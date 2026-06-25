@@ -1,0 +1,31 @@
+# Environment variables (API Keys, Secrets)
+.env
+
+# Python virtual environments
+venv/
+.venv/
+env/
+
+# Python cache and temporary files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+
+# Operating System files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDEs and editors configuration
+.vscode/
+.idea/
+
+# Project-specific output and test files
+output/
+input.txt
+*.png
+*.jpg
+*.jpeg
