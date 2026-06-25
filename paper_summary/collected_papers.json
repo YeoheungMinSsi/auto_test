@@ -1,0 +1,38 @@
+[
+    {
+        "title": "Do You Even Need Attention? A Stack of Feed-Forward Layers Does Surprisingly Well on ImageNet",
+        "normalized_title": "doyouevenneedattentionastackoffeedforwardlayersdoessurprisinglywellonimagenet",
+        "doi": null,
+        "pdf_path": "categories\\ai_ml\\llm\\Do You Even Need Attention_ A Stack of Feed-Forward Layers Does Surprisingly Well on ImageNet.pdf",
+        "source": "arXiv",
+        "collected_at": "2026-06-24T14:32:18.326829",
+        "url": "http://arxiv.org/abs/2105.02723v1"
+    },
+    {
+        "title": "\"All You Need\" is Not All You Need for a Paper Title: On the Origins of a Scientific Meme",
+        "normalized_title": "allyouneedisnotallyouneedforapapertitleontheoriginsofascientificmeme",
+        "doi": null,
+        "pdf_path": "categories\\ai_ml\\llm\\_All You Need_ is Not All You Need for a Paper Title_ On the Origins of a Scientific Meme.pdf",
+        "source": "arXiv",
+        "collected_at": "2026-06-24T14:32:18.806476",
+        "url": "http://arxiv.org/abs/2512.19700v1"
+    },
+    {
+        "title": "Attention Is All You Need In Speech Separation",
+        "normalized_title": "attentionisallyouneedinspeechseparation",
+        "doi": "10.1109/icassp39728.2021.9413901",
+        "pdf_path": null,
+        "source": "OpenAlex",
+        "collected_at": "2026-06-24T14:32:19.546419",
+        "url": "https://openalex.org/W3163652268"
+    },
+    {
+        "title": "Tierkreis: A Dataflow Framework for Hybrid Quantum-Classical Computing",
+        "normalized_title": "tierkreisadataflowframeworkforhybridquantumclassicalcomputing",
+        "doi": "10.1109/QCS56647.2022.00007",
+        "pdf_path": "categories\\science\\quantum\\Tierkreis_ A Dataflow Framework for Hybrid Quantum-Classical Computing.pdf",
+        "source": "arXiv",
+        "collected_at": "2026-06-24T17:37:10.382772",
+        "url": "http://arxiv.org/abs/2211.02350v1"
+    }
+]
