@@ -13,7 +13,12 @@ from apis import (
 from downloader import PaperDownloader
 
 # .env 환경 변수 로드
-load_dotenv()
+base_dir = os.path.dirname(os.path.abspath(__file__))
+root_env = os.path.join(base_dir, "..", ".env")
+if os.path.exists(root_env):
+    load_dotenv(root_env)
+else:
+    load_dotenv()
 
 # 사용할 수 있는 전체 API 소스 매핑
 API_MAPPING = {
@@ -34,8 +39,10 @@ def main():
     parser.add_argument("--sources", type=str, default="arxiv,semantic,openalex,pmc",
                         help="사용할 API 소스 목록 (쉼표 구분, 예: arxiv,semantic,riss)")
     parser.add_argument("--limit", type=int, default=3, help="API 소스당 검색할 논문 수 제한")
+    parser.add_argument("--search-only", action="store_true", help="다운로드를 생략하고 검색 결과만 JSON으로 출력합니다.")
     
     args = parser.parse_args()
+    
     
     # 1. 저장 디렉토리 유효성 체크
     base_dir = os.path.dirname(os.path.abspath(__file__))
@@ -75,6 +82,17 @@ def main():
         papers = api_instance.search(query=args.query, limit=args.limit)
         print(f" -> {len(papers)}개의 논문 발견.")
         all_papers.extend(papers)
+
+    if args.search_only:
+        print("\n" + "=" * 60)
+        print("검색 완료 (Search Only Mode). 결과를 파일로 저장합니다.")
+        print("=" * 60)
+        import json
+        out_path = os.path.join(base_dir, "search_results_tmp.json")
+        with open(out_path, "w", encoding="utf-8") as f:
+            json.dump(all_papers, f, ensure_ascii=False, indent=2)
+        print(f"검색 결과가 저장되었습니다: {out_path}")
+        return
 
     # 4. 수집된 논문 통합 및 다운로드 (중복 제거 포함)
     print("\n" + "=" * 60)
