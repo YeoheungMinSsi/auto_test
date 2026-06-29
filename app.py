@@ -11,6 +11,7 @@ pg = st.navigation(
         "Workflows": [
             st.Page("pages/automation.py", title="🚀 논문 자동화 파이프라인"),
             st.Page("pages/progress.py", title="📊 현재 진행 상황"),
+            st.Page("pages/blog.py", title="📝 블로그 관리"),
         ],
         "Hidden": [
             st.Page("pages/progress_detail.py", title="작업 상세"),

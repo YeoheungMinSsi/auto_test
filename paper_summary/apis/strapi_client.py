@@ -2,6 +2,7 @@ import os
 import requests
 from dotenv import load_dotenv
 from typing import Dict, Any, List, Optional
+from datetime import datetime
 
 # .env 환경 변수 로드
 base_dir = os.path.dirname(os.path.abspath(__file__))
@@ -197,3 +198,76 @@ class StrapiClient:
         except Exception as e:
             print(f"[StrapiClient] Connection error during update_summary_by_title: {e}")
             return False
+
+    def create_blog_post(self, blog_data: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+        """
+        새로운 블로그 포스트를 Strapi DB에 생성(저장)합니다.
+        """
+        if not self.token:
+            print("[StrapiClient] Warning: API Token is missing. Cannot save blog post.")
+            return None
+
+        url = f"{self.api_url}/api/blogs"
+        payload = {
+            "data": {
+                "title": blog_data.get("title"),
+                "content": blog_data.get("content", ""),
+                "category": blog_data.get("category", "General"),
+                "author": blog_data.get("author", "User"),
+                "publishedAt": datetime.now().isoformat()
+            }
+        }
+
+        try:
+            response = requests.post(url, json=payload, headers=self.headers)
+            if response.status_code in [200, 201]:
+                res_json = response.json()
+                print(f"[StrapiClient] Successfully saved blog post: {blog_data.get('title')[:30]}...")
+                return res_json.get("data")
+            else:
+                print(f"[StrapiClient] Error creating blog post ({response.status_code}): {response.text}")
+                return None
+        except Exception as e:
+            print(f"[StrapiClient] Connection error during create_blog_post: {e}")
+            return None
+
+    def get_blog_posts(self, category: Optional[str] = None, limit: int = 100) -> List[Dict[str, Any]]:
+        """
+        Strapi DB로부터 블로그 포스트 목록을 가져옵니다.
+        """
+        if not self.token:
+            print("[StrapiClient] Warning: API Token is missing.")
+            return []
+
+        url = f"{self.api_url}/api/blogs"
+        params = {
+            "pagination[limit]": limit,
+            "sort": "createdAt:desc"
+        }
+        
+        if category:
+            params["filters[category][$eq]"] = category
+
+        try:
+            response = requests.get(url, headers=self.headers, params=params)
+            if response.status_code == 200:
+                data = response.json().get("data", [])
+                flat_posts = []
+                for item in data:
+                    flat_item = {
+                        "id": item.get("id"),
+                        "documentId": item.get("documentId"),
+                        "title": self._get_field(item, "title"),
+                        "content": self._get_field(item, "content"),
+                        "category": self._get_field(item, "category"),
+                        "author": self._get_field(item, "author"),
+                        "createdAt": self._get_field(item, "createdAt")
+                    }
+                    flat_posts.append(flat_item)
+                return flat_posts
+            else:
+                print(f"[StrapiClient] Error getting blog posts ({response.status_code}): {response.text}")
+                return []
+        except Exception as e:
+            print(f"[StrapiClient] Connection error during get_blog_posts: {e}")
+            return []
