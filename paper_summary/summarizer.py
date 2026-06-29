@@ -5,6 +5,7 @@ import requests
 from pypdf import PdfReader
 from tqdm import tqdm
 from typing import Dict, Any, Optional, List
+from apis.strapi_client import StrapiClient
 
 # 로컬 Ollama 엔드포인트
 OLLAMA_API_URL = "http://localhost:11434/api/chat"
@@ -283,6 +284,19 @@ def process_single_pdf(pdf_path: str, model: str, force: bool = False) -> bool:
         with open(summary_path, "w", encoding="utf-8") as f:
             json.dump(final_data, f, indent=4, ensure_ascii=False)
         print(f"[Summarizer] Success! High-fidelity summary saved to: {summary_path}")
+        
+        # Strapi DB에도 요약 정보 실시간 동기화
+        try:
+            strapi = StrapiClient()
+            summary_markdown = f"**한글 번역 제목**: {korean_title}\n\n"
+            for sec in sections:
+                summary_markdown += f"### {sec.get('title')}\n{sec.get('content')}\n\n"
+            
+            # original_title을 기준으로 데이터베이스 행 검색 및 업데이트
+            strapi.update_summary_by_title(original_title, summary_markdown)
+        except Exception as e:
+            print(f"[Summarizer] Failed to update summary to Strapi DB: {e}")
+            
         return True
     except Exception as e:
         print(f"[Summarizer] Failed to save summary JSON: {e}")

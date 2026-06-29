@@ -4,12 +4,14 @@ import json
 import requests
 from datetime import datetime
 from typing import Dict, Any, List
+from apis.strapi_client import StrapiClient
 
 class PaperDownloader:
     def __init__(self, base_dir: str):
         self.base_dir = base_dir
         self.history_file = os.path.join(base_dir, "collected_papers.json")
         self.history = self._load_history()
+        self.strapi = StrapiClient()
 
     def _load_history(self) -> List[Dict[str, Any]]:
         """수집 이력 JSON 파일을 로드합니다."""
@@ -40,14 +42,19 @@ class PaperDownloader:
         """제목 또는 DOI를 기준으로 중복 수집 여부를 확인합니다."""
         normalized_title = self.normalize_title(title)
         
+        # 1. 로컬 JSON 기록 검사
         for item in self.history:
-            # 1. DOI 기준 비교
+            # DOI 기준 비교
             if doi and item.get("doi") == doi:
                 return True
-            # 2. 제목 기준 비교
+            # 제목 기준 비교
             if item.get("normalized_title") == normalized_title:
                 return True
                 
+        # 2. Strapi DB 기록 검사
+        if self.strapi.check_duplicate(title, doi):
+            return True
+            
         return False
 
     def clean_filename(self, filename: str) -> str:
@@ -68,7 +75,7 @@ class PaperDownloader:
         if not pdf_url:
             # PDF 다운로드 링크는 없지만, 메타데이터 수집을 위해 이력에 저장만 함
             print(f"[Downloader] No PDF link. Metadata saved for: {title[:50]}...")
-            self.history.append({
+            paper_entry = {
                 "title": title,
                 "normalized_title": self.normalize_title(title),
                 "doi": doi,
@@ -76,8 +83,21 @@ class PaperDownloader:
                 "source": paper.get("source"),
                 "collected_at": datetime.now().isoformat(),
                 "url": paper.get("url")
-            })
+            }
+            self.history.append(paper_entry)
             self._save_history()
+            
+            # Strapi DB에 메타데이터 저장
+            self.strapi.create_paper({
+                "title": title,
+                "authors": ", ".join(paper.get("authors", [])) if isinstance(paper.get("authors"), list) else paper.get("authors", ""),
+                "pdf_path": None,
+                "source_url": paper.get("url") or paper.get("pdf_url"),
+                "category": category_path,
+                "doi": doi,
+                "published_year": paper.get("year")
+            })
+            
             return True
 
         # 저장할 파일명 설정
@@ -129,6 +149,18 @@ class PaperDownloader:
             })
             self._save_history()
             print(f"[Downloader] Success! Saved to: {relative_pdf_path}")
+            
+            # Strapi DB에 메타데이터 저장
+            self.strapi.create_paper({
+                "title": title,
+                "authors": ", ".join(paper.get("authors", [])) if isinstance(paper.get("authors"), list) else paper.get("authors", ""),
+                "pdf_path": relative_pdf_path,
+                "source_url": paper.get("url") or paper.get("pdf_url"),
+                "category": category_path,
+                "doi": doi,
+                "published_year": paper.get("year")
+            })
+            
             return True
 
         except Exception as e:
