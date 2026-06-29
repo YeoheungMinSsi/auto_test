@@ -4,6 +4,18 @@ from paper_summary.apis.strapi_client import StrapiClient
 # Strapi 클라이언트 초기화
 strapi = StrapiClient()
 
+# st.dialog 데코레이터를 이용한 상세 팝업 창 정의
+@st.dialog("상세 보기 🔍", width="large")
+def show_post_detail(post):
+    st.write(f"### {post['title']}")
+    st.write(f"📁 **카테고리:** `{post['category']}` | 👤 **작성자:** `{post['author']}` | 📅 **작성일:** `{post['createdAt'][:10]}`")
+    st.divider()
+    # 마크다운 본문 출력
+    st.markdown(post["content"])
+    st.write("")
+    if st.button("닫기", use_container_width=True, type="primary"):
+        st.rerun()
+
 st.title("📝 블로그 포스트 관리")
 st.markdown("Strapi 데이터베이스와 실시간으로 연동되는 블로그 글쓰기 및 목록 조회 화면입니다.")
 
@@ -75,12 +87,18 @@ with tab_read:
         if not posts:
             st.warning("검색 결과와 일치하는 포스트가 없습니다.")
         else:
+            # 3열 카드 그리드 레이아웃 배치
+            cols = st.columns(3)
             for idx, post in enumerate(posts):
-                with st.container(border=True):
-                    # 제목 및 정보 라인
-                    st.markdown(f"### {post['title']}")
-                    st.markdown(f"**카테고리:** `{post['category']}` | **작성자:** `{post['author']}` | **작성일:** `{post['createdAt'][:10]}`")
-                    st.divider()
-                    
-                    # 본문 (마크다운)
-                    st.markdown(post["content"])
+                col_idx = idx % 3
+                with cols[col_idx]:
+                    with st.container(border=True):
+                        # 카드 헤더
+                        st.markdown(f"### {post['title']}")
+                        st.markdown(f"📁 **카테고리:** `{post['category']}`")
+                        st.markdown(f"👤 `{post['author']}` | 📅 `{post['createdAt'][:10]}`")
+                        st.write("") # 간격 조절
+                        
+                        # 상세보기 버튼 클릭 시 dialog 팝업 호출
+                        if st.button("자세히 보기 🔍", key=f"view_{post['id']}", use_container_width=True):
+                            show_post_detail(post)
