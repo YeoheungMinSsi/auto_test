@@ -82,6 +82,14 @@
                     "completed": false
                 }
             ]
+        },
+        "3fcacd63-8199-46de-acf8-8fe5de4fa91f": {
+            "id": "3fcacd63-8199-46de-acf8-8fe5de4fa91f",
+            "name": "fads",
+            "description": "테스트용",
+            "status": "계획 중",
+            "created_at": "2026-06-29T16:17:51.417036",
+            "tasks": []
         }
     },
     "active_project_id": null
