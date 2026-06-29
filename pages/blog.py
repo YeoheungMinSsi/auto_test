@@ -4,6 +4,11 @@ from paper_summary.apis.strapi_client import StrapiClient
 # Strapi 클라이언트 초기화
 strapi = StrapiClient()
 
+# 성능 향상을 위한 데이터 캐싱 함수 정의 (2분 캐시 보존)
+@st.cache_data(show_spinner=False, ttl=120)
+def get_cached_blogs(category=None):
+    return strapi.get_blog_posts(category=category)
+
 # st.dialog 데코레이터를 이용한 상세 팝업 창 정의
 @st.dialog("상세 보기 🔍", width="large")
 def show_post_detail(post):
@@ -52,6 +57,8 @@ with tab_write:
                     
                 if result:
                     st.success(f"🎉 '{title}' 포스트가 성공적으로 발행되어 DB에 저장되었습니다!")
+                    # 새 글이 등록되었으므로 임시 캐시 데이터를 초기화하여 즉시 목록 갱신 유도
+                    st.cache_data.clear()
                     # 화면을 새로고침하여 캐시 업데이트 유도
                     st.rerun()
                 else:
@@ -67,11 +74,9 @@ with tab_read:
     with col_filter:
         selected_cat = st.selectbox("📁 카테고리 필터", ["전체", "AI & Data", "Python & Streamlit", "개발 일지", "기타"])
     
-    # DB에서 데이터 가져오기
-    with st.spinner("DB로부터 포스트를 불러오는 중..."):
-        filter_cat = None if selected_cat == "전체" else selected_cat
-        # DB에서 최신 글 100개 fetch
-        posts = strapi.get_blog_posts(category=filter_cat)
+    # DB에서 캐시를 활용해 데이터 가져오기 (매 렌더링 시 API 재호출 방지)
+    filter_cat = None if selected_cat == "전체" else selected_cat
+    posts = get_cached_blogs(category=filter_cat)
         
     if not posts:
         st.info("발행된 블로그 글이 없습니다. '새 글 작성' 탭에서 첫 글을 등록해 보세요!")
