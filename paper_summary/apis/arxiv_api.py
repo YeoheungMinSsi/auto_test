@@ -9,8 +9,8 @@ class ArxivAPI(BaseAcademicAPI):
         results = []
         try:
             encoded_query = urllib.parse.quote(query)
-            # arXiv API 엔드포인트 호출
-            url = f"http://export.arxiv.org/api/query?search_query=all:{encoded_query}&max_results={limit}"
+            # arXiv API 엔드포인트 호출 (최신 제출일 순 정렬 추가)
+            url = f"http://export.arxiv.org/api/query?search_query=all:{encoded_query}&max_results={limit}&sortBy=submittedDate&sortOrder=descending"
             response = requests.get(url, timeout=10)
             
             if response.status_code != 200:

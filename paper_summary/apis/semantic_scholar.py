@@ -10,7 +10,8 @@ class SemanticScholarAPI(BaseAcademicAPI):
             params = {
                 "query": query,
                 "limit": limit,
-                "fields": "title,authors,abstract,externalIds,openAccessPdf,citationCount,year,url"
+                "fields": "title,authors,abstract,externalIds,openAccessPdf,citationCount,year,url",
+                "sort": "publicationDate:desc"
             }
             
             headers = {}

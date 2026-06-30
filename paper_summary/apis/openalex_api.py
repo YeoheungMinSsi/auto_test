@@ -25,7 +25,8 @@ class OpenAlexAPI(BaseAcademicAPI):
             url = "https://api.openalex.org/works"
             params = {
                 "search": query,
-                "per_page": limit
+                "per_page": limit,
+                "sort": "publication_date:desc"
             }
             # OpenAlex 가이드라인: Polite pool에 합류하기 위해 User-Agent 설정 권장
             headers = {
