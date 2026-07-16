@@ -37,12 +37,27 @@
                     "title": "Streamlit 기반 대시보드 내비게이션 통합",
                     "completed": true
                 }
-            ]
+            ],
+            "documents": {
+                "044a2653-a582-45af-82f9-36cfafa4f957": {
+                    "id": "044a2653-a582-45af-82f9-36cfafa4f957",
+                    "title": "📜 기본 기획서 및 설명",
+                    "parent_id": null,
+                    "created_at": "2026-06-26T16:42:23.369896",
+                    "blocks": [
+                        {
+                            "id": "6416e570-ff87-476d-8294-289cc2f22653",
+                            "type": "text",
+                            "content": "<p>### 📑 1. 계획 (Implementation Plan)</p><p>- **논문 수집 엔진 개발**: 다양한 학술 데이터베이스(Arxiv, ScienceOn 등) API 연동 및 논문 검색 기능 설계</p><p>- **AI 요약 파이프라인**: 수집된 논문 PDF에서 텍스트를 추출하고 LLM을 활용해 초록/본문 요약 수행</p><p>- **PPT 자동 생성**: 요약 텍스트와 AI 이미지(SDXL)를 결합하여 구조화된 발표용 파워포인트 슬라이드 제작</p><p>- **Strapi 연동**: 로컬 DB에 수집한 데이터와 요약본을 실시간 동기화하여 보관함 형태로 제공</p><p><br></p><p>### ⚙️ 2. 주요 기능 계획</p><p>- 논문 검색 및 파일 다운로드</p><p>- 다단계 요약 알고리즘</p><p>- PPT 파일 자동 다운로드 제공</p><p>- Strapi 기반의 웹 보관함 대시보드</p><p><br></p><p>/페이지 </p>"
+                        }
+                    ]
+                }
+            }
         },
         "default-blog-homepage": {
             "id": "default-blog-homepage",
             "name": "블로그식 홈페이지",
-            "description": "### 📑 1. 계획 (Implementation Plan)\n- **프론트엔드 UI 디자인 (Streamlit)**: 파이썬 기반 Streamlit을 활용하여 모던하고 반응형인 블로그형 레이아웃 및 카드 그리드 설계\n- **콘텐츠 관리 시스템 (Strapi CMS 연동)**: Strapi 백엔드에서 작성한 포스팅 목록과 상세 내용을 REST API로 실시간 호출\n- **검색 및 태그 필터링**: Streamlit의 셀렉트박스 및 검색창 컴포넌트를 이용해 실시간 검색 및 카테고리 태그 필터 기능 제공\n- **배포 및 최적화**: Streamlit 대시보드 환경에 맞는 캐싱(st.cache_data) 및 모바일/데스크톱 화면 최적화 적용\n\n### 🛠️ 2. 사용 기술 (Tech Stack)\n- **Frontend/Backend**: Streamlit (Python)\n- **CMS**: Strapi (Headless CMS)\n- **Database**: SQLite\n- **Deployment**: Streamlit Cloud / Local Python Environment\n\n### ⚙️ 3. 주요 기능 계획\n- Streamlit 마크다운 렌더링(st.markdown)을 활용한 블로그 포스팅 CRUD 연동\n- Strapi REST API 연동을 통한 실시간 데이터 송수신\n- 카테고리별 태그 분류 및 검색 기능\n- Streamlit의 모바일 및 데스크톱 반응형 레이아웃 최적화",
+            "description": "### 📑 1. 계획 (Implementation Plan)\n- **프론트엔드 UI 디자인 (Streamlit)**: 파이썬 기반 Streamlit을 활용하여 모던하고 반응형인 블로그형 레이아웃 및 카드 그리드 설계\n- **콘텐츠 관리 시스템 (Strapi CMS 연동)**: Strapi 백엔드에서 작성한 포스팅 목록과 상세 내용을 REST API로 실시간 호출\n- **검색 및 태그 필터링**: Streamlit의 셀렉트박스 및 검색창 컴포넌트를 이용해 실시간 검색 및 카테고리 태그 필터 기능 제공\n- **배포 및 최적화**: Streamlit 대시보드 환경에 맞는 캐싱(st.cache_data) 및 모바일/데스크톱 화면 최적화 적용\n\n### 🛠️ 2. 사용 기술 상세 설명 (Tech Stack Guide)\n- **Streamlit (Frontend/Backend)**\n  - *개념*: 파이썬(Python) 코드만으로 간편하게 웹 애플리케이션을 만들 수 있게 해주는 프레임워크입니다.\n  - *쉽게 말해*: 복잡한 웹 디자인 언어(HTML, CSS, JS) 없이도 파이썬 스크립트만으로 직관적이고 멋진 웹 대시보드 화면을 뚝딱 만들게 해주는 도구입니다.\n- **Strapi (Headless CMS)**\n  - *개념*: **CMS(Content Management System)**는 글이나 이미지 등의 콘텐츠를 쉽게 등록하고 관리할 수 있도록 해주는 시스템입니다. Strapi는 그 중에서도 웹 화면을 배제하고 오직 데이터 저장과 관리 기능만을 API 형태로 전문 공급하는 'Headless CMS'입니다.\n  - *쉽게 말해*: 네이버 블로그의 글쓰기/관리자 화면처럼 웹에서 간편하게 글을 적으면, 이를 안전하게 저장해 두었다가 필요할 때 Streamlit 화면으로 가져다 쓸 수 있게 중개해주는 서비스입니다.\n- **SQLite (Database)**\n  - *개념*: 서버 설치 없이 파일 하나로 가볍게 작동하는 파일 기반 관계형 데이터베이스입니다.\n  - *쉽게 말해*: 복잡한 데이터베이스 서버 프로그램을 별도로 띄울 필요 없이, 로컬 환경에서 하나의 파일 형태로 블로그 포스트 정보들을 안전하고 신속하게 읽고 쓰며 기록해주는 보관함 역할을 합니다.\n\n### ⚙️ 3. 주요 기능 계획\n- Streamlit 마크다운 렌더링(st.markdown)을 활용한 블로그 포스팅 CRUD 연동\n- Strapi REST API 연동을 통한 실시간 데이터 송수신\n- 카테고리별 태그 분류 및 검색 기능\n- Streamlit의 모바일 및 데스크톱 반응형 레이아웃 최적화",
             "status": "진행 중",
             "created_at": "2026-06-26T11:59:00.000000",
             "tasks": [
@@ -81,7 +96,22 @@
                     "title": "캐싱(st.cache_data) 최적화 및 최종 배포 점검",
                     "completed": false
                 }
-            ]
+            ],
+            "documents": {
+                "42730b3c-fc83-4f35-9143-61a07c88c12a": {
+                    "id": "42730b3c-fc83-4f35-9143-61a07c88c12a",
+                    "title": "📜 기본 기획서 및 설명",
+                    "parent_id": null,
+                    "created_at": "2026-06-26T11:59:00.000000",
+                    "blocks": [
+                        {
+                            "id": "78f91fd8-bea9-42a5-a7a2-3affe7df7d4c",
+                            "type": "text",
+                            "content": "### 📑 1. 계획 (Implementation Plan)\n- **프론트엔드 UI 디자인 (Streamlit)**: 파이썬 기반 Streamlit을 활용하여 모던하고 반응형인 블로그형 레이아웃 및 카드 그리드 설계\n- **콘텐츠 관리 시스템 (Strapi CMS 연동)**: Strapi 백엔드에서 작성한 포스팅 목록과 상세 내용을 REST API로 실시간 호출\n- **검색 및 태그 필터링**: Streamlit의 셀렉트박스 및 검색창 컴포넌트를 이용해 실시간 검색 및 카테고리 태그 필터 기능 제공\n- **배포 및 최적화**: Streamlit 대시보드 환경에 맞는 캐싱(st.cache_data) 및 모바일/데스크톱 화면 최적화 적용\n\n### 🛠️ 2. 사용 기술 상세 설명 (Tech Stack Guide)\n- **Streamlit (Frontend/Backend)**\n  - *개념*: 파이썬(Python) 코드만으로 간편하게 웹 애플리케이션을 만들 수 있게 해주는 프레임워크입니다.\n  - *쉽게 말해*: 복잡한 웹 디자인 언어(HTML, CSS, JS) 없이도 파이썬 스크립트만으로 직관적이고 멋진 웹 대시보드 화면을 뚝딱 만들게 해주는 도구입니다.\n- **Strapi (Headless CMS)**\n  - *개념*: **CMS(Content Management System)**는 글이나 이미지 등의 콘텐츠를 쉽게 등록하고 관리할 수 있도록 해주는 시스템입니다. Strapi는 그 중에서도 웹 화면을 배제하고 오직 데이터 저장과 관리 기능만을 API 형태로 전문 공급하는 'Headless CMS'입니다.\n  - *쉽게 말해*: 네이버 블로그의 글쓰기/관리자 화면처럼 웹에서 간편하게 글을 적으면, 이를 안전하게 저장해 두었다가 필요할 때 Streamlit 화면으로 가져다 쓸 수 있게 중개해주는 서비스입니다.\n- **SQLite (Database)**\n  - *개념*: 서버 설치 없이 파일 하나로 가볍게 작동하는 파일 기반 관계형 데이터베이스입니다.\n  - *쉽게 말해*: 복잡한 데이터베이스 서버 프로그램을 별도로 띄울 필요 없이, 로컬 환경에서 하나의 파일 형태로 블로그 포스트 정보들을 안전하고 신속하게 읽고 쓰며 기록해주는 보관함 역할을 합니다.\n\n### ⚙️ 3. 주요 기능 계획\n- Streamlit 마크다운 렌더링(st.markdown)을 활용한 블로그 포스팅 CRUD 연동\n- Strapi REST API 연동을 통한 실시간 데이터 송수신\n- 카테고리별 태그 분류 및 검색 기능\n- Streamlit의 모바일 및 데스크톱 반응형 레이아웃 최적화"
+                        }
+                    ]
+                }
+            }
         },
         "3fcacd63-8199-46de-acf8-8fe5de4fa91f": {
             "id": "3fcacd63-8199-46de-acf8-8fe5de4fa91f",
@@ -89,7 +119,22 @@
             "description": "테스트용",
             "status": "계획 중",
             "created_at": "2026-06-29T16:17:51.417036",
-            "tasks": []
+            "tasks": [],
+            "documents": {
+                "4bc02aa3-4378-413c-b775-6809a1ffbd0e": {
+                    "id": "4bc02aa3-4378-413c-b775-6809a1ffbd0e",
+                    "title": "📜 기본 기획서 및 설명",
+                    "parent_id": null,
+                    "created_at": "2026-06-29T16:17:51.417036",
+                    "blocks": [
+                        {
+                            "id": "5c233ab4-38be-40ac-8bf4-678b227d3801",
+                            "type": "text",
+                            "content": "테스트용"
+                        }
+                    ]
+                }
+            }
         }
     },
     "active_project_id": null

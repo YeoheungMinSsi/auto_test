@@ -1,0 +1,4 @@
+sys.argv query: '컴퓨터 비전'
+sys.getfilesystemencoding(): utf-8
+sys.stdout.encoding: cp949
+env SCIENCEON_API_KEY: True

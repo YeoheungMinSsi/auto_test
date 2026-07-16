@@ -60,11 +60,16 @@ def load_state():
             "- **콘텐츠 관리 시스템 (Strapi CMS 연동)**: Strapi 백엔드에서 작성한 포스팅 목록과 상세 내용을 REST API로 실시간 호출\n"
             "- **검색 및 태그 필터링**: Streamlit의 셀렉트박스 및 검색창 컴포넌트를 이용해 실시간 검색 및 카테고리 태그 필터 기능 제공\n"
             "- **배포 및 최적화**: Streamlit 대시보드 환경에 맞는 캐싱(st.cache_data) 및 모바일/데스크톱 화면 최적화 적용\n\n"
-            "### 🛠️ 2. 사용 기술 (Tech Stack)\n"
-            "- **Frontend/Backend**: Streamlit (Python)\n"
-            "- **CMS**: Strapi (Headless CMS)\n"
-            "- **Database**: SQLite\n"
-            "- **Deployment**: Streamlit Cloud / Local Python Environment\n\n"
+            "### 🛠️ 2. 사용 기술 상세 설명 (Tech Stack Guide)\n"
+            "- **Streamlit (Frontend/Backend)**\n"
+            "  - *개념*: 파이썬(Python) 코드만으로 간편하게 웹 애플리케이션을 만들 수 있게 해주는 프레임워크입니다.\n"
+            "  - *쉽게 말해*: 복잡한 웹 디자인 언어(HTML, CSS, JS) 없이도 파이썬 스크립트만으로 직관적이고 멋진 웹 대시보드 화면을 뚝딱 만들게 해주는 도구입니다.\n"
+            "- **Strapi (Headless CMS)**\n"
+            "  - *개념*: **CMS(Content Management System)**는 글이나 이미지 등의 콘텐츠를 쉽게 등록하고 관리할 수 있도록 해주는 시스템입니다. Strapi는 그 중에서도 웹 화면을 배제하고 오직 데이터 저장과 관리 기능만을 API 형태로 전문 공급하는 'Headless CMS'입니다.\n"
+            "  - *쉽게 말해*: 네이버 블로그의 글쓰기/관리자 화면처럼 웹에서 간편하게 글을 적으면, 이를 안전하게 저장해 두었다가 필요할 때 Streamlit 화면으로 가져다 쓸 수 있게 중개해주는 서비스입니다.\n"
+            "- **SQLite (Database)**\n"
+            "  - *개념*: 서버 설치 없이 파일 하나로 가볍게 작동하는 파일 기반 관계형 데이터베이스입니다.\n"
+            "  - *쉽게 말해*: 복잡한 데이터베이스 서버 프로그램을 별도로 띄울 필요 없이, 로컬 환경에서 하나의 파일 형태로 블로그 포스트 정보들을 안전하고 신속하게 읽고 쓰며 기록해주는 보관함 역할을 합니다.\n\n"
             "### ⚙️ 3. 주요 기능 계획\n"
             "- Streamlit 마크다운 렌더링(st.markdown)을 활용한 블로그 포스팅 CRUD 연동\n"
             "- Strapi REST API 연동을 통한 실시간 데이터 송수신\n"
@@ -89,6 +94,28 @@ def load_state():
         }
         updated = True
         
+    # 기존 프로젝트들에 'documents'가 없는 경우, 'description'을 첫 번째 문서(마크다운 블록)로 마이그레이션
+    for pid, proj in state["projects"].items():
+        if "documents" not in proj:
+            proj["documents"] = {}
+            desc_content = proj.get("description", "").strip()
+            
+            doc_id = str(uuid.uuid4())
+            proj["documents"][doc_id] = {
+                "id": doc_id,
+                "title": "📜 기본 기획서 및 설명",
+                "parent_id": None,
+                "created_at": proj.get("created_at", datetime.now().isoformat()),
+                "blocks": [
+                    {
+                        "id": str(uuid.uuid4()),
+                        "type": "text",
+                        "content": desc_content if desc_content else "새로운 페이지 내용을 입력하세요."
+                    }
+                ]
+            }
+            updated = True
+
     if updated:
         save_state(state)
         
@@ -187,4 +214,157 @@ def delete_task(project_id, task_id):
         if len(state["projects"][project_id]["tasks"]) < original_len:
             save_state(state)
             return True
+    return False
+
+def add_document(project_id, title, parent_id=None):
+    """프로젝트 내에 새로운 문서를 추가하고 기본 텍스트 블록을 하나 생성합니다."""
+    state = load_state()
+    if project_id in state["projects"]:
+        doc_id = str(uuid.uuid4())
+        default_block = {
+            "id": str(uuid.uuid4()),
+            "type": "text",
+            "content": ""
+        }
+        
+        if "documents" not in state["projects"][project_id]:
+            state["projects"][project_id]["documents"] = {}
+            
+        state["projects"][project_id]["documents"][doc_id] = {
+            "id": doc_id,
+            "title": title,
+            "parent_id": parent_id,
+            "created_at": datetime.now().isoformat(),
+            "blocks": [default_block]
+        }
+        save_state(state)
+        return doc_id
+    return None
+
+def delete_document(project_id, doc_id):
+    """문서를 삭제하며, 해당 문서의 모든 하위 문서도 연쇄 삭제합니다."""
+    state = load_state()
+    if project_id in state["projects"] and "documents" in state["projects"][project_id]:
+        docs = state["projects"][project_id]["documents"]
+        if doc_id in docs:
+            to_delete = {doc_id}
+            queue = [doc_id]
+            while queue:
+                current_id = queue.pop(0)
+                for d_id, d_val in list(docs.items()):
+                    if d_val.get("parent_id") == current_id:
+                        if d_id not in to_delete:
+                            to_delete.add(d_id)
+                            queue.append(d_id)
+            
+            for target_id in to_delete:
+                if target_id in docs:
+                    del docs[target_id]
+                    
+            save_state(state)
+            return True
+    return False
+
+def update_document_title(project_id, doc_id, title):
+    """문서의 제목을 수정합니다."""
+    state = load_state()
+    if project_id in state["projects"] and "documents" in state["projects"][project_id]:
+        docs = state["projects"][project_id]["documents"]
+        if doc_id in docs:
+            docs[doc_id]["title"] = title
+            save_state(state)
+            return True
+    return False
+
+def add_block(project_id, doc_id, block_type, content=None, after_block_id=None):
+    """문서 내 특정 블록 뒤 또는 맨 뒤에 새로운 블록을 추가합니다."""
+    state = load_state()
+    if project_id in state["projects"] and "documents" in state["projects"][project_id]:
+        docs = state["projects"][project_id]["documents"]
+        if doc_id in docs:
+            block_id = str(uuid.uuid4())
+            if content is None:
+                if block_type == "text":
+                    content = ""
+                elif block_type == "code":
+                    content = "print('Hello World')"
+                elif block_type == "table":
+                    content = [["헤더1", "헤더2"], ["", ""]]
+                else:
+                    content = ""
+                    
+            new_block = {
+                "id": block_id,
+                "type": block_type,
+                "content": content
+            }
+            
+            blocks = docs[doc_id].setdefault("blocks", [])
+            if after_block_id:
+                idx = -1
+                for i, b in enumerate(blocks):
+                    if b["id"] == after_block_id:
+                        idx = i
+                        break
+                if idx != -1:
+                    blocks.insert(idx + 1, new_block)
+                else:
+                    blocks.append(new_block)
+            else:
+                blocks.append(new_block)
+                
+            save_state(state)
+            return block_id
+    return None
+
+def update_block(project_id, doc_id, block_id, content):
+    """문서 내 특정 블록의 내용을 갱신합니다."""
+    state = load_state()
+    if project_id in state["projects"] and "documents" in state["projects"][project_id]:
+        docs = state["projects"][project_id]["documents"]
+        if doc_id in docs:
+            blocks = docs[doc_id].get("blocks", [])
+            for b in blocks:
+                if b["id"] == block_id:
+                    b["content"] = content
+                    save_state(state)
+                    return True
+    return False
+
+def delete_block(project_id, doc_id, block_id):
+    """문서 내 특정 블록을 삭제합니다."""
+    state = load_state()
+    if project_id in state["projects"] and "documents" in state["projects"][project_id]:
+        docs = state["projects"][project_id]["documents"]
+        if doc_id in docs:
+            blocks = docs[doc_id].get("blocks", [])
+            for i, b in enumerate(blocks):
+                if b["id"] == block_id:
+                    blocks.pop(i)
+                    save_state(state)
+                    return True
+    return False
+
+def move_block(project_id, doc_id, block_id, direction):
+    """문서 내 특정 블록의 위치를 위/아래로 이동합니다."""
+    state = load_state()
+    if project_id in state["projects"] and "documents" in state["projects"][project_id]:
+        docs = state["projects"][project_id]["documents"]
+        if doc_id in docs:
+            blocks = docs[doc_id].get("blocks", [])
+            idx = -1
+            for i, b in enumerate(blocks):
+                if b["id"] == block_id:
+                    idx = i
+                    break
+            if idx == -1:
+                return False
+            if direction == "up" and idx > 0:
+                blocks[idx], blocks[idx - 1] = blocks[idx - 1], blocks[idx]
+                save_state(state)
+                return True
+            elif direction == "down" and idx < len(blocks) - 1:
+                blocks[idx], blocks[idx + 1] = blocks[idx + 1], blocks[idx]
+                save_state(state)
+                return True
     return False
