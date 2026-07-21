@@ -4,9 +4,89 @@ from datetime import datetime
 import uuid
 
 # 상태를 저장할 JSON 파일 경로
-STATE_FILE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "progress_state.json")
 
-def load_state():
+def get_state_file(page_id="progress"):
+    return os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), f"{page_id}_state.json")
+
+WORKSPACE_STATE_FILE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "workspace_state.json")
+
+def load_workspace_state():
+    if not os.path.exists(WORKSPACE_STATE_FILE):
+        state = {"workspace_name": "Auto Workspace", "custom_pages": []}
+        save_workspace_state(state)
+        return state
+    try:
+        import json
+        with open(WORKSPACE_STATE_FILE, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except:
+        return {"workspace_name": "Auto Workspace", "custom_pages": []}
+
+def save_workspace_state(state):
+    try:
+        import json
+        with open(WORKSPACE_STATE_FILE, "w", encoding="utf-8") as f:
+            json.dump(state, f, ensure_ascii=False, indent=4)
+    except Exception as e:
+        print(f"Error saving workspace state: {e}")
+
+def update_workspace_name(name):
+    state = load_workspace_state()
+    state["workspace_name"] = name
+    save_workspace_state(state)
+    return state
+
+def add_custom_page(title, has_subpages, is_hidden):
+    state = load_workspace_state()
+    if "custom_pages" not in state:
+        state["custom_pages"] = []
+    page_id = "page_" + str(uuid.uuid4())
+    new_page = {
+        "id": page_id,
+        "title": title,
+        "has_subpages": has_subpages,
+        "is_hidden": is_hidden,
+        "created_at": datetime.now().isoformat()
+    }
+    state["custom_pages"].append(new_page)
+    save_workspace_state(state)
+    return new_page
+
+def update_custom_page(page_id, title=None, has_subpages=None, is_hidden=None):
+    state = load_workspace_state()
+    if "custom_pages" not in state:
+        return False
+    for page in state["custom_pages"]:
+        if page["id"] == page_id:
+            if title is not None:
+                page["title"] = title
+            if has_subpages is not None:
+                page["has_subpages"] = has_subpages
+            if is_hidden is not None:
+                page["is_hidden"] = is_hidden
+            save_workspace_state(state)
+            return True
+    return False
+
+def delete_custom_page(page_id):
+    state = load_workspace_state()
+    if "custom_pages" not in state:
+        return False
+    original_len = len(state["custom_pages"])
+    state["custom_pages"] = [p for p in state["custom_pages"] if p["id"] != page_id]
+    if len(state["custom_pages"]) < original_len:
+        save_workspace_state(state)
+        state_file = get_state_file(page_id)
+        if os.path.exists(state_file):
+            try:
+                os.remove(state_file)
+            except:
+                pass
+        return True
+    return False
+
+def load_state(page_id="progress"):
+    state_file = get_state_file(page_id)
     default_plan = (
         "### 📑 1. 계획 (Implementation Plan)\n"
         "- **논문 수집 엔진 개발**: 다양한 학술 데이터베이스(Arxiv, ScienceOn 등) API 연동 및 논문 검색 기능 설계\n"
@@ -20,11 +100,11 @@ def load_state():
         "- Strapi 기반의 웹 보관함 대시보드"
     )
     
-    if not os.path.exists(STATE_FILE):
+    if not os.path.exists(state_file):
         state = {"projects": {}}
     else:
         try:
-            with open(STATE_FILE, "r", encoding="utf-8") as f:
+            with open(state_file, "r", encoding="utf-8") as f:
                 state = json.load(f)
                 if "projects" not in state:
                     state = {"projects": {}}
@@ -117,20 +197,20 @@ def load_state():
             updated = True
 
     if updated:
-        save_state(state)
+        save_state(state, page_id)
         
     return state
 
-def save_state(state):
+def save_state(state, page_id):
     try:
-        with open(STATE_FILE, "w", encoding="utf-8") as f:
+        with open(state_file, "w", encoding="utf-8") as f:
             json.dump(state, f, ensure_ascii=False, indent=4)
     except Exception as e:
         print(f"Error saving state: {e}")
 
-def add_project(name, description=""):
+def add_project(name, description="", page_id="progress"):
     """새로운 일반 프로젝트(Todo/Plan)를 추가합니다."""
-    state = load_state()
+    state = load_state(page_id)
     project_id = str(uuid.uuid4())
     
     state["projects"][project_id] = {
@@ -142,20 +222,20 @@ def add_project(name, description=""):
         "tasks": [] # 각 요소는 {"id": "uuid", "title": "할 일", "completed": False} 형태
     }
     
-    save_state(state)
+    save_state(state, page_id)
     return project_id
 
-def delete_project(project_id):
-    state = load_state()
+def delete_project(project_id, page_id="progress"):
+    state = load_state(page_id)
     if project_id in state["projects"]:
         del state["projects"][project_id]
-        save_state(state)
+        save_state(state, page_id)
         return True
     return False
 
-def update_project(project_id, name=None, description=None, status=None):
+def update_project(project_id, name=None, description=None, status=None, page_id="progress"):
     """프로젝트 메타데이터 수정"""
-    state = load_state()
+    state = load_state(page_id)
     if project_id in state["projects"]:
         if name is not None:
             state["projects"][project_id]["name"] = name
@@ -163,24 +243,24 @@ def update_project(project_id, name=None, description=None, status=None):
             state["projects"][project_id]["description"] = description
         if status is not None:
             state["projects"][project_id]["status"] = status
-        save_state(state)
+        save_state(state, page_id)
         return True
     return False
 
-def get_projects():
+def get_projects(page_id="progress"):
     """모든 프로젝트를 최신순으로 가져옵니다."""
-    state = load_state()
+    state = load_state(page_id)
     projects = list(state["projects"].values())
     projects.sort(key=lambda x: x.get("created_at", ""), reverse=True)
     return projects
 
-def get_project(project_id):
-    state = load_state()
+def get_project(project_id, page_id="progress"):
+    state = load_state(page_id)
     return state["projects"].get(project_id)
 
-def add_task(project_id, title):
+def add_task(project_id, title, page_id="progress"):
     """프로젝트에 새로운 할 일 추가"""
-    state = load_state()
+    state = load_state(page_id)
     if project_id in state["projects"]:
         task_id = str(uuid.uuid4())
         state["projects"][project_id]["tasks"].append({
@@ -188,37 +268,37 @@ def add_task(project_id, title):
             "title": title,
             "completed": False
         })
-        save_state(state)
+        save_state(state, page_id)
         return task_id
     return None
 
-def toggle_task(project_id, task_id, completed):
+def toggle_task(project_id, task_id, completed, page_id="progress"):
     """할 일 완료 여부 토글"""
-    state = load_state()
+    state = load_state(page_id)
     if project_id in state["projects"]:
         for task in state["projects"][project_id]["tasks"]:
             if task["id"] == task_id:
                 task["completed"] = completed
-                save_state(state)
+                save_state(state, page_id)
                 return True
     return False
 
-def delete_task(project_id, task_id):
+def delete_task(project_id, task_id, page_id="progress"):
     """할 일 삭제"""
-    state = load_state()
+    state = load_state(page_id)
     if project_id in state["projects"]:
         original_len = len(state["projects"][project_id]["tasks"])
         state["projects"][project_id]["tasks"] = [
             t for t in state["projects"][project_id]["tasks"] if t["id"] != task_id
         ]
         if len(state["projects"][project_id]["tasks"]) < original_len:
-            save_state(state)
+            save_state(state, page_id)
             return True
     return False
 
-def add_document(project_id, title, parent_id=None):
+def add_document(project_id, title, parent_id=None, page_id="progress"):
     """프로젝트 내에 새로운 문서를 추가하고 기본 텍스트 블록을 하나 생성합니다."""
-    state = load_state()
+    state = load_state(page_id)
     if project_id in state["projects"]:
         doc_id = str(uuid.uuid4())
         default_block = {
@@ -237,13 +317,13 @@ def add_document(project_id, title, parent_id=None):
             "created_at": datetime.now().isoformat(),
             "blocks": [default_block]
         }
-        save_state(state)
+        save_state(state, page_id)
         return doc_id
     return None
 
-def delete_document(project_id, doc_id):
+def delete_document(project_id, doc_id, page_id="progress"):
     """문서를 삭제하며, 해당 문서의 모든 하위 문서도 연쇄 삭제합니다."""
-    state = load_state()
+    state = load_state(page_id)
     if project_id in state["projects"] and "documents" in state["projects"][project_id]:
         docs = state["projects"][project_id]["documents"]
         if doc_id in docs:
@@ -261,24 +341,24 @@ def delete_document(project_id, doc_id):
                 if target_id in docs:
                     del docs[target_id]
                     
-            save_state(state)
+            save_state(state, page_id)
             return True
     return False
 
-def update_document_title(project_id, doc_id, title):
+def update_document_title(project_id, doc_id, title, page_id="progress"):
     """문서의 제목을 수정합니다."""
-    state = load_state()
+    state = load_state(page_id)
     if project_id in state["projects"] and "documents" in state["projects"][project_id]:
         docs = state["projects"][project_id]["documents"]
         if doc_id in docs:
             docs[doc_id]["title"] = title
-            save_state(state)
+            save_state(state, page_id)
             return True
     return False
 
-def add_block(project_id, doc_id, block_type, content=None, after_block_id=None):
+def add_block(project_id, doc_id, block_type, content=None, after_block_id=None, page_id="progress"):
     """문서 내 특정 블록 뒤 또는 맨 뒤에 새로운 블록을 추가합니다."""
-    state = load_state()
+    state = load_state(page_id)
     if project_id in state["projects"] and "documents" in state["projects"][project_id]:
         docs = state["projects"][project_id]["documents"]
         if doc_id in docs:
@@ -313,13 +393,13 @@ def add_block(project_id, doc_id, block_type, content=None, after_block_id=None)
             else:
                 blocks.append(new_block)
                 
-            save_state(state)
+            save_state(state, page_id)
             return block_id
     return None
 
-def update_block(project_id, doc_id, block_id, content):
+def update_block(project_id, doc_id, block_id, content, page_id="progress"):
     """문서 내 특정 블록의 내용을 갱신합니다."""
-    state = load_state()
+    state = load_state(page_id)
     if project_id in state["projects"] and "documents" in state["projects"][project_id]:
         docs = state["projects"][project_id]["documents"]
         if doc_id in docs:
@@ -327,13 +407,13 @@ def update_block(project_id, doc_id, block_id, content):
             for b in blocks:
                 if b["id"] == block_id:
                     b["content"] = content
-                    save_state(state)
+                    save_state(state, page_id)
                     return True
     return False
 
-def delete_block(project_id, doc_id, block_id):
+def delete_block(project_id, doc_id, block_id, page_id="progress"):
     """문서 내 특정 블록을 삭제합니다."""
-    state = load_state()
+    state = load_state(page_id)
     if project_id in state["projects"] and "documents" in state["projects"][project_id]:
         docs = state["projects"][project_id]["documents"]
         if doc_id in docs:
@@ -341,13 +421,13 @@ def delete_block(project_id, doc_id, block_id):
             for i, b in enumerate(blocks):
                 if b["id"] == block_id:
                     blocks.pop(i)
-                    save_state(state)
+                    save_state(state, page_id)
                     return True
     return False
 
-def move_block(project_id, doc_id, block_id, direction):
+def move_block(project_id, doc_id, block_id, direction, page_id="progress"):
     """문서 내 특정 블록의 위치를 위/아래로 이동합니다."""
-    state = load_state()
+    state = load_state(page_id)
     if project_id in state["projects"] and "documents" in state["projects"][project_id]:
         docs = state["projects"][project_id]["documents"]
         if doc_id in docs:
@@ -361,10 +441,10 @@ def move_block(project_id, doc_id, block_id, direction):
                 return False
             if direction == "up" and idx > 0:
                 blocks[idx], blocks[idx - 1] = blocks[idx - 1], blocks[idx]
-                save_state(state)
+                save_state(state, page_id)
                 return True
             elif direction == "down" and idx < len(blocks) - 1:
                 blocks[idx], blocks[idx + 1] = blocks[idx + 1], blocks[idx]
-                save_state(state)
+                save_state(state, page_id)
                 return True
     return False

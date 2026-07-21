@@ -129,8 +129,31 @@
                     "blocks": [
                         {
                             "id": "5c233ab4-38be-40ac-8bf4-678b227d3801",
-                            "type": "text",
-                            "content": "테스트용"
+                            "type": "paragraph",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "테스트용",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "1e450cc9-a9fd-4731-bcb6-5b781bcce0a3",
+                            "type": "paragraph",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [],
+                            "children": []
                         }
                     ]
                 }

@@ -1,0 +1,12 @@
+{
+    "workspace_name": "Auto Workspace",
+    "custom_pages": [
+        {
+            "id": "page_08b377dd-5e93-497a-8845-a2764288a973",
+            "title": "test",
+            "has_subpages": true,
+            "is_hidden": false,
+            "created_at": "2026-07-21T14:39:27.898938"
+        }
+    ]
+}
