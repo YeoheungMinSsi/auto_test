@@ -3,7 +3,7 @@ import Sidebar from "./components/Sidebar"
 import Automation from "./components/Automation"
 import Projects from "./components/Projects"
 import Blog from "./components/Blog"
-import { Plus, MoreVertical, X } from "lucide-react"
+import { Plus, MoreVertical, X, Edit2, Eye, EyeOff, Trash2 } from "lucide-react"
 
 function App() {
   const [currentView, setCurrentView] = useState<"home" | "automation" | "projects" | "blog" | string>("home");
@@ -15,6 +15,46 @@ function App() {
   const [showCreatePageModal, setShowCreatePageModal] = useState(false);
   const [newPageData, setNewPageData] = useState({ title: "", has_subpages: false, is_hidden: false });
   const [isBackendConnected, setIsBackendConnected] = useState<boolean>(true);
+  const [openDropdownId, setOpenDropdownId] = useState<string | null>(null);
+
+  const handleEditPage = (page: any, e: React.MouseEvent) => {
+    e.stopPropagation();
+    const newTitle = window.prompt("새로운 페이지 이름을 입력하세요:", page.title);
+    if (newTitle && newTitle.trim() !== "" && newTitle !== page.title) {
+      fetch(`http://localhost:8000/api/workspace/pages/${page.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title: newTitle.trim() })
+      })
+      .then(res => {
+        if (!res.ok) throw new Error("Failed to rename page");
+        loadWorkspace();
+      })
+      .catch(err => {
+        console.error("Error renaming page:", err);
+        setIsBackendConnected(false);
+      });
+    }
+    setOpenDropdownId(null);
+  };
+
+  const handleToggleHidden = (page: any, e: React.MouseEvent) => {
+    e.stopPropagation();
+    fetch(`http://localhost:8000/api/workspace/pages/${page.id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ is_hidden: !page.is_hidden })
+    })
+    .then(res => {
+      if (!res.ok) throw new Error("Failed to toggle hidden state");
+      loadWorkspace();
+    })
+    .catch(err => {
+      console.error("Error toggling hidden state:", err);
+      setIsBackendConnected(false);
+    });
+    setOpenDropdownId(null);
+  };
 
   const loadWorkspace = () => {
     fetch("http://localhost:8000/api/workspace")
@@ -135,12 +175,43 @@ function App() {
                 {/* 커스텀 페이지 렌더링 */}
                 {workspaceData?.custom_pages?.map((page: any) => (
                   <div key={page.id} onClick={() => handleNavigate(page.id)} className="relative p-6 bg-white dark:bg-[#1e1e1e] rounded-xl border border-gray-200/80 dark:border-gray-800 hover:border-blue-500 dark:hover:border-blue-500 hover:shadow-xl transition-all cursor-pointer group text-left">
-                    <button 
-                      onClick={(e) => handleDeletePage(page.id, e)}
-                      className="absolute top-2 right-2 p-1 text-gray-400 hover:text-red-500 hover:bg-gray-100 dark:hover:bg-gray-800 rounded opacity-0 group-hover:opacity-100 transition-opacity"
-                    >
-                      <MoreVertical size={16} />
-                    </button>
+                    <div className="absolute top-2 right-2">
+                      <button 
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setOpenDropdownId(openDropdownId === page.id ? null : page.id);
+                        }}
+                        className="p-1 text-gray-400 hover:text-gray-800 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded opacity-0 group-hover:opacity-100 transition-opacity"
+                      >
+                        <MoreVertical size={16} />
+                      </button>
+                      
+                      {openDropdownId === page.id && (
+                        <div className="absolute right-0 mt-1 w-36 bg-white dark:bg-[#252525] rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 z-10 py-1 overflow-hidden">
+                          <button 
+                            onClick={(e) => handleEditPage(page, e)}
+                            className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-[#333] flex items-center gap-2"
+                          >
+                            <Edit2 size={14} /> 이름 변경
+                          </button>
+                          <button 
+                            onClick={(e) => handleToggleHidden(page, e)}
+                            className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-[#333] flex items-center gap-2"
+                          >
+                            {page.is_hidden ? <Eye size={14} /> : <EyeOff size={14} />} {page.is_hidden ? "보이게 하기" : "나만 보이기"}
+                          </button>
+                          <button 
+                            onClick={(e) => {
+                              handleDeletePage(page.id, e);
+                              setOpenDropdownId(null);
+                            }}
+                            className="w-full text-left px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 flex items-center gap-2"
+                          >
+                            <Trash2 size={14} /> 삭제
+                          </button>
+                        </div>
+                      )}
+                    </div>
                     <div className="text-2xl mb-2 group-hover:scale-110 transition-transform">📄</div>
                     <h3 className="font-semibold text-gray-800 dark:text-gray-200 flex items-center gap-2">
                       {page.title} {page.is_hidden && <span className="text-[10px] bg-gray-100 dark:bg-gray-800 px-1 rounded text-gray-500">숨김</span>}
@@ -233,7 +304,7 @@ function App() {
           </div>
         </div>
         
-        <div className="flex-1 overflow-y-auto">
+        <div className="flex-1 overflow-y-auto" onClick={() => setOpenDropdownId(null)}>
           {renderContent()}
         </div>
       </div>

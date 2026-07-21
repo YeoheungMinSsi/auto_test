@@ -342,11 +342,11 @@ export default function Sidebar({ currentView, onNavigate, selectedProjectId, se
       </div>
 
       {/* 하단 제어부 및 다크모드 스위치 */}
-      <div className="p-3 border-t border-gray-200/60 dark:border-gray-800 flex items-center justify-between shrink-0 bg-[#f7f7f5] dark:bg-[#1e1e1e]/40 transition-colors">
+      <div className="p-3 border-t border-gray-200/60 dark:border-gray-800 flex items-center justify-between shrink-0 bg-[#f7f7f5] dark:bg-[#1e1e1e] transition-colors">
         <div className="text-[10px] text-gray-400 font-semibold uppercase">테마</div>
         <button 
           onClick={onToggleDarkMode}
-          className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg border text-xs font-semibold hover:bg-gray-200 dark:hover:bg-gray-800 transition-all border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-900"
+          className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg border text-xs font-semibold hover:bg-gray-200 dark:hover:bg-gray-800 transition-all border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 bg-white dark:bg-[#2a2a2a]"
         >
           {isDarkMode ? <Sun size={13} className="text-amber-500" /> : <Moon size={13} className="text-indigo-500" />}
           <span>{isDarkMode ? "라이트" : "다크"}</span>
