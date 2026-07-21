@@ -29,6 +29,10 @@ html.dark .bg-\[\#fbfbfa\] {
   background-color: #202020 !important;
 }
 
+html.dark .bg-\[\#f7f7f5\] {
+  background-color: #1e1e1e !important;
+}
+
 html.dark .border-gray-200 {
   border-color: #2d2d2d !important;
 }
