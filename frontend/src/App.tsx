@@ -14,12 +14,20 @@ function App() {
   const [workspaceData, setWorkspaceData] = useState<any>(null);
   const [showCreatePageModal, setShowCreatePageModal] = useState(false);
   const [newPageData, setNewPageData] = useState({ title: "", has_subpages: false, is_hidden: false });
+  const [isBackendConnected, setIsBackendConnected] = useState<boolean>(true);
 
   const loadWorkspace = () => {
     fetch("http://localhost:8000/api/workspace")
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) throw new Error("Server not responding");
+        setIsBackendConnected(true);
+        return res.json();
+      })
       .then(data => setWorkspaceData(data))
-      .catch(err => console.error("Error fetching workspace:", err));
+      .catch(err => {
+        console.error("Error fetching workspace:", err);
+        setIsBackendConnected(false);
+      });
   };
 
   useEffect(() => {
@@ -47,24 +55,34 @@ function App() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(newPageData)
     })
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) throw new Error("Failed to create page");
+        return res.json();
+      })
       .then(() => {
         loadWorkspace();
         setShowCreatePageModal(false);
         setNewPageData({ title: "", has_subpages: false, is_hidden: false });
       })
-      .catch(err => console.error("Error creating page:", err));
+      .catch(err => {
+        console.error("Error creating page:", err);
+        setIsBackendConnected(false);
+      });
   };
 
   const handleDeletePage = (pageId: string, e: React.MouseEvent) => {
     e.stopPropagation();
     if (window.confirm("이 페이지를 삭제하시겠습니까?")) {
       fetch(`http://localhost:8000/api/workspace/pages/${pageId}`, { method: "DELETE" })
-        .then(() => {
+        .then(res => {
+          if (!res.ok) throw new Error("Failed to delete page");
           if (currentView === pageId) setCurrentView("home");
           loadWorkspace();
         })
-        .catch(err => console.error("Error deleting page:", err));
+        .catch(err => {
+          console.error("Error deleting page:", err);
+          setIsBackendConnected(false);
+        });
     }
   };
 
@@ -177,6 +195,20 @@ function App() {
       />
       
       <div className="flex-1 flex flex-col h-full overflow-hidden bg-[#fafafa] dark:bg-[#121212] transition-colors">
+        {!isBackendConnected && (
+          <div className="bg-red-500 text-white px-6 py-2.5 text-sm flex items-center justify-between font-semibold shrink-0 shadow-md">
+            <span className="flex items-center gap-2">
+              ⚠️ 백엔드 API 서버(localhost:8000)에 연결할 수 없습니다. 기능 동작을 위해 'python main.py' 백엔드 서버를 먼저 실행해 주세요.
+            </span>
+            <button 
+              onClick={loadWorkspace}
+              className="bg-white text-red-600 hover:bg-red-50 px-3 py-1 rounded-md text-xs font-bold transition-colors"
+            >
+              서버 재연결 시도
+            </button>
+          </div>
+        )}
+
         <div className="h-12 border-b border-gray-200/60 dark:border-gray-800 bg-white dark:bg-[#1a1a1a] flex items-center justify-between px-6 text-sm text-gray-500 dark:text-gray-400 font-medium shrink-0 transition-colors">
           <div className="flex items-center gap-2">
             <span className="cursor-pointer hover:text-gray-800 dark:hover:text-gray-200" onClick={() => handleNavigate("home")}>Auto Workspace</span>
@@ -191,8 +223,13 @@ function App() {
               </>
             )}
           </div>
-          <div className="text-xs text-gray-400 dark:text-gray-500 bg-gray-50 dark:bg-gray-800 px-2.5 py-1 rounded-full border border-gray-100 dark:border-gray-700">
-            Backend API: localhost:8000
+          <div className={`text-xs px-2.5 py-1 rounded-full border flex items-center gap-1.5 font-semibold transition-all ${
+            isBackendConnected 
+              ? "text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-950/30 border-green-200 dark:border-green-800/50" 
+              : "text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/30 border-red-200 dark:border-red-800/50"
+          }`}>
+            <span className={`w-1.5 h-1.5 rounded-full ${isBackendConnected ? "bg-green-500 animate-pulse" : "bg-red-500"}`}></span>
+            Backend: {isBackendConnected ? "Connected" : "Disconnected"}
           </div>
         </div>
         
