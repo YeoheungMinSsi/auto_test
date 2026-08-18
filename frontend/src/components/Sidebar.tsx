@@ -214,9 +214,10 @@ export default function Sidebar({ currentView, onNavigate, selectedProjectId, se
                     setPageEditData({ title: page.title, has_subpages: page.has_subpages, is_hidden: page.is_hidden });
                     setPageSettingsId(page.id);
                   }}
-                  className="opacity-0 group-hover:opacity-100 p-0.5 hover:bg-gray-300 dark:hover:bg-gray-600 rounded text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-opacity"
+                  className="opacity-0 group-hover:opacity-100 p-1 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-md text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-all flex items-center justify-center cursor-pointer"
+                  title="페이지 설정"
                 >
-                  <MoreVertical size={14} />
+                  <MoreVertical size={14} className="pointer-events-none" />
                 </button>
               </div>
             );

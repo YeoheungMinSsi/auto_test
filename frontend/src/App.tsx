@@ -181,9 +181,10 @@ function App() {
                           e.stopPropagation();
                           setOpenDropdownId(openDropdownId === page.id ? null : page.id);
                         }}
-                        className="p-1 text-gray-400 hover:text-gray-800 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded opacity-0 group-hover:opacity-100 transition-opacity"
+                        className="p-1.5 text-gray-400 hover:text-gray-800 dark:hover:text-white hover:bg-gray-200/80 dark:hover:bg-gray-700/80 rounded-lg opacity-0 group-hover:opacity-100 transition-all cursor-pointer flex items-center justify-center"
+                        title="페이지 옵션"
                       >
-                        <MoreVertical size={16} />
+                        <MoreVertical size={16} className="pointer-events-none" />
                       </button>
                       
                       {openDropdownId === page.id && (

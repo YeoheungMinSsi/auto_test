@@ -2,25 +2,11 @@
     "workspace_name": "Auto Workspace",
     "custom_pages": [
         {
-            "id": "page_08b377dd-5e93-497a-8845-a2764288a973",
-            "title": "test",
+            "id": "page_a2cae0bc-251b-4a08-a2d9-eb1034b54b7b",
+            "title": "메모장",
             "has_subpages": true,
             "is_hidden": false,
-            "created_at": "2026-07-21T14:39:27.898938"
-        },
-        {
-            "id": "page_5dc35faf-d298-45cd-98b8-ca755ffb2da8",
-            "title": "ㅅㄷㄴㅅ",
-            "has_subpages": true,
-            "is_hidden": false,
-            "created_at": "2026-07-21T17:59:44.342176"
-        },
-        {
-            "id": "page_52287f18-e914-4ae3-84bb-87b77d37acb2",
-            "title": "연구용 페이지",
-            "has_subpages": true,
-            "is_hidden": false,
-            "created_at": "2026-07-21T18:16:40.790489"
+            "created_at": "2026-08-18T13:29:53.139887"
         }
     ]
 }
