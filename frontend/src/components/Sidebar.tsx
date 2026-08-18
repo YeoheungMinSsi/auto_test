@@ -206,7 +206,7 @@ export default function Sidebar({ currentView, onNavigate, selectedProjectId, se
                 }`}
               >
                 <div onClick={() => onNavigate(page.id)} className="flex items-center gap-2 flex-1 truncate">
-                  <FileText size={16} /> <span className="truncate">{page.title}</span>
+                  <span className="text-sm shrink-0">{page.icon || "📄"}</span> <span className="truncate">{page.title}</span>
                 </div>
                 <button 
                   onClick={(e) => {

@@ -36,7 +36,7 @@ def update_workspace_name(name):
     save_workspace_state(state)
     return state
 
-def add_custom_page(title, has_subpages, is_hidden):
+def add_custom_page(title, has_subpages, is_hidden, icon="📄", description=""):
     state = load_workspace_state()
     if "custom_pages" not in state:
         state["custom_pages"] = []
@@ -46,13 +46,15 @@ def add_custom_page(title, has_subpages, is_hidden):
         "title": title,
         "has_subpages": has_subpages,
         "is_hidden": is_hidden,
+        "icon": icon if icon else "📄",
+        "description": description if description else "",
         "created_at": datetime.now().isoformat()
     }
     state["custom_pages"].append(new_page)
     save_workspace_state(state)
     return new_page
 
-def update_custom_page(page_id, title=None, has_subpages=None, is_hidden=None):
+def update_custom_page(page_id, title=None, has_subpages=None, is_hidden=None, icon=None, description=None):
     state = load_workspace_state()
     if "custom_pages" not in state:
         return False
@@ -64,6 +66,10 @@ def update_custom_page(page_id, title=None, has_subpages=None, is_hidden=None):
                 page["has_subpages"] = has_subpages
             if is_hidden is not None:
                 page["is_hidden"] = is_hidden
+            if icon is not None:
+                page["icon"] = icon
+            if description is not None:
+                page["description"] = description
             save_workspace_state(state)
             return True
     return False

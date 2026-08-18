@@ -84,11 +84,15 @@ class CustomPageCreate(BaseModel):
     title: str
     has_subpages: bool = False
     is_hidden: bool = False
+    icon: Optional[str] = "📄"
+    description: Optional[str] = ""
 
 class CustomPageUpdate(BaseModel):
     title: Optional[str] = None
     has_subpages: Optional[bool] = None
     is_hidden: Optional[bool] = None
+    icon: Optional[str] = None
+    description: Optional[str] = None
 
 # ---- Background Tasks State ----
 active_tasks = {}
@@ -131,11 +135,11 @@ def update_workspace(data: WorkspaceUpdate):
 
 @app.post("/api/workspace/pages")
 def create_custom_page(data: CustomPageCreate):
-    return sm.add_custom_page(data.title, data.has_subpages, data.is_hidden)
+    return sm.add_custom_page(data.title, data.has_subpages, data.is_hidden, data.icon, data.description)
 
 @app.put("/api/workspace/pages/{page_id}")
 def update_custom_page(page_id: str, data: CustomPageUpdate):
-    if sm.update_custom_page(page_id, data.title, data.has_subpages, data.is_hidden):
+    if sm.update_custom_page(page_id, data.title, data.has_subpages, data.is_hidden, data.icon, data.description):
         return {"success": True}
     raise HTTPException(status_code=404, detail="Page not found")
 

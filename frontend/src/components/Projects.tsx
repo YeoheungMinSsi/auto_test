@@ -8,6 +8,9 @@ interface ProjectsProps {
   onNavigate: (projId: string | null, docId: string | null) => void;
   isDarkMode: boolean;
   customPageId?: string;
+  customPageTitle?: string;
+  customPageIcon?: string;
+  customPageDescription?: string;
 }
 
 interface Project {
@@ -33,7 +36,7 @@ interface Document {
   blocks: any[];
 }
 
-export default function Projects({ selectedProjectId, selectedDocId, onNavigate, isDarkMode, customPageId }: ProjectsProps) {
+export default function Projects({ selectedProjectId, selectedDocId, onNavigate, isDarkMode, customPageId, customPageTitle, customPageIcon, customPageDescription }: ProjectsProps) {
   const [projects, setProjects] = useState<Project[]>([]);
   const [showAddModal, setShowAddModal] = useState(false);
   const [newProjName, setNewProjName] = useState("");
@@ -288,13 +291,13 @@ export default function Projects({ selectedProjectId, selectedDocId, onNavigate,
   if (!selectedProjectId) {
     return (
       <div className="p-8 max-w-6xl mx-auto space-y-6">
-        <div className="flex items-center justify-between bg-white p-6 rounded-2xl border border-gray-200/80 shadow-sm">
+        <div className="flex items-center justify-between bg-white dark:bg-[#1e1e1e] p-6 rounded-2xl border border-gray-200/80 dark:border-gray-800 shadow-sm transition-colors">
           <div>
-            <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
-              📊 프로젝트 진행 상황 대시보드
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2">
+              <span>{customPageIcon || "📊"}</span> {customPageTitle || "프로젝트 진행 상황 대시보드"}
             </h2>
-            <p className="text-sm text-gray-500 mt-1">
-              연구 계획, 개발 스케줄, Todo 리스트와 개발 노트를 계층적으로 정돈하여 기획을 관리하세요.
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+              {customPageDescription || "연구 계획, 개발 스케줄, Todo 리스트와 개발 노트를 계층적으로 정돈하여 기획을 관리하세요."}
             </p>
           </div>
           <button
