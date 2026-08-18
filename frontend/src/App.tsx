@@ -12,6 +12,14 @@ function App() {
   const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
   const [selectedDocId, setSelectedDocId] = useState<string | null>(null);
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [language, setLanguage] = useState<"ko" | "en">(() => {
+    return (localStorage.getItem("app_lang") as "ko" | "en") || "ko";
+  });
+
+  const handleLanguageChange = (lang: "ko" | "en") => {
+    setLanguage(lang);
+    localStorage.setItem("app_lang", lang);
+  };
   
   const [workspaceData, setWorkspaceData] = useState<any>(null);
   const [showCreatePageModal, setShowCreatePageModal] = useState(false);
@@ -153,6 +161,7 @@ function App() {
            customPageIcon={currentPage?.icon || "📄"}
            customPageDescription={currentPage?.description}
            onWorkspaceUpdate={loadWorkspace}
+           language={language}
          />
        );
     }
@@ -267,6 +276,8 @@ function App() {
             selectedDocId={selectedDocId} 
             onNavigate={(projId, docId) => handleNavigate("projects", projId, docId)} 
             isDarkMode={isDarkMode}
+            onWorkspaceUpdate={loadWorkspace}
+            language={language}
           />
         );
       case "blog":
@@ -287,6 +298,8 @@ function App() {
         onToggleDarkMode={() => setIsDarkMode(!isDarkMode)}
         workspaceData={workspaceData}
         onWorkspaceUpdate={loadWorkspace}
+        language={language}
+        onLanguageChange={handleLanguageChange}
       />
       
       <div className="flex-1 flex flex-col h-full overflow-hidden bg-[#fafafa] dark:bg-[#121212] transition-colors">

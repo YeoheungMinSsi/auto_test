@@ -112,52 +112,6 @@
                     ]
                 }
             }
-        },
-        "3fcacd63-8199-46de-acf8-8fe5de4fa91f": {
-            "id": "3fcacd63-8199-46de-acf8-8fe5de4fa91f",
-            "name": "fads",
-            "description": "테스트용",
-            "status": "계획 중",
-            "created_at": "2026-06-29T16:17:51.417036",
-            "tasks": [],
-            "documents": {
-                "4bc02aa3-4378-413c-b775-6809a1ffbd0e": {
-                    "id": "4bc02aa3-4378-413c-b775-6809a1ffbd0e",
-                    "title": "📜 기본 기획서 및 설명",
-                    "parent_id": null,
-                    "created_at": "2026-06-29T16:17:51.417036",
-                    "blocks": [
-                        {
-                            "id": "5c233ab4-38be-40ac-8bf4-678b227d3801",
-                            "type": "paragraph",
-                            "props": {
-                                "backgroundColor": "default",
-                                "textColor": "default",
-                                "textAlignment": "left"
-                            },
-                            "content": [
-                                {
-                                    "type": "text",
-                                    "text": "테스트용",
-                                    "styles": {}
-                                }
-                            ],
-                            "children": []
-                        },
-                        {
-                            "id": "1e450cc9-a9fd-4731-bcb6-5b781bcce0a3",
-                            "type": "paragraph",
-                            "props": {
-                                "backgroundColor": "default",
-                                "textColor": "default",
-                                "textAlignment": "left"
-                            },
-                            "content": [],
-                            "children": []
-                        }
-                    ]
-                }
-            }
         }
     },
     "active_project_id": null

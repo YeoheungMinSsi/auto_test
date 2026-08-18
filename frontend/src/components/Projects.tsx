@@ -12,6 +12,7 @@ interface ProjectsProps {
   customPageIcon?: string;
   customPageDescription?: string;
   onWorkspaceUpdate?: () => void;
+  language?: "ko" | "en";
 }
 
 const PROJECT_PAGE_ICONS = ["📄", "📝", "🚀", "📊", "💡", "📚", "⚙️", "📁", "🎨", "🔬", "📌", "🎯", "💻", "📂", "✨", "🔍", "⚡", "🔒", "🛠️", "💬"];
@@ -39,7 +40,18 @@ interface Document {
   blocks: any[];
 }
 
-export default function Projects({ selectedProjectId, selectedDocId, onNavigate, isDarkMode, customPageId, customPageTitle, customPageIcon, customPageDescription, onWorkspaceUpdate }: ProjectsProps) {
+export default function Projects({ 
+  selectedProjectId, 
+  selectedDocId, 
+  onNavigate, 
+  isDarkMode, 
+  customPageId, 
+  customPageTitle, 
+  customPageIcon, 
+  customPageDescription, 
+  onWorkspaceUpdate,
+  language = "ko"
+}: ProjectsProps) {
   const [projects, setProjects] = useState<Project[]>([]);
   const [showAddModal, setShowAddModal] = useState(false);
   const [showIconPopover, setShowIconPopover] = useState(false);
@@ -600,6 +612,9 @@ export default function Projects({ selectedProjectId, selectedDocId, onNavigate,
                     docTitle={projectDetail.documents[selectedDocId].title}
                     isDarkMode={isDarkMode}
                     pageId={customPageId}
+                    language={language}
+                    onNavigate={onNavigate}
+                    onWorkspaceUpdate={onWorkspaceUpdate}
                   />
                 </div>
               ) : (
