@@ -203,8 +203,9 @@ def load_state(page_id="progress"):
         
     return state
 
-def save_state(state, page_id):
+def save_state(state, page_id="progress"):
     try:
+        state_file = get_state_file(page_id)
         with open(state_file, "w", encoding="utf-8") as f:
             json.dump(state, f, ensure_ascii=False, indent=4)
     except Exception as e:

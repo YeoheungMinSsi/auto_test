@@ -175,7 +175,7 @@ function App() {
                 {/* 커스텀 페이지 렌더링 */}
                 {workspaceData?.custom_pages?.map((page: any) => (
                   <div key={page.id} onClick={() => handleNavigate(page.id)} className="relative p-6 bg-white dark:bg-[#1e1e1e] rounded-xl border border-gray-200/80 dark:border-gray-800 hover:border-blue-500 dark:hover:border-blue-500 hover:shadow-xl transition-all cursor-pointer group text-left">
-                    <div className="absolute top-2 right-2">
+                    <div className="absolute top-2 right-2" onClick={(e) => e.stopPropagation()}>
                       <button 
                         onClick={(e) => {
                           e.stopPropagation();
@@ -187,7 +187,10 @@ function App() {
                       </button>
                       
                       {openDropdownId === page.id && (
-                        <div className="absolute right-0 mt-1 w-36 bg-white dark:bg-[#252525] rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 z-10 py-1 overflow-hidden">
+                        <div 
+                          onClick={(e) => e.stopPropagation()}
+                          className="absolute right-0 mt-1 w-36 bg-white dark:bg-[#252525] rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 z-10 py-1 overflow-hidden"
+                        >
                           <button 
                             onClick={(e) => handleEditPage(page, e)}
                             className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-[#333] flex items-center gap-2"
@@ -202,6 +205,7 @@ function App() {
                           </button>
                           <button 
                             onClick={(e) => {
+                              e.stopPropagation();
                               handleDeletePage(page.id, e);
                               setOpenDropdownId(null);
                             }}
