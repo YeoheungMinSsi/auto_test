@@ -152,6 +152,7 @@ function App() {
            customPageTitle={currentPage?.title}
            customPageIcon={currentPage?.icon || "📄"}
            customPageDescription={currentPage?.description}
+           onWorkspaceUpdate={loadWorkspace}
          />
        );
     }
@@ -191,16 +192,16 @@ function App() {
                 {/* 커스텀 페이지 렌더링 */}
                 {workspaceData?.custom_pages?.map((page: any) => (
                   <div key={page.id} onClick={() => handleNavigate(page.id)} className="relative p-6 bg-white dark:bg-[#1e1e1e] rounded-xl border border-gray-200/80 dark:border-gray-800 hover:border-blue-500 dark:hover:border-blue-500 hover:shadow-xl transition-all cursor-pointer group text-left">
-                    <div className="absolute top-2 right-2" onClick={(e) => e.stopPropagation()}>
+                    <div className="absolute top-2.5 right-2.5 z-10" onClick={(e) => e.stopPropagation()}>
                       <button 
                         onClick={(e) => {
                           e.stopPropagation();
                           setOpenDropdownId(openDropdownId === page.id ? null : page.id);
                         }}
-                        className="p-1.5 text-gray-400 hover:text-gray-800 dark:hover:text-white hover:bg-gray-200/80 dark:hover:bg-gray-700/80 rounded-lg opacity-0 group-hover:opacity-100 transition-all cursor-pointer flex items-center justify-center"
+                        className="w-8 h-8 rounded-lg text-gray-400 hover:text-gray-800 dark:hover:text-white hover:bg-gray-200/90 dark:hover:bg-gray-700/90 opacity-0 group-hover:opacity-100 transition-all cursor-pointer flex items-center justify-center pointer-events-auto shadow-sm"
                         title="페이지 옵션"
                       >
-                        <MoreVertical size={16} className="pointer-events-none" />
+                        <MoreVertical size={18} className="pointer-events-none" />
                       </button>
                       
                       {openDropdownId === page.id && (

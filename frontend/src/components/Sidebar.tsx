@@ -19,6 +19,8 @@ interface Project {
   documents?: Record<string, any>;
 }
 
+const SIDEBAR_ICONS = ["📄", "📝", "🚀", "📊", "💡", "📚", "⚙️", "📁", "🎨", "🔬", "📌", "🎯", "💻", "📂", "✨", "🔍", "⚡", "🔒", "🛠️", "💬"];
+
 export default function Sidebar({ currentView, onNavigate, selectedProjectId, selectedDocId, isDarkMode, onToggleDarkMode, workspaceData, onWorkspaceUpdate }: SidebarProps) {
   const [projects, setProjects] = useState<Project[]>([]);
   const [expandedProjects, setExpandedProjects] = useState<Record<string, boolean>>({});
@@ -31,7 +33,7 @@ export default function Sidebar({ currentView, onNavigate, selectedProjectId, se
   const [workspaceNameInput, setWorkspaceNameInput] = useState("");
 
   const [pageSettingsId, setPageSettingsId] = useState<string | null>(null);
-  const [pageEditData, setPageEditData] = useState({ title: "", has_subpages: false, is_hidden: false });
+  const [pageEditData, setPageEditData] = useState({ title: "", description: "", icon: "📄", has_subpages: false, is_hidden: false });
 
   const loadSidebarProjects = () => {
     fetch("http://localhost:8000/api/projects")
@@ -211,7 +213,13 @@ export default function Sidebar({ currentView, onNavigate, selectedProjectId, se
                 <button 
                   onClick={(e) => {
                     e.stopPropagation();
-                    setPageEditData({ title: page.title, has_subpages: page.has_subpages, is_hidden: page.is_hidden });
+                    setPageEditData({ 
+                      title: page.title, 
+                      description: page.description || "", 
+                      icon: page.icon || "📄", 
+                      has_subpages: page.has_subpages, 
+                      is_hidden: page.is_hidden 
+                    });
                     setPageSettingsId(page.id);
                   }}
                   className="opacity-0 group-hover:opacity-100 p-1 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-md text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-all flex items-center justify-center cursor-pointer"
@@ -298,43 +306,30 @@ export default function Sidebar({ currentView, onNavigate, selectedProjectId, se
                 {projects.length === 0 ? (
                   <div className="px-2.5 text-xs text-gray-400 italic">등록된 프로젝트 없음</div>
                 ) : (
-                  projects.map(project => {
-                    const isExpanded = expandedProjects[project.id];
-                    const isCurrentProject = selectedProjectId === project.id;
-                    return (
-                      <div key={project.id} className="flex flex-col">
+                  projects.map(project => (
+                      <div key={project.id} className="space-y-0.5">
                         <div 
-                          className={`flex items-center justify-between px-2 py-1.5 rounded-lg cursor-pointer hover:bg-gray-200/50 dark:hover:bg-gray-800 transition-colors ${
-                            isCurrentProject && !selectedDocId ? "bg-gray-200/80 dark:bg-gray-800 text-gray-900 dark:text-gray-100 font-semibold" : "text-gray-600 dark:text-gray-400 text-xs"
+                          onClick={() => {
+                            toggleExpand(project.id);
+                            onNavigate("projects", project.id, null);
+                          }}
+                          className={`flex items-center justify-between px-2.5 py-1.5 rounded-lg cursor-pointer transition-all group ${
+                            selectedProjectId === project.id ? "bg-gray-200/80 dark:bg-gray-800 text-gray-900 dark:text-gray-100 font-semibold" : "text-gray-600 dark:text-gray-400 hover:bg-gray-200/60 dark:hover:bg-gray-800"
                           }`}
                         >
-                          <div 
-                            onClick={() => onNavigate("projects", project.id, null)}
-                            className="flex items-center gap-1.5 truncate flex-1"
-                          >
-                            <span className="w-1.5 h-1.5 rounded-full shrink-0 bg-blue-500"></span>
+                          <div className="flex items-center gap-2 flex-1 truncate">
+                            {expandedProjects[project.id] ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
                             <span className="truncate">{project.name}</span>
                           </div>
-                          {project.documents && Object.keys(project.documents).length > 0 && (
-                            <div 
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                toggleExpand(project.id);
-                              }}
-                              className="p-0.5 hover:bg-gray-300 dark:hover:bg-gray-700 rounded text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors shrink-0"
-                            >
-                              {isExpanded ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
-                            </div>
-                          )}
                         </div>
-                        {isExpanded && project.documents && (
+
+                        {expandedProjects[project.id] && project.documents && (
                           <div className="mt-0.5 space-y-0.5 border-l border-gray-200 dark:border-gray-700 ml-2.5">
                             {renderDocTree(project.documents, project.id, null)}
                           </div>
                         )}
                       </div>
-                    );
-                  })
+                  ))
                 )}
               </div>
             </div>
@@ -384,12 +379,32 @@ export default function Sidebar({ currentView, onNavigate, selectedProjectId, se
       {/* 커스텀 페이지 관리 모달 */}
       {pageSettingsId && (
         <div className="fixed inset-0 bg-black/40 dark:bg-black/60 flex items-center justify-center z-50">
-          <div className="bg-white dark:bg-[#1e1e1e] p-6 rounded-2xl w-full max-w-sm shadow-2xl border border-gray-100 dark:border-gray-800">
+          <div className="bg-white dark:bg-[#1e1e1e] p-6 rounded-2xl w-full max-w-md shadow-2xl border border-gray-100 dark:border-gray-800">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-lg font-bold text-gray-800 dark:text-white">페이지 설정</h2>
               <button onClick={() => setPageSettingsId(null)} className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"><X size={20}/></button>
             </div>
             <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">아이콘 수정</label>
+                <div className="flex flex-wrap gap-1.5 p-2 bg-gray-50 dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700 max-h-28 overflow-y-auto">
+                  {SIDEBAR_ICONS.map((icon) => (
+                    <button
+                      key={icon}
+                      type="button"
+                      onClick={() => setPageEditData({ ...pageEditData, icon })}
+                      className={`w-8 h-8 rounded-lg text-lg flex items-center justify-center transition-all ${
+                        (pageEditData.icon || "📄") === icon 
+                          ? "bg-blue-500 text-white shadow-md scale-105" 
+                          : "hover:bg-gray-200 dark:hover:bg-gray-800"
+                      }`}
+                    >
+                      {icon}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">페이지 제목</label>
                 <input 
@@ -397,6 +412,17 @@ export default function Sidebar({ currentView, onNavigate, selectedProjectId, se
                   value={pageEditData.title}
                   onChange={e => setPageEditData({...pageEditData, title: e.target.value})}
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-[#121212] dark:text-white"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">페이지 설명</label>
+                <input 
+                  type="text" 
+                  value={pageEditData.description || ""}
+                  onChange={e => setPageEditData({...pageEditData, description: e.target.value})}
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-[#121212] dark:text-white text-sm"
+                  placeholder="페이지에 대한 짧은 설명을 입력하세요."
                 />
               </div>
               

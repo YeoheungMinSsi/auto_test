@@ -11,7 +11,10 @@ interface ProjectsProps {
   customPageTitle?: string;
   customPageIcon?: string;
   customPageDescription?: string;
+  onWorkspaceUpdate?: () => void;
 }
+
+const PROJECT_PAGE_ICONS = ["📄", "📝", "🚀", "📊", "💡", "📚", "⚙️", "📁", "🎨", "🔬", "📌", "🎯", "💻", "📂", "✨", "🔍", "⚡", "🔒", "🛠️", "💬"];
 
 interface Project {
   id: string;
@@ -36,9 +39,10 @@ interface Document {
   blocks: any[];
 }
 
-export default function Projects({ selectedProjectId, selectedDocId, onNavigate, isDarkMode, customPageId, customPageTitle, customPageIcon, customPageDescription }: ProjectsProps) {
+export default function Projects({ selectedProjectId, selectedDocId, onNavigate, isDarkMode, customPageId, customPageTitle, customPageIcon, customPageDescription, onWorkspaceUpdate }: ProjectsProps) {
   const [projects, setProjects] = useState<Project[]>([]);
   const [showAddModal, setShowAddModal] = useState(false);
+  const [showIconPopover, setShowIconPopover] = useState(false);
   const [newProjName, setNewProjName] = useState("");
   const [newProjDesc, setNewProjDesc] = useState("");
   
@@ -287,14 +291,61 @@ export default function Projects({ selectedProjectId, selectedDocId, onNavigate,
     }
   };
 
+  const handleUpdatePageIcon = (icon: string) => {
+    if (!customPageId) return;
+    fetch(`http://localhost:8000/api/workspace/pages/${customPageId}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ icon })
+    }).then(() => {
+      onWorkspaceUpdate?.();
+      setShowIconPopover(false);
+    }).catch(err => console.error(err));
+  };
+
   // ------------------ 리스트 화면 ------------------
   if (!selectedProjectId) {
     return (
       <div className="p-8 max-w-6xl mx-auto space-y-6">
-        <div className="flex items-center justify-between bg-white dark:bg-[#1e1e1e] p-6 rounded-2xl border border-gray-200/80 dark:border-gray-800 shadow-sm transition-colors">
+        <div className="flex items-center justify-between bg-white dark:bg-[#1e1e1e] p-6 rounded-2xl border border-gray-200/80 dark:border-gray-800 shadow-sm transition-colors relative">
           <div>
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2">
-              <span>{customPageIcon || "📊"}</span> {customPageTitle || "프로젝트 진행 상황 대시보드"}
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2 relative">
+              <div className="relative">
+                <button
+                  type="button"
+                  onClick={() => customPageId && setShowIconPopover(!showIconPopover)}
+                  className={`text-2xl p-1 rounded-xl transition-all ${
+                    customPageId ? "hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer hover:scale-110" : ""
+                  }`}
+                  title={customPageId ? "클릭하여 아이콘 변경" : "기본 프로젝트"}
+                >
+                  {customPageIcon || "📊"}
+                </button>
+
+                {showIconPopover && customPageId && (
+                  <div className="absolute left-0 top-10 bg-white dark:bg-[#252525] border border-gray-200 dark:border-gray-700 rounded-xl p-3 shadow-2xl z-50 w-64">
+                    <div className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-2">페이지 아이콘 변경</div>
+                    <div className="grid grid-cols-5 gap-1.5 max-h-36 overflow-y-auto">
+                      {PROJECT_PAGE_ICONS.map((icon) => (
+                        <button
+                          key={icon}
+                          type="button"
+                          onClick={() => handleUpdatePageIcon(icon)}
+                          className={`w-9 h-9 rounded-lg text-lg flex items-center justify-center transition-all ${
+                            (customPageIcon || "📊") === icon 
+                              ? "bg-blue-500 text-white shadow-md scale-105" 
+                              : "hover:bg-gray-100 dark:hover:bg-gray-800"
+                          }`}
+                        >
+                          {icon}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <span>{customPageTitle || "프로젝트 진행 상황 대시보드"}</span>
             </h2>
             <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
               {customPageDescription || "연구 계획, 개발 스케줄, Todo 리스트와 개발 노트를 계층적으로 정돈하여 기획을 관리하세요."}
