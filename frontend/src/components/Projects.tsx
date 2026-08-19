@@ -103,6 +103,33 @@ export default function Projects({
         .then(res => res.json())
         .then(data => {
           setProjectDetail(data);
+
+          const docs = data.documents || {};
+          const docKeys = Object.keys(docs);
+
+          if (docKeys.length > 0) {
+            // 현재 선택된 문서가 없거나 유효하지 않으면 루트 문서로 자동 선택
+            if (!selectedDocId || !docs[selectedDocId]) {
+              const rootDoc = Object.values(docs).find((d: any) => d.parent_id === null) as any;
+              const targetDocId = rootDoc ? rootDoc.id : docKeys[0];
+              onNavigate(selectedProjectId, targetDocId);
+            }
+          } else {
+            // 문서가 하나도 없으면 기본 루트 문서 자동 생성
+            fetch(`http://localhost:8000/api/projects/${selectedProjectId}/documents?page_id=${customPageId || "progress"}`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ title: data.name || "시작 페이지", parent_id: null })
+            })
+              .then(r => r.json())
+              .then(newDoc => {
+                if (newDoc.id) {
+                  onNavigate(selectedProjectId, newDoc.id);
+                  onWorkspaceUpdate?.();
+                }
+              })
+              .catch(err => console.error("Error creating initial root doc:", err));
+          }
         })
         .catch(err => console.error("Error loading project detail:", err));
     } else {
@@ -121,12 +148,20 @@ export default function Projects({
       body: JSON.stringify({ name: newProjName, description: newProjDesc })
     })
       .then(res => res.json())
-      .then(() => {
+      .then(newProj => {
         setNewProjName("");
         setNewProjDesc("");
         setShowAddModal(false);
         loadProjects();
         onWorkspaceUpdate?.();
+
+        // 생성 직후 방금 만든 프로젝트의 루트 문서 에디터로 즉시 진입
+        if (newProj && newProj.id) {
+          const docs = newProj.documents || {};
+          const rootDoc = Object.values(docs).find((d: any) => d.parent_id === null) as any;
+          const targetDocId = rootDoc ? rootDoc.id : Object.keys(docs)[0] || null;
+          onNavigate(newProj.id, targetDocId);
+        }
       })
       .catch(err => console.error("Error creating project:", err));
   };

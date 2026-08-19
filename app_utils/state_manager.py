@@ -218,17 +218,38 @@ def save_state(state, page_id="progress"):
         print(f"Error saving state: {e}")
 
 def add_project(name, description="", page_id="progress"):
-    """새로운 일반 프로젝트(Todo/Plan)를 추가합니다."""
+    """새로운 일반 프로젝트를 추가하고 기본 루트 문서를 생성합니다."""
     state = load_state(page_id)
     project_id = str(uuid.uuid4())
+    root_doc_id = str(uuid.uuid4())
+    
+    default_block = {
+        "id": str(uuid.uuid4()),
+        "type": "paragraph",
+        "props": {
+            "textColor": "default",
+            "backgroundColor": "default",
+            "textAlignment": "left"
+        },
+        "content": []
+    }
     
     state["projects"][project_id] = {
         "id": project_id,
         "name": name,
         "description": description,
-        "status": "계획 중", # 계획 중, 진행 중, 완료
+        "status": "계획 중",
         "created_at": datetime.now().isoformat(),
-        "tasks": [] # 각 요소는 {"id": "uuid", "title": "할 일", "completed": False} 형태
+        "tasks": [],
+        "documents": {
+            root_doc_id: {
+                "id": root_doc_id,
+                "title": name,
+                "parent_id": None,
+                "created_at": datetime.now().isoformat(),
+                "blocks": [default_block]
+            }
+        }
     }
     
     save_state(state, page_id)

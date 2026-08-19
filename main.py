@@ -164,7 +164,8 @@ def get_project(project_id: str, page_id: str = "progress"):
 @app.post("/api/projects")
 def create_project(data: ProjectCreate, page_id: str = "progress"):
     pid = sm.add_project(data.name, data.description, page_id)
-    return {"id": pid}
+    proj = sm.get_project(pid, page_id)
+    return proj
 
 @app.delete("/api/projects/{project_id}")
 def delete_project(project_id: str, page_id: str = "progress"):

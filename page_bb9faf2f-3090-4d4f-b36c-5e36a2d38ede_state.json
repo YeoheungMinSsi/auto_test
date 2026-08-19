@@ -15,9 +15,32 @@
                     "created_at": "2026-08-19T18:27:18.097844",
                     "blocks": [
                         {
-                            "id": "aaf6688a-bda2-495d-b0d3-bd2c97ac9e04",
-                            "type": "text",
-                            "content": "칵테일"
+                            "id": "pnifiew",
+                            "type": "paragraph",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "칵테일",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "f5e58eb1-6ba7-4fdb-9466-5da8bbfae5ad",
+                            "type": "paragraph",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [],
+                            "children": []
                         }
                     ]
                 }
@@ -76,6 +99,29 @@
                                 }
                             ],
                             "children": []
+                        }
+                    ]
+                }
+            }
+        },
+        "d4544786-c715-4143-8a5f-5c0ce19d36be": {
+            "id": "d4544786-c715-4143-8a5f-5c0ce19d36be",
+            "name": "챗봇",
+            "description": "챗봇만들기",
+            "status": "계획 중",
+            "created_at": "2026-08-19T19:09:37.902580",
+            "tasks": [],
+            "documents": {
+                "0bf5086e-ba46-4e83-8984-170de85c7f48": {
+                    "id": "0bf5086e-ba46-4e83-8984-170de85c7f48",
+                    "title": "📜 기본 기획서 및 설명",
+                    "parent_id": null,
+                    "created_at": "2026-08-19T19:09:37.902580",
+                    "blocks": [
+                        {
+                            "id": "268dcb46-d1e2-4474-ab8e-f6065f12465f",
+                            "type": "text",
+                            "content": "챗봇만들기"
                         }
                     ]
                 }

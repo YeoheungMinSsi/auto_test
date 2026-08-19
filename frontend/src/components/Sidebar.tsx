@@ -370,30 +370,44 @@ export default function Sidebar({
                     {language === "en" ? "No projects found" : "등록된 프로젝트 없음"}
                   </div>
                 ) : (
-                  projects.map(project => (
-                    <div key={project.id} className="space-y-0.5">
-                      <div 
-                        onClick={() => {
-                          toggleExpand(project.id);
-                          onNavigate(isCustomSubpage ? currentView : "projects", project.id, null);
-                        }}
-                        className={`flex items-center justify-between px-2.5 py-1.5 rounded-lg cursor-pointer transition-all group ${
-                          selectedProjectId === project.id ? "bg-gray-200/80 dark:bg-gray-800 text-gray-900 dark:text-gray-100 font-semibold" : "text-gray-600 dark:text-gray-400 hover:bg-gray-200/60 dark:hover:bg-gray-800"
-                        }`}
-                      >
-                        <div className="flex items-center gap-2 flex-1 truncate">
-                          {expandedProjects[project.id] ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
-                          <span className="truncate">{project.name}</span>
-                        </div>
-                      </div>
+                  projects.map(project => {
+                    const docs = project.documents || {};
+                    const rootDoc = Object.values(docs).find((d: any) => d.parent_id === null) as any;
+                    const targetDocId = rootDoc ? rootDoc.id : (Object.keys(docs)[0] || null);
 
-                      {expandedProjects[project.id] && project.documents && (
-                        <div className="mt-0.5 space-y-0.5 border-l border-gray-200 dark:border-gray-700 ml-2.5">
-                          {renderDocTree(project.documents, project.id, null)}
+                    return (
+                      <div key={project.id} className="space-y-0.5">
+                        <div 
+                          onClick={() => {
+                            setExpandedProjects(prev => ({ ...prev, [project.id]: true }));
+                            onNavigate(isCustomSubpage ? currentView : "projects", project.id, targetDocId);
+                          }}
+                          className={`flex items-center justify-between px-2.5 py-1.5 rounded-lg cursor-pointer transition-all group ${
+                            selectedProjectId === project.id ? "bg-gray-200/80 dark:bg-gray-800 text-gray-900 dark:text-gray-100 font-semibold" : "text-gray-600 dark:text-gray-400 hover:bg-gray-200/60 dark:hover:bg-gray-800"
+                          }`}
+                        >
+                          <div className="flex items-center gap-1.5 flex-1 truncate">
+                            <span
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                toggleExpand(project.id);
+                              }}
+                              className="p-0.5 hover:bg-gray-300 dark:hover:bg-gray-700 rounded transition-colors text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+                            >
+                              {expandedProjects[project.id] ? <ChevronDown size={13} /> : <ChevronRight size={13} />}
+                            </span>
+                            <span className="truncate">{project.name}</span>
+                          </div>
                         </div>
-                      )}
-                    </div>
-                  ))
+
+                        {expandedProjects[project.id] && project.documents && (
+                          <div className="mt-0.5 space-y-0.5 border-l border-gray-200 dark:border-gray-700 ml-2.5">
+                            {renderDocTree(project.documents, project.id, null)}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })
                 )}
               </div>
             </div>

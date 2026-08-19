@@ -29,12 +29,16 @@ export default function NotionEditor({
 }: NotionEditorProps) {
   const [initialContent, setInitialContent] = useState<any[] | null>(null);
   const [subDocuments, setSubDocuments] = useState<any[]>([]);
+  const [allDocuments, setAllDocuments] = useState<Record<string, any>>({});
+  const [projectName, setProjectName] = useState<string>("");
 
   const loadDocData = () => {
     fetch(`http://localhost:8000/api/projects/${projectId}?page_id=${pageId || "progress"}`)
       .then(res => res.json())
       .then(data => {
+        setProjectName(data.name || "");
         const docs = data.documents || {};
+        setAllDocuments(docs);
         const doc = docs[docId];
 
         // 직속 하위 문서 목록 필터링
@@ -144,6 +148,8 @@ export default function NotionEditor({
       docTitle={docTitle} 
       initialContent={initialContent} 
       subDocuments={subDocuments}
+      allDocuments={allDocuments}
+      projectName={projectName}
       isDarkMode={isDarkMode} 
       pageId={pageId} 
       language={language}
@@ -162,6 +168,8 @@ interface WrapperProps {
   docTitle: string;
   initialContent: any[];
   subDocuments: any[];
+  allDocuments: Record<string, any>;
+  projectName: string;
   isDarkMode: boolean;
   pageId?: string;
   language: "ko" | "en";
@@ -175,6 +183,8 @@ function EditorWrapper({
   docTitle, 
   initialContent, 
   subDocuments,
+  allDocuments,
+  projectName,
   isDarkMode, 
   pageId, 
   language,
@@ -286,8 +296,46 @@ function EditorWrapper({
     );
   };
 
+  // 부모 계층 브레드크럼 계산
+  const breadcrumbs: any[] = [];
+  let curr = allDocuments[docId];
+  while (curr && curr.parent_id && allDocuments[curr.parent_id]) {
+    curr = allDocuments[curr.parent_id];
+    breadcrumbs.unshift(curr);
+  }
+
   return (
-    <div className="flex-1 w-full max-w-4xl mx-auto px-10 py-12 flex flex-col h-full overflow-y-auto">
+    <div className="flex-1 w-full max-w-4xl mx-auto px-10 py-10 flex flex-col h-full overflow-y-auto">
+      {/* 상단 브레드크럼 네비게이션 */}
+      <div className="flex items-center gap-1.5 text-xs text-gray-400 dark:text-gray-500 mb-6 font-medium pl-12 flex-wrap">
+        <span 
+          onClick={() => {
+            const rootDoc = Object.values(allDocuments).find(d => d.parent_id === null);
+            if (rootDoc) onNavigate?.(projectId, rootDoc.id);
+          }}
+          className="hover:text-blue-600 dark:hover:text-blue-400 hover:underline cursor-pointer flex items-center gap-1"
+          title="프로젝트 최상위 문서로 이동"
+        >
+          📁 {projectName || (language === "en" ? "Project" : "프로젝트")}
+        </span>
+        {breadcrumbs.map(b => (
+          <div key={b.id} className="flex items-center gap-1.5">
+            <span>/</span>
+            <span 
+              onClick={() => onNavigate?.(projectId, b.id)}
+              className="hover:text-blue-600 dark:hover:text-blue-400 hover:underline cursor-pointer truncate max-w-[150px]"
+              title={b.title}
+            >
+              📄 {b.title}
+            </span>
+          </div>
+        ))}
+        <span>/</span>
+        <span className="text-gray-700 dark:text-gray-300 font-semibold truncate max-w-[180px]">
+          📄 {title || (language === "en" ? "Untitled" : "제목 없음")}
+        </span>
+      </div>
+
       <div className="flex items-center justify-between mb-4 shrink-0">
         <input 
           type="text"
@@ -297,7 +345,7 @@ function EditorWrapper({
           className="text-4xl font-bold pl-12 focus:outline-none text-gray-800 dark:text-gray-100 bg-transparent w-full border-none"
           placeholder={language === "en" ? "Untitled" : "제목 없음"}
         />
-        <span className={`text-[10px] px-2 py-0.5 rounded font-mono ${
+        <span className={`text-[10px] px-2 py-0.5 rounded font-mono shrink-0 ${
           saveStatus === "saved" ? "bg-green-50 text-green-600 dark:bg-green-950/30 dark:text-green-400" :
           saveStatus === "saving" ? "bg-amber-50 text-amber-600 dark:bg-amber-950/30 dark:text-amber-400" : "bg-red-50 text-red-600 dark:bg-red-950/30 dark:text-red-400"
         }`}>
