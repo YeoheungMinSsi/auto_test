@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { FileText, Home, Rocket, BarChart2, BookOpen, ChevronRight, ChevronDown, Plus, MoreHorizontal, Sun, Moon, Settings, MoreVertical, X, Globe } from "lucide-react";
+import { FileText, Home, Rocket, BarChart2, BookOpen, ChevronRight, ChevronDown, Plus, MoreHorizontal, Sun, Moon, Settings, MoreVertical, X, Globe, CheckSquare } from "lucide-react";
 
 interface SidebarProps {
   currentView: string;
@@ -230,6 +230,14 @@ export default function Sidebar({
             >
               <Plus size={13} />
             </button>
+          </div>
+          <div 
+            onClick={() => onNavigate("todos")}
+            className={`flex items-center gap-2 px-2.5 py-1.5 rounded-lg cursor-pointer transition-all ${
+              currentView === "todos" ? "bg-gray-200/80 dark:bg-gray-800 text-gray-900 dark:text-gray-100 font-semibold" : "text-gray-600 dark:text-gray-400 hover:bg-gray-200/60 dark:hover:bg-gray-800"
+            }`}
+          >
+            <CheckSquare size={16} /> <span>✅ {language === "en" ? "Todo List" : "할 일 목록"}</span>
           </div>
           <div 
             onClick={() => onNavigate("blog")}

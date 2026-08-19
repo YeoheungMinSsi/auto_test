@@ -91,14 +91,23 @@ export default function Projects({
     loadProjects();
   }, [selectedProjectId, customPageId]); // customPageId 변경시에도 재로드 필요
 
-  // 단일 프로젝트 상세 로드
+  // 단일 프로젝트 상세 로드 함수
+  const loadProjectDetail = (projId: string) => {
+    fetch(`http://localhost:8000/api/projects/${projId}?page_id=${customPageId || "progress"}`)
+      .then(res => res.json())
+      .then(data => {
+        setProjectDetail(data);
+      })
+      .catch(err => console.error("Error loading project detail:", err));
+  };
+
   useEffect(() => {
     if (selectedProjectId) {
       fetch(`http://localhost:8000/api/projects/${selectedProjectId}?page_id=${customPageId || "progress"}`)
         .then(res => res.json())
         .then(data => {
           setProjectDetail(data);
-          // 기본 선택 문서 지정 (만약 문서가 있고 현재 selectedDocId가 없다면 첫 번째 문서를 강제 선택)
+          // 기본 선택 문서 지정
           if (data.documents && Object.keys(data.documents).length > 0 && !selectedDocId) {
             const firstDocId = Object.keys(data.documents)[0];
             onNavigate(selectedProjectId, firstDocId);
@@ -126,6 +135,7 @@ export default function Projects({
         setNewProjDesc("");
         setShowAddModal(false);
         loadProjects();
+        onWorkspaceUpdate?.();
       })
       .catch(err => console.error("Error creating project:", err));
   };
@@ -143,6 +153,7 @@ export default function Projects({
           onNavigate(null, null);
         }
         loadProjects();
+        onWorkspaceUpdate?.();
       })
       .catch(err => console.error("Error deleting project:", err));
   };
@@ -160,32 +171,53 @@ export default function Projects({
       .then(() => {
         setEditProjId(null);
         loadProjects();
+        onWorkspaceUpdate?.();
       })
       .catch(err => console.error("Error updating project:", err));
   };
 
-  // 할 일 추가
+  // 할 일 추가 (낙관적 업데이트)
   const handleAddTask = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newTaskTitle.trim() || !selectedProjectId) return;
+    const titleToAdd = newTaskTitle.trim();
+    setNewTaskTitle("");
+
+    const tempId = "temp-" + Date.now();
+    setProjectDetail(prev => {
+      if (!prev) return prev;
+      return {
+        ...prev,
+        tasks: [...(prev.tasks || []), { id: tempId, title: titleToAdd, completed: false }]
+      };
+    });
 
     fetch(`http://localhost:8000/api/projects/${selectedProjectId}/tasks?page_id=${customPageId || "progress"}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ title: newTaskTitle })
+      body: JSON.stringify({ title: titleToAdd })
     })
       .then(res => res.json())
       .then(() => {
-        setNewTaskTitle("");
-        // 디테일 리로드
-        onNavigate(selectedProjectId, selectedDocId);
+        loadProjectDetail(selectedProjectId);
       })
-      .catch(err => console.error("Error adding task:", err));
+      .catch(err => {
+        console.error("Error adding task:", err);
+        loadProjectDetail(selectedProjectId);
+      });
   };
 
-  // 할 일 완료 여부 토글
+  // 할 일 완료 여부 토글 (낙관적 업데이트)
   const handleToggleTask = (taskId: string, completed: boolean) => {
     if (!selectedProjectId) return;
+
+    setProjectDetail(prev => {
+      if (!prev) return prev;
+      return {
+        ...prev,
+        tasks: (prev.tasks || []).map(t => t.id === taskId ? { ...t, completed } : t)
+      };
+    });
 
     fetch(`http://localhost:8000/api/projects/${selectedProjectId}/tasks/${taskId}?page_id=${customPageId || "progress"}`, {
       method: "PUT",
@@ -193,22 +225,36 @@ export default function Projects({
       body: JSON.stringify({ completed })
     })
       .then(() => {
-        onNavigate(selectedProjectId, selectedDocId);
+        loadProjectDetail(selectedProjectId);
       })
-      .catch(err => console.error("Error toggling task:", err));
+      .catch(err => {
+        console.error("Error toggling task:", err);
+        loadProjectDetail(selectedProjectId);
+      });
   };
 
-  // 할 일 삭제
+  // 할 일 삭제 (낙관적 업데이트)
   const handleDeleteTask = (taskId: string) => {
     if (!selectedProjectId) return;
+
+    setProjectDetail(prev => {
+      if (!prev) return prev;
+      return {
+        ...prev,
+        tasks: (prev.tasks || []).filter(t => t.id !== taskId)
+      };
+    });
 
     fetch(`http://localhost:8000/api/projects/${selectedProjectId}/tasks/${taskId}?page_id=${customPageId || "progress"}`, {
       method: "DELETE"
     })
       .then(() => {
-        onNavigate(selectedProjectId, selectedDocId);
+        loadProjectDetail(selectedProjectId);
       })
-      .catch(err => console.error("Error deleting task:", err));
+      .catch(err => {
+        console.error("Error deleting task:", err);
+        loadProjectDetail(selectedProjectId);
+      });
   };
 
   // 문서 생성

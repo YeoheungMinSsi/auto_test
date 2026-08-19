@@ -3,12 +3,13 @@ import Sidebar from "./components/Sidebar"
 import Automation from "./components/Automation"
 import Projects from "./components/Projects"
 import Blog from "./components/Blog"
+import TodoList from "./components/TodoList"
 import { Plus, MoreVertical, X, Edit2, Eye, EyeOff, Trash2 } from "lucide-react"
 
 const PAGE_ICONS = ["📄", "📝", "🚀", "📊", "💡", "📚", "⚙️", "📁", "🎨", "🔬", "📌", "🎯", "💻", "📂", "✨", "🔍", "⚡", "🔒", "🛠️", "💬"];
 
 function App() {
-  const [currentView, setCurrentView] = useState<"home" | "automation" | "projects" | "blog" | string>("home");
+  const [currentView, setCurrentView] = useState<"home" | "automation" | "projects" | "blog" | "todos" | string>("home");
   const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
   const [selectedDocId, setSelectedDocId] = useState<string | null>(null);
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -181,7 +182,7 @@ function App() {
                 논문 수집 및 PPT 자동화 서비스와 프로젝트 관리 공간을 통합 제공하는 AI 개발 대시보드입니다.
               </p>
               
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 pt-6 w-full">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 pt-6 w-full">
                 <div onClick={() => handleNavigate("automation")} className="relative p-6 bg-white dark:bg-[#1e1e1e] rounded-xl border border-gray-200/80 dark:border-gray-800 hover:border-blue-500 dark:hover:border-blue-500 hover:shadow-xl transition-all cursor-pointer group text-left">
                   <div className="text-2xl mb-2 group-hover:scale-110 transition-transform">🚀</div>
                   <h3 className="font-semibold text-gray-800 dark:text-gray-200">논문 자동화</h3>
@@ -190,7 +191,12 @@ function App() {
                 <div onClick={() => handleNavigate("projects")} className="relative p-6 bg-white dark:bg-[#1e1e1e] rounded-xl border border-gray-200/80 dark:border-gray-800 hover:border-blue-500 dark:hover:border-blue-500 hover:shadow-xl transition-all cursor-pointer group text-left">
                   <div className="text-2xl mb-2 group-hover:scale-110 transition-transform">📊</div>
                   <h3 className="font-semibold text-gray-800 dark:text-gray-200">진행 상황</h3>
-                  <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">Implementation Plan 및 문서 공간 & 할 일 관리</p>
+                  <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">문서 공간 & 프로젝트 대시보드</p>
+                </div>
+                <div onClick={() => handleNavigate("todos")} className="relative p-6 bg-white dark:bg-[#1e1e1e] rounded-xl border border-gray-200/80 dark:border-gray-800 hover:border-blue-500 dark:hover:border-blue-500 hover:shadow-xl transition-all cursor-pointer group text-left">
+                  <div className="text-2xl mb-2 group-hover:scale-110 transition-transform">✅</div>
+                  <h3 className="font-semibold text-gray-800 dark:text-gray-200">할 일 목록</h3>
+                  <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">모든 프로젝트의 Todo 항목 통합 관리 및 달성률 대시보드</p>
                 </div>
                 <div onClick={() => handleNavigate("blog")} className="relative p-6 bg-white dark:bg-[#1e1e1e] rounded-xl border border-gray-200/80 dark:border-gray-800 hover:border-blue-500 dark:hover:border-blue-500 hover:shadow-xl transition-all cursor-pointer group text-left">
                   <div className="text-2xl mb-2 group-hover:scale-110 transition-transform">📝</div>
@@ -280,6 +286,15 @@ function App() {
             language={language}
           />
         );
+      case "todos":
+        return (
+          <TodoList 
+            isDarkMode={isDarkMode} 
+            language={language} 
+            workspaceData={workspaceData}
+            onNavigateProject={(projId) => handleNavigate("projects", projId, null)}
+          />
+        );
       case "blog":
         return <Blog />;
       default:
@@ -326,6 +341,7 @@ function App() {
                 <span className="text-gray-800 dark:text-gray-200">
                   {currentView === "automation" ? "🚀 논문 자동화 파이프라인" : 
                    currentView === "blog" ? "📝 블로그 관리" : 
+                   currentView === "todos" ? "✅ 통합 할 일 목록" : 
                    currentView === "projects" ? "📊 프로젝트 진행 상황" : workspaceData?.custom_pages?.find((p:any)=>p.id===currentView)?.title || currentView}
                 </span>
               </>

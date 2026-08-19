@@ -28,13 +28,19 @@ export default function NotionEditor({
   onWorkspaceUpdate
 }: NotionEditorProps) {
   const [initialContent, setInitialContent] = useState<any[] | null>(null);
+  const [subDocuments, setSubDocuments] = useState<any[]>([]);
 
-  useEffect(() => {
-    setInitialContent(null);
+  const loadDocData = () => {
     fetch(`http://localhost:8000/api/projects/${projectId}?page_id=${pageId || "progress"}`)
       .then(res => res.json())
       .then(data => {
-        const doc = data.documents?.[docId];
+        const docs = data.documents || {};
+        const doc = docs[docId];
+
+        // 직속 하위 문서 목록 필터링
+        const children = Object.values(docs).filter((d: any) => d.parent_id === docId);
+        setSubDocuments(children);
+
         if (doc && doc.blocks && doc.blocks.length > 0) {
           const generateId = () => Math.random().toString(36).substring(2, 9);
           const parsedBlocks: any[] = [];
@@ -119,6 +125,11 @@ export default function NotionEditor({
           }
         ]);
       });
+  };
+
+  useEffect(() => {
+    setInitialContent(null);
+    loadDocData();
   }, [projectId, docId, pageId]);
 
   if (!initialContent) {
@@ -132,11 +143,15 @@ export default function NotionEditor({
       docId={docId} 
       docTitle={docTitle} 
       initialContent={initialContent} 
+      subDocuments={subDocuments}
       isDarkMode={isDarkMode} 
       pageId={pageId} 
       language={language}
       onNavigate={onNavigate}
-      onWorkspaceUpdate={onWorkspaceUpdate}
+      onWorkspaceUpdate={() => {
+        loadDocData();
+        onWorkspaceUpdate?.();
+      }}
     />
   );
 }
@@ -146,6 +161,7 @@ interface WrapperProps {
   docId: string;
   docTitle: string;
   initialContent: any[];
+  subDocuments: any[];
   isDarkMode: boolean;
   pageId?: string;
   language: "ko" | "en";
@@ -158,6 +174,7 @@ function EditorWrapper({
   docId, 
   docTitle, 
   initialContent, 
+  subDocuments,
   isDarkMode, 
   pageId, 
   language,
@@ -221,6 +238,28 @@ function EditorWrapper({
       .catch(err => console.error("Title save error:", err));
   };
 
+  const handleCreateSubpage = () => {
+    const subTitle = prompt(language === "en" ? "Enter sub-page title:" : "새 하위 문서의 제목을 입력하세요:");
+    if (!subTitle || !subTitle.trim()) return;
+
+    fetch(`http://localhost:8000/api/projects/${projectId}/documents?page_id=${pageId || "progress"}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        title: subTitle.trim(),
+        parent_id: docId
+      })
+    })
+      .then(res => res.json())
+      .then(newDoc => {
+        onWorkspaceUpdate?.();
+        if (newDoc && newDoc.id) {
+          onNavigate?.(projectId, newDoc.id);
+        }
+      })
+      .catch(err => console.error("Error creating subpage:", err));
+  };
+
   // 노션 스타일의 하위 페이지 생성 아이템 (/page)
   const getCustomSlashMenuItems = (editor: any, query: string) => {
     const defaultItems = getDefaultReactSlashMenuItems(editor);
@@ -232,25 +271,7 @@ function EditorWrapper({
       group: language === "en" ? "Advanced" : "고급",
       icon: <FileText size={18} className="text-blue-500" />,
       onItemClick: () => {
-        const subTitle = prompt(language === "en" ? "Enter sub-page title:" : "새 하위 문서의 제목을 입력하세요:");
-        if (!subTitle || !subTitle.trim()) return;
-
-        fetch(`http://localhost:8000/api/projects/${projectId}/documents?page_id=${pageId || "progress"}`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            title: subTitle.trim(),
-            parent_id: docId
-          })
-        })
-          .then(res => res.json())
-          .then(newDoc => {
-            onWorkspaceUpdate?.();
-            if (newDoc && newDoc.id) {
-              onNavigate?.(projectId, newDoc.id);
-            }
-          })
-          .catch(err => console.error("Error creating subpage:", err));
+        handleCreateSubpage();
       }
     };
 
@@ -284,7 +305,9 @@ function EditorWrapper({
            saveStatus === "saving" ? (language === "en" ? "Saving..." : "저장 중...") : (language === "en" ? "Save Failed" : "저장 실패")}
         </span>
       </div>
-      <div className="flex-1">
+
+      {/* 에디터 본문 영역 */}
+      <div className="flex-1 min-h-[300px]">
         <BlockNoteView 
           editor={editor} 
           theme={isDarkMode ? "dark" : "light"} 
@@ -296,6 +319,57 @@ function EditorWrapper({
             getItems={async (query) => getCustomSlashMenuItems(editor, query)} 
           />
         </BlockNoteView>
+      </div>
+
+      {/* 하위 페이지 목록 카드 섹션 (노션 스타일) */}
+      <div className="mt-12 pt-8 border-t border-gray-100 dark:border-gray-800 space-y-4">
+        <div className="flex items-center justify-between">
+          <div className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider flex items-center gap-1.5">
+            <FileText size={14} className="text-blue-500" />
+            <span>{language === "en" ? "Sub-pages in this document" : "이 문서의 하위 페이지"}</span>
+            <span className="text-[10px] px-1.5 py-0.2 bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 rounded-full font-mono">
+              {subDocuments.length}
+            </span>
+          </div>
+          <button
+            type="button"
+            onClick={handleCreateSubpage}
+            className="text-xs text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-semibold flex items-center gap-1 px-2.5 py-1 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-950/30 transition-all cursor-pointer"
+          >
+            + {language === "en" ? "Add Sub-page" : "하위 페이지 추가"}
+          </button>
+        </div>
+
+        {subDocuments.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {subDocuments.map((subDoc) => (
+              <div
+                key={subDoc.id}
+                onClick={() => onNavigate?.(projectId, subDoc.id)}
+                className="p-4 bg-white dark:bg-[#1e1e1e] border border-gray-200/80 dark:border-gray-800 rounded-xl hover:border-blue-500 dark:hover:border-blue-500 hover:shadow-md transition-all cursor-pointer flex items-center justify-between group"
+              >
+                <div className="flex items-center gap-3 truncate">
+                  <div className="w-8 h-8 rounded-lg bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 flex items-center justify-center text-sm font-semibold shrink-0 group-hover:scale-110 transition-transform">
+                    📄
+                  </div>
+                  <span className="text-sm font-semibold text-gray-800 dark:text-gray-200 truncate">
+                    {subDoc.title}
+                  </span>
+                </div>
+                <span className="text-gray-400 group-hover:text-blue-500 group-hover:translate-x-0.5 transition-all text-xs font-bold shrink-0">
+                  →
+                </span>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div 
+            onClick={handleCreateSubpage}
+            className="p-5 border border-dashed border-gray-200 dark:border-gray-800 rounded-xl text-center text-xs text-gray-400 dark:text-gray-500 hover:border-blue-400 dark:hover:border-blue-500 hover:text-blue-500 cursor-pointer transition-all flex flex-col items-center justify-center gap-1"
+          >
+            <span>{language === "en" ? "No sub-pages yet. Click to create one." : "등록된 하위 페이지가 없습니다. 클릭하여 새로운 하위 문서를 만들어보세요."}</span>
+          </div>
+        )}
       </div>
     </div>
   );

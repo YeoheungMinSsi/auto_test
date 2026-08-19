@@ -1,21 +1,27 @@
 {
     "projects": {
-        "a980e738-5365-4d2b-9a4d-2383cc934e86": {
-            "id": "a980e738-5365-4d2b-9a4d-2383cc934e86",
-            "name": "대학원 모집요걍",
-            "description": "대학원 모집 요강 정리",
+        "f8b2f237-4bcd-4b36-b045-625fca87f52b": {
+            "id": "f8b2f237-4bcd-4b36-b045-625fca87f52b",
+            "name": "대학원 요강",
+            "description": "대학원 요강 정리",
             "status": "계획 중",
-            "created_at": "2026-08-18T17:16:52.370145",
-            "tasks": [],
+            "created_at": "2026-08-18T17:35:41.165392",
+            "tasks": [
+                {
+                    "id": "dba09966-3efa-4da2-a6fd-0d58138bd358",
+                    "title": "ㄹㅇㅁㄴ",
+                    "completed": true
+                }
+            ],
             "documents": {
-                "010c3e2f-a09a-40ce-a51e-e5d363307122": {
-                    "id": "010c3e2f-a09a-40ce-a51e-e5d363307122",
+                "2e0ac6f2-1a4e-443d-bd6b-5a9b3bf4664d": {
+                    "id": "2e0ac6f2-1a4e-443d-bd6b-5a9b3bf4664d",
                     "title": "📜 기본 기획서 및 설명",
                     "parent_id": null,
-                    "created_at": "2026-08-18T17:16:52.370145",
+                    "created_at": "2026-08-18T17:35:41.165392",
                     "blocks": [
                         {
-                            "id": "qeqrs4z",
+                            "id": "o5ryj54",
                             "type": "paragraph",
                             "props": {
                                 "backgroundColor": "default",
@@ -25,20 +31,406 @@
                             "content": [
                                 {
                                     "type": "text",
-                                    "text": "대학원 모집 요강 정리",
+                                    "text": "대학원 요강 정리",
                                     "styles": {}
                                 }
                             ],
                             "children": []
                         },
                         {
-                            "id": "72cfc1d6-eb35-4230-85c9-2dc3e375eb72",
+                            "id": "9902cba3-8497-4c73-9017-9697b6fb5ba3",
                             "type": "divider",
                             "props": {},
                             "children": []
                         },
                         {
-                            "id": "e3e86581-92d1-4b81-a32e-c673fc85a425",
+                            "id": "32834b13-4163-4f00-9751-d3f35034c156",
+                            "type": "paragraph",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [],
+                            "children": []
+                        }
+                    ]
+                },
+                "c889d78b-bb31-4cbb-8576-5b6cd6a56479": {
+                    "id": "c889d78b-bb31-4cbb-8576-5b6cd6a56479",
+                    "title": "부산대",
+                    "parent_id": "2e0ac6f2-1a4e-443d-bd6b-5a9b3bf4664d",
+                    "created_at": "2026-08-18T17:35:53.744759",
+                    "blocks": [
+                        {
+                            "id": "e46ox92",
+                            "type": "divider",
+                            "props": {},
+                            "children": []
+                        },
+                        {
+                            "id": "be576766-4d75-4980-8f3c-7206f5a07b0c",
+                            "type": "numberedListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "지원 일시",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "2cb027bb-2fb0-4f45-af21-a632c4953333",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "26.9.14(월) 9시 ~ 9.18(금) 6시",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "1af6a746-dbfe-4881-8a7e-8ada641e8554",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "ai 분야 모집",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "c8a1f618-2131-4cd3-9de2-a21bdab84c1f",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "석/박사 통합과정도 ai 분야 모집",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "db0ae9ca-5828-4d89-992b-dc9b8df27962",
+                            "type": "numberedListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left",
+                                "start": 2
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "면접",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "2eaf41a6-d5f9-401f-9c58-5fd969c8c339",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "10.23(금)",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "203e5242-e45c-4269-a530-ff4c4a2bc1b7",
+                            "type": "numberedListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left",
+                                "start": 3
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "합격자 발표",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "23dcad14-12f9-4386-96e9-971cd5c222e0",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "11.14(금) 4시",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "2a0f9f7b-0d72-42ba-8938-f9c300c11713",
+                            "type": "numberedListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left",
+                                "start": 4
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "공통 제출서류 목록",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": [
+                                {
+                                    "id": "8eae13d7-1f06-4c77-be10-935c2722a1d5",
+                                    "type": "numberedListItem",
+                                    "props": {
+                                        "backgroundColor": "default",
+                                        "textColor": "default",
+                                        "textAlignment": "left"
+                                    },
+                                    "content": [
+                                        {
+                                            "type": "text",
+                                            "text": "자기소개 및 수학계획서",
+                                            "styles": {}
+                                        }
+                                    ],
+                                    "children": []
+                                },
+                                {
+                                    "id": "69bca900-3b5d-4bbd-ab44-8e7d49e1e8bf",
+                                    "type": "numberedListItem",
+                                    "props": {
+                                        "backgroundColor": "default",
+                                        "textColor": "default",
+                                        "textAlignment": "left"
+                                    },
+                                    "content": [
+                                        {
+                                            "type": "text",
+                                            "text": "학사과정 전 학년 성적증명서",
+                                            "styles": {}
+                                        }
+                                    ],
+                                    "children": []
+                                },
+                                {
+                                    "id": "b4171901-cd4b-4f78-944a-5c741a8df20d",
+                                    "type": "numberedListItem",
+                                    "props": {
+                                        "backgroundColor": "default",
+                                        "textColor": "default",
+                                        "textAlignment": "left"
+                                    },
+                                    "content": [
+                                        {
+                                            "type": "text",
+                                            "text": "최종학위증명서",
+                                            "styles": {}
+                                        }
+                                    ],
+                                    "children": []
+                                },
+                                {
+                                    "id": "6d91a42c-11e2-41a6-b175-ab66907bf96b",
+                                    "type": "numberedListItem",
+                                    "props": {
+                                        "backgroundColor": "default",
+                                        "textColor": "default",
+                                        "textAlignment": "left"
+                                    },
+                                    "content": [
+                                        {
+                                            "type": "text",
+                                            "text": "개인정보 수집 및 이용에 대한 동의서",
+                                            "styles": {}
+                                        }
+                                    ],
+                                    "children": []
+                                }
+                            ]
+                        },
+                        {
+                            "id": "a368fcb6-2d29-44cc-beee-73db8fbee6c5",
+                            "type": "numberedListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left",
+                                "start": 5
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "추가 제출서류 목록",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "e852cbfc-7e0e-42f2-85f0-dc6c3e53a5c6",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "연구실적물 목록",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "7ed63010-4fda-4187-b3f8-1cf7daf08341",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "연구실적물",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": [
+                                {
+                                    "id": "f70a0c30-a8c1-4a50-8ee8-250db8be7c67",
+                                    "type": "bulletListItem",
+                                    "props": {
+                                        "backgroundColor": "default",
+                                        "textColor": "default",
+                                        "textAlignment": "left"
+                                    },
+                                    "content": [
+                                        {
+                                            "type": "text",
+                                            "text": "박사과정 지원자 한함",
+                                            "styles": {}
+                                        }
+                                    ],
+                                    "children": []
+                                }
+                            ]
+                        },
+                        {
+                            "id": "0ab76d10-3e9c-4d13-ae05-30922884f2a9",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "토익",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "f4fbec03-e6e1-45d4-8170-eab7a93c49b4",
+                            "type": "paragraph",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [],
+                            "children": []
+                        }
+                    ]
+                },
+                "f2dbe09d-292a-4e66-8153-4ec0f5fbb244": {
+                    "id": "f2dbe09d-292a-4e66-8153-4ec0f5fbb244",
+                    "title": "대구과기원(DGIST)",
+                    "parent_id": "2e0ac6f2-1a4e-443d-bd6b-5a9b3bf4664d",
+                    "created_at": "2026-08-18T17:36:09.163651",
+                    "blocks": [
+                        {
+                            "id": "6vwhkii",
+                            "type": "divider",
+                            "props": {},
+                            "children": []
+                        }
+                    ]
+                }
+            }
+        },
+        "387af483-2c4b-4361-bc6b-0e36df830b8b": {
+            "id": "387af483-2c4b-4361-bc6b-0e36df830b8b",
+            "name": "TODO",
+            "description": "할일",
+            "status": "계획 중",
+            "created_at": "2026-08-18T17:36:25.214925",
+            "tasks": [
+                {
+                    "id": "25d453ef-b58d-4ca8-8caa-eef4860e3dce",
+                    "title": "Gemini 구독 고객센터 질문",
+                    "completed": false
+                }
+            ],
+            "documents": {
+                "8f8d56cd-b3f5-4893-b57c-580240a93026": {
+                    "id": "8f8d56cd-b3f5-4893-b57c-580240a93026",
+                    "title": "📜 기본 기획서 및 설명",
+                    "parent_id": null,
+                    "created_at": "2026-08-18T17:36:25.214925",
+                    "blocks": [
+                        {
+                            "id": "5cdnffs",
                             "type": "paragraph",
                             "props": {
                                 "backgroundColor": "default",
@@ -48,7 +440,202 @@
                             "content": [
                                 {
                                     "type": "text",
-                                    "text": "/",
+                                    "text": "할일",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "6b461f94-474c-411e-807d-e8cdb0e4a830",
+                            "type": "numberedListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": " Gemini 구독 고객센터 질문하기",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "f5448b7f-46a6-4490-8f9c-b1bc39ffefa9",
+                            "type": "numberedListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [],
+                            "children": []
+                        }
+                    ]
+                }
+            }
+        },
+        "7b7dc0ac-2e97-416b-8556-7e599861e7b3": {
+            "id": "7b7dc0ac-2e97-416b-8556-7e599861e7b3",
+            "name": "프로젝트 구동 명령어",
+            "description": "프론트 및 백엔드 구동 명령어",
+            "status": "계획 중",
+            "created_at": "2026-08-19T17:43:50.985141",
+            "tasks": [],
+            "documents": {
+                "40287ebe-2dc7-4d2f-ac41-6dd209afecdb": {
+                    "id": "40287ebe-2dc7-4d2f-ac41-6dd209afecdb",
+                    "title": "📜 기본 기획서 및 설명",
+                    "parent_id": null,
+                    "created_at": "2026-08-19T17:43:50.985141",
+                    "blocks": [
+                        {
+                            "id": "es0hoc5",
+                            "type": "paragraph",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "프론트 및 백엔드 구동 명령어",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "05f402a4-0cc2-4d6b-9a52-18ddf5f36865",
+                            "type": "divider",
+                            "props": {},
+                            "children": []
+                        },
+                        {
+                            "id": "365c48f9-1548-43f9-969e-7e5f1b9afd52",
+                            "type": "numberedListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "가상화 실행",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "ff68cc43-2c7c-4e51-a780-2381c68bb0ff",
+                            "type": "codeBlock",
+                            "props": {
+                                "language": "text"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": ".\\venv\\Script\\activate.bs1",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "c95265b5-880b-4818-83ec-210f3b01996a",
+                            "type": "numberedListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left",
+                                "start": 2
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "백엔드 실행",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "417d0ab3-f32b-4aa2-bf04-6f199ab66949",
+                            "type": "codeBlock",
+                            "props": {
+                                "language": "text"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "python ",
+                                    "styles": {}
+                                },
+                                {
+                                    "type": "link",
+                                    "href": "https://main.py",
+                                    "content": [
+                                        {
+                                            "type": "text",
+                                            "text": "main.py",
+                                            "styles": {}
+                                        }
+                                    ]
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "f1d0f5be-5232-4ed4-a505-5ff14342fb5b",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "파이썬으로 생성함(Strapi)",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "636422ed-434d-49d1-9826-7cc5dc1b6240",
+                            "type": "numberedListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left",
+                                "start": 3
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "프론트 실행",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "98986414-f2cc-45b8-9cf4-4d97c1ec3dde",
+                            "type": "codeBlock",
+                            "props": {
+                                "language": "text"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "# 프론트 프로젝트 이동\ncd frontend\n# 구동(pnpm으로 생성함)\npnpm dev",
                                     "styles": {}
                                 }
                             ],
