@@ -9,6 +9,15 @@
             "created_at": "2026-08-18T13:29:53.139887",
             "icon": "📝",
             "description": "메모장"
+        },
+        {
+            "id": "page_bb9faf2f-3090-4d4f-b36c-5e36a2d38ede",
+            "title": "프로젝트(동서대)",
+            "has_subpages": true,
+            "is_hidden": false,
+            "icon": "💻",
+            "description": "동서대에서 진행항 프로젝트",
+            "created_at": "2026-08-19T18:27:03.148506"
         }
     ]
 }

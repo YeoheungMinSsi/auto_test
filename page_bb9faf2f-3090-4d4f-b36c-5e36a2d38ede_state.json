@@ -1,0 +1,85 @@
+{
+    "projects": {
+        "3616296e-73de-4805-8576-ac279c72e1a5": {
+            "id": "3616296e-73de-4805-8576-ac279c72e1a5",
+            "name": "한잔",
+            "description": "칵테일",
+            "status": "계획 중",
+            "created_at": "2026-08-19T18:27:18.097844",
+            "tasks": [],
+            "documents": {
+                "6e881ead-2675-499a-ae96-8287b8f96530": {
+                    "id": "6e881ead-2675-499a-ae96-8287b8f96530",
+                    "title": "📜 기본 기획서 및 설명",
+                    "parent_id": null,
+                    "created_at": "2026-08-19T18:27:18.097844",
+                    "blocks": [
+                        {
+                            "id": "aaf6688a-bda2-495d-b0d3-bd2c97ac9e04",
+                            "type": "text",
+                            "content": "칵테일"
+                        }
+                    ]
+                }
+            }
+        },
+        "e68ab7f6-95e5-4167-a6c4-bc94427b971c": {
+            "id": "e68ab7f6-95e5-4167-a6c4-bc94427b971c",
+            "name": "화장품",
+            "description": "화장품 추천",
+            "status": "계획 중",
+            "created_at": "2026-08-19T18:27:28.499801",
+            "tasks": [],
+            "documents": {
+                "4271b5d1-9598-4078-8510-a11f90a430fb": {
+                    "id": "4271b5d1-9598-4078-8510-a11f90a430fb",
+                    "title": "📜 기본 기획서 및 설명",
+                    "parent_id": null,
+                    "created_at": "2026-08-19T18:27:28.499801",
+                    "blocks": [
+                        {
+                            "id": "zfsn0zx",
+                            "type": "paragraph",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "화장품 추천",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "ef076a16-9df5-448a-98ff-1155ec80f875",
+                            "type": "divider",
+                            "props": {},
+                            "children": []
+                        },
+                        {
+                            "id": "ed314976-0a81-4b15-9754-8f5d9b5d698f",
+                            "type": "paragraph",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "1.",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Trash2, Edit3, Plus, ArrowLeft, CheckSquare, FileText } from "lucide-react";
+import { Trash2, Edit3, Plus, ArrowLeft, FileText } from "lucide-react";
 import NotionEditor from "./NotionEditor";
 
 interface ProjectsProps {
@@ -65,10 +65,6 @@ export default function Projects({
 
   // 상세 보기 상태
   const [projectDetail, setProjectDetail] = useState<Project | null>(null);
-  const [detailTab, setDetailTab] = useState<"document" | "todo">("document");
-  
-  // 할 일 상태
-  const [newTaskTitle, setNewTaskTitle] = useState("");
 
   // 새 문서 상태
   const [newDocTitle, setNewDocTitle] = useState("");
@@ -107,11 +103,6 @@ export default function Projects({
         .then(res => res.json())
         .then(data => {
           setProjectDetail(data);
-          // 기본 선택 문서 지정
-          if (data.documents && Object.keys(data.documents).length > 0 && !selectedDocId) {
-            const firstDocId = Object.keys(data.documents)[0];
-            onNavigate(selectedProjectId, firstDocId);
-          }
         })
         .catch(err => console.error("Error loading project detail:", err));
     } else {
@@ -174,87 +165,6 @@ export default function Projects({
         onWorkspaceUpdate?.();
       })
       .catch(err => console.error("Error updating project:", err));
-  };
-
-  // 할 일 추가 (낙관적 업데이트)
-  const handleAddTask = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!newTaskTitle.trim() || !selectedProjectId) return;
-    const titleToAdd = newTaskTitle.trim();
-    setNewTaskTitle("");
-
-    const tempId = "temp-" + Date.now();
-    setProjectDetail(prev => {
-      if (!prev) return prev;
-      return {
-        ...prev,
-        tasks: [...(prev.tasks || []), { id: tempId, title: titleToAdd, completed: false }]
-      };
-    });
-
-    fetch(`http://localhost:8000/api/projects/${selectedProjectId}/tasks?page_id=${customPageId || "progress"}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ title: titleToAdd })
-    })
-      .then(res => res.json())
-      .then(() => {
-        loadProjectDetail(selectedProjectId);
-      })
-      .catch(err => {
-        console.error("Error adding task:", err);
-        loadProjectDetail(selectedProjectId);
-      });
-  };
-
-  // 할 일 완료 여부 토글 (낙관적 업데이트)
-  const handleToggleTask = (taskId: string, completed: boolean) => {
-    if (!selectedProjectId) return;
-
-    setProjectDetail(prev => {
-      if (!prev) return prev;
-      return {
-        ...prev,
-        tasks: (prev.tasks || []).map(t => t.id === taskId ? { ...t, completed } : t)
-      };
-    });
-
-    fetch(`http://localhost:8000/api/projects/${selectedProjectId}/tasks/${taskId}?page_id=${customPageId || "progress"}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ completed })
-    })
-      .then(() => {
-        loadProjectDetail(selectedProjectId);
-      })
-      .catch(err => {
-        console.error("Error toggling task:", err);
-        loadProjectDetail(selectedProjectId);
-      });
-  };
-
-  // 할 일 삭제 (낙관적 업데이트)
-  const handleDeleteTask = (taskId: string) => {
-    if (!selectedProjectId) return;
-
-    setProjectDetail(prev => {
-      if (!prev) return prev;
-      return {
-        ...prev,
-        tasks: (prev.tasks || []).filter(t => t.id !== taskId)
-      };
-    });
-
-    fetch(`http://localhost:8000/api/projects/${selectedProjectId}/tasks/${taskId}?page_id=${customPageId || "progress"}`, {
-      method: "DELETE"
-    })
-      .then(() => {
-        loadProjectDetail(selectedProjectId);
-      })
-      .catch(err => {
-        console.error("Error deleting task:", err);
-        loadProjectDetail(selectedProjectId);
-      });
   };
 
   // 문서 생성
@@ -570,179 +480,282 @@ export default function Projects({
     );
   }
 
-  // ------------------ 상세 화면 (Workspace & Todo) ------------------
+  // ------------------ 상세 화면 (Project Overview & Notion Editor) ------------------
   if (!projectDetail) {
-    return <div className="p-8 text-center text-gray-500">로딩 중...</div>;
+    return <div className="p-8 text-center text-gray-500">{language === "en" ? "Loading..." : "로딩 중..."}</div>;
   }
 
+  const rootDocs = Object.values(projectDetail.documents || {}).filter(d => d.parent_id === null);
+  const allDocs = Object.values(projectDetail.documents || {});
+
   return (
-    <div className="h-full flex flex-col overflow-hidden bg-white">
+    <div className="h-full flex flex-col overflow-hidden bg-white dark:bg-[#121212] transition-colors">
       {/* 상세 헤더 */}
-      <div className="px-6 py-4 border-b border-gray-200/60 bg-[#fafafa] flex items-center justify-between shrink-0">
+      <div className="px-6 py-4 border-b border-gray-200/60 dark:border-gray-800 bg-[#fafafa] dark:bg-[#1a1a1a] flex items-center justify-between shrink-0 transition-colors">
         <div className="flex items-center gap-3">
           <button 
             onClick={() => onNavigate(null, null)}
-            className="p-1.5 hover:bg-gray-200 rounded-lg text-gray-500 transition-colors"
-            title="목록으로 이동"
+            className="p-1.5 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-lg text-gray-500 dark:text-gray-400 transition-colors"
+            title={language === "en" ? "Back to project list" : "프로젝트 목록으로 이동"}
           >
             <ArrowLeft size={16} />
           </button>
-          <div>
-            <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2">
+          <div className="flex items-center gap-2">
+            <h2 
+              onClick={() => onNavigate(selectedProjectId, null)}
+              className="text-lg font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2 cursor-pointer hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+              title="프로젝트 홈으로 이동"
+            >
               📁 {projectDetail.name}
-              <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${getStatusColor(projectDetail.status)}`}>
-                {projectDetail.status}
-              </span>
             </h2>
+            <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${getStatusColor(projectDetail.status)}`}>
+              {projectDetail.status}
+            </span>
           </div>
+
+          {selectedDocId && (
+            <div className="flex items-center gap-1.5 text-xs text-gray-400 pl-2 border-l border-gray-200 dark:border-gray-700">
+              <button 
+                onClick={() => onNavigate(selectedProjectId, null)}
+                className="hover:text-blue-500 hover:underline cursor-pointer"
+              >
+                {language === "en" ? "Overview" : "개요"}
+              </button>
+              <span>/</span>
+              <span className="text-gray-800 dark:text-gray-200 font-semibold truncate max-w-[200px]">
+                {projectDetail.documents?.[selectedDocId]?.title || (language === "en" ? "Untitled" : "제목 없음")}
+              </span>
+            </div>
+          )}
         </div>
 
-        {/* 탭 버튼 */}
-        <div className="flex bg-gray-100 p-1 rounded-xl">
+        <div className="flex items-center gap-2">
+          {selectedDocId && (
+            <button
+              onClick={() => onNavigate(selectedProjectId, null)}
+              className="px-3 py-1.5 text-xs font-semibold rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all"
+            >
+              🏠 {language === "en" ? "Project Home" : "프로젝트 홈"}
+            </button>
+          )}
           <button
-            onClick={() => setDetailTab("document")}
-            className={`px-4 py-1.5 text-xs font-semibold rounded-lg flex items-center gap-1.5 transition-all ${
-              detailTab === "document" ? "bg-white text-gray-900 shadow-sm" : "text-gray-500 hover:text-gray-800"
-            }`}
+            onClick={() => {
+              setAddingDocParentId(null);
+              setShowDocModal(true);
+            }}
+            className="px-3 py-1.5 text-xs font-semibold rounded-lg bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-1.5 shadow-sm transition-all"
           >
-            <FileText size={14} /> 문서 작업 공간
-          </button>
-          <button
-            onClick={() => setDetailTab("todo")}
-            className={`px-4 py-1.5 text-xs font-semibold rounded-lg flex items-center gap-1.5 transition-all ${
-              detailTab === "todo" ? "bg-white text-gray-900 shadow-sm" : "text-gray-500 hover:text-gray-800"
-            }`}
-          >
-            <CheckSquare size={14} /> Todo List
+            <Plus size={14} /> {language === "en" ? "New Document" : "새 문서 추가"}
           </button>
         </div>
       </div>
 
-      {/* 탭별 내용 렌더링 */}
+      {/* 메인 내용 렌더링 */}
       <div className="flex-1 overflow-hidden">
-        {detailTab === "document" && (
-          <div className="h-full flex divide-x divide-gray-200/60">
-            {/* 좌측 문서 트리 영역 */}
-            <div className="w-64 bg-[#fbfbfa] p-4 flex flex-col justify-between shrink-0 h-full overflow-y-auto">
-              <div>
-                <div className="flex items-center justify-between text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">
-                  <span>📑 문서 트리</span>
-                  <button 
-                    onClick={() => {
-                      setAddingDocParentId(null);
-                      setShowDocModal(true);
-                    }}
-                    className="p-1 hover:bg-gray-200 rounded text-gray-500 transition-colors"
-                    title="루트 문서 추가"
-                  >
-                    + 루트
-                  </button>
-                </div>
-                
-                {projectDetail.documents && Object.keys(projectDetail.documents).length > 0 ? (
-                  renderDetailDocTree(projectDetail.documents, null)
-                ) : (
-                  <div className="text-xs text-gray-400 italic p-3 text-center">생성된 문서가 없습니다.</div>
-                )}
+        <div className="h-full flex divide-x divide-gray-200/60 dark:divide-gray-800">
+          {/* 좌측 문서 트리 영역 */}
+          <div className="w-64 bg-[#fbfbfa] dark:bg-[#181818] p-4 flex flex-col justify-between shrink-0 h-full overflow-y-auto transition-colors">
+            <div>
+              <div className="flex items-center justify-between text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-3">
+                <span 
+                  onClick={() => onNavigate(selectedProjectId, null)}
+                  className="cursor-pointer hover:text-blue-500 transition-colors"
+                >
+                  📑 {language === "en" ? "Document Tree" : "문서 트리"}
+                </span>
+                <button 
+                  onClick={() => {
+                    setAddingDocParentId(null);
+                    setShowDocModal(true);
+                  }}
+                  className="p-1 hover:bg-gray-200 dark:hover:bg-gray-700 rounded text-gray-500 dark:text-gray-400 transition-colors"
+                  title="루트 문서 추가"
+                >
+                  <Plus size={14} />
+                </button>
               </div>
-            </div>
-
-            {/* 우측 에디터 영역 */}
-            <div className="flex-1 h-full overflow-y-auto">
-              {selectedDocId && projectDetail.documents?.[selectedDocId] ? (
-                <div className="h-full flex flex-col">
-                  {/* NotionEditor에 id 및 데이터 전달 */}
-                  <NotionEditor 
-                    projectId={projectDetail.id}
-                    docId={selectedDocId} 
-                    docTitle={projectDetail.documents[selectedDocId].title}
-                    isDarkMode={isDarkMode}
-                    pageId={customPageId}
-                    language={language}
-                    onNavigate={onNavigate}
-                    onWorkspaceUpdate={onWorkspaceUpdate}
-                  />
-                </div>
+              
+              {projectDetail.documents && Object.keys(projectDetail.documents).length > 0 ? (
+                renderDetailDocTree(projectDetail.documents, null)
               ) : (
-                <div className="h-full flex flex-col items-center justify-center text-gray-400 italic text-sm">
-                  👈 왼쪽 문서 트리에서 열어볼 문서를 선택하거나 새로 생성해 주세요.
+                <div className="text-xs text-gray-400 italic p-3 text-center">
+                  {language === "en" ? "No documents yet" : "생성된 문서가 없습니다."}
                 </div>
               )}
             </div>
           </div>
-        )}
 
-        {detailTab === "todo" && (
-          <div className="p-8 max-w-3xl mx-auto space-y-6 h-full overflow-y-auto">
-            <h3 className="text-lg font-bold text-gray-800 flex items-center gap-1.5">
-              <CheckSquare size={18} className="text-blue-500" />
-              할 일 목록 (Todo List)
-            </h3>
-
-            {/* 추가 폼 */}
-            <form onSubmit={handleAddTask} className="flex gap-2">
-              <input 
-                type="text" required
-                value={newTaskTitle}
-                onChange={(e) => setNewTaskTitle(e.target.value)}
-                className="flex-1 px-4 py-2 border rounded-xl focus:outline-none focus:border-blue-500 bg-gray-50 text-sm"
-                placeholder="예: AI 요약 프롬프트 튜닝하기"
-              />
-              <button 
-                type="submit"
-                className="px-4 py-2 bg-blue-600 text-white rounded-xl text-xs font-bold hover:bg-blue-700"
-              >
-                할 일 추가
-              </button>
-            </form>
-
-            {/* 목록 */}
-            {projectDetail.tasks && projectDetail.tasks.length > 0 ? (
-              <div className="bg-white border rounded-2xl divide-y overflow-hidden shadow-sm">
-                {projectDetail.tasks.map(task => (
-                  <div key={task.id} className="p-4 flex items-center justify-between hover:bg-gray-50 transition-colors">
-                    <div className="flex items-center gap-3">
-                      <input 
-                        type="checkbox"
-                        checked={task.completed}
-                        onChange={(e) => handleToggleTask(task.id, e.target.checked)}
-                        className="w-4 h-4 rounded text-blue-600 focus:ring-blue-500 cursor-pointer"
-                      />
-                      <span className={`text-sm ${task.completed ? "line-through text-gray-400" : "text-gray-700"}`}>
-                        {task.title}
-                      </span>
-                    </div>
-                    <button 
-                      onClick={() => handleDeleteTask(task.id)}
-                      className="text-gray-400 hover:text-red-500 transition-colors p-1"
-                    >
-                      <Trash2 size={16} />
-                    </button>
-                  </div>
-                ))}
+          {/* 우측 화면 (문서 에디터 또는 프로젝트 홈 개요 대시보드) */}
+          <div className="flex-1 h-full overflow-y-auto">
+            {selectedDocId && projectDetail.documents?.[selectedDocId] ? (
+              <div className="h-full flex flex-col">
+                <NotionEditor 
+                  projectId={projectDetail.id}
+                  docId={selectedDocId} 
+                  docTitle={projectDetail.documents[selectedDocId].title}
+                  isDarkMode={isDarkMode}
+                  pageId={customPageId}
+                  language={language}
+                  onNavigate={onNavigate}
+                  onWorkspaceUpdate={() => {
+                    loadProjectDetail(projectDetail.id);
+                    onWorkspaceUpdate?.();
+                  }}
+                />
               </div>
             ) : (
-              <div className="h-48 border border-dashed rounded-2xl flex items-center justify-center text-gray-400 italic">
-                등록된 할 일이 없습니다. 첫 할 일을 적고 스케줄을 개시해 보세요!
+              /* 프로젝트 홈 / 개요 대시보드 화면 */
+              <div className="p-10 max-w-5xl mx-auto space-y-8">
+                {/* 프로젝트 정보 헤더 카드 */}
+                <div className="bg-gradient-to-br from-white to-gray-50 dark:from-[#1e1e1e] dark:to-[#181818] p-8 rounded-2xl border border-gray-200/80 dark:border-gray-800 shadow-sm space-y-4 transition-colors">
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <div className="text-3xl font-black text-gray-900 dark:text-gray-100 flex items-center gap-3">
+                        <span>📁</span>
+                        <span>{projectDetail.name}</span>
+                      </div>
+                      <p className="text-sm text-gray-500 dark:text-gray-400 mt-2 leading-relaxed max-w-2xl">
+                        {projectDetail.description || (language === "en" ? "No description provided." : "프로젝트에 대한 설명이 등록되지 않았습니다.")}
+                      </p>
+                    </div>
+                    <span className={`text-xs font-bold px-3 py-1 rounded-full ${getStatusColor(projectDetail.status)} shadow-sm`}>
+                      {projectDetail.status}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center gap-6 pt-2 text-xs text-gray-400 dark:text-gray-500 border-t border-gray-100 dark:border-gray-800">
+                    <div>
+                      <span className="font-semibold">{language === "en" ? "Total Documents:" : "총 문서 수:"}</span>{" "}
+                      <span className="font-bold text-gray-700 dark:text-gray-300">{allDocs.length}개</span>
+                    </div>
+                    <div>
+                      <span className="font-semibold">{language === "en" ? "Root Documents:" : "루트 문서 수:"}</span>{" "}
+                      <span className="font-bold text-gray-700 dark:text-gray-300">{rootDocs.length}개</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* 하위 문서 및 페이지 그리드 섹션 */}
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-base font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
+                      <FileText size={18} className="text-blue-500" />
+                      <span>{language === "en" ? "Project Documents & Sub-pages" : "프로젝트 하위 문서 및 페이지 목록"}</span>
+                    </h3>
+                    <button
+                      onClick={() => {
+                        setAddingDocParentId(null);
+                        setShowDocModal(true);
+                      }}
+                      className="px-3 py-1.5 bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/40 rounded-xl text-xs font-bold transition-all flex items-center gap-1 cursor-pointer"
+                    >
+                      <Plus size={14} /> {language === "en" ? "Add Document" : "새 문서 추가"}
+                    </button>
+                  </div>
+
+                  {allDocs.length > 0 ? (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                      {allDocs.map((doc) => {
+                        const childCount = allDocs.filter(d => d.parent_id === doc.id).length;
+                        return (
+                          <div
+                            key={doc.id}
+                            onClick={() => onNavigate(selectedProjectId, doc.id)}
+                            className="p-5 bg-white dark:bg-[#1e1e1e] border border-gray-200/80 dark:border-gray-800 rounded-2xl hover:border-blue-500 dark:hover:border-blue-500 hover:shadow-lg transition-all cursor-pointer flex flex-col justify-between group h-36 relative"
+                          >
+                            <div className="flex items-start justify-between">
+                              <div className="flex items-center gap-2.5 min-w-0 pr-2">
+                                <div className="w-9 h-9 rounded-xl bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 flex items-center justify-center text-lg font-bold shrink-0 group-hover:scale-110 transition-transform">
+                                  📄
+                                </div>
+                                <div className="min-w-0 flex-1">
+                                  <h4 className="text-sm font-bold text-gray-900 dark:text-gray-100 truncate group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                                    {doc.title}
+                                  </h4>
+                                  <span className="text-[10px] text-gray-400 dark:text-gray-500">
+                                    {doc.parent_id ? "하위 문서" : "루트 문서"}
+                                  </span>
+                                </div>
+                              </div>
+                              <button
+                                onClick={(e) => handleDeleteDocument(doc.id, e)}
+                                className="opacity-0 group-hover:opacity-100 p-1 text-gray-400 hover:text-red-500 rounded-md transition-all"
+                                title="문서 삭제"
+                              >
+                                <Trash2 size={14} />
+                              </button>
+                            </div>
+
+                            <div className="flex items-center justify-between pt-2 border-t border-gray-100 dark:border-gray-800/60 text-xs text-gray-400">
+                              <span className="text-[11px]">
+                                {childCount > 0 ? `하위 페이지 ${childCount}개` : "단일 문서"}
+                              </span>
+                              <span className="text-blue-500 group-hover:translate-x-1 transition-transform font-bold">
+                                열기 →
+                              </span>
+                            </div>
+                          </div>
+                        );
+                      })}
+
+                      {/* 새 문서 생성 카드 */}
+                      <div
+                        onClick={() => {
+                          setAddingDocParentId(null);
+                          setShowDocModal(true);
+                        }}
+                        className="p-5 border-2 border-dashed border-gray-200 dark:border-gray-800 rounded-2xl hover:border-blue-400 dark:hover:border-blue-500 hover:bg-blue-50/30 dark:hover:bg-blue-950/10 cursor-pointer transition-all flex flex-col items-center justify-center gap-2 h-36 text-center group"
+                      >
+                        <Plus size={24} className="text-gray-400 group-hover:text-blue-500 group-hover:scale-110 transition-all" />
+                        <span className="text-xs font-bold text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400">
+                          {language === "en" ? "Create New Document" : "새 문서 생성하기"}
+                        </span>
+                      </div>
+                    </div>
+                  ) : (
+                    <div 
+                      onClick={() => {
+                        setAddingDocParentId(null);
+                        setShowDocModal(true);
+                      }}
+                      className="p-12 border-2 border-dashed border-gray-200 dark:border-gray-800 rounded-2xl text-center space-y-3 cursor-pointer hover:border-blue-500 transition-all"
+                    >
+                      <div className="text-4xl">📄</div>
+                      <div className="text-sm font-bold text-gray-700 dark:text-gray-300">
+                        {language === "en" ? "No documents yet" : "생성된 문서가 없습니다."}
+                      </div>
+                      <div className="text-xs text-gray-400">
+                        {language === "en" ? "Click to create the first document for this project." : "이 프로젝트의 첫 문서를 생성하고 기획을 시작하세요."}
+                      </div>
+                      <button className="px-4 py-2 bg-blue-600 text-white rounded-xl text-xs font-bold hover:bg-blue-700 shadow-md">
+                        + {language === "en" ? "Create First Document" : "첫 문서 생성"}
+                      </button>
+                    </div>
+                  )}
+                </div>
               </div>
             )}
           </div>
-        )}
+        </div>
       </div>
 
       {/* 새 문서 생성 모달 */}
       {showDocModal && (
-        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-2xl border p-6 w-full max-w-sm shadow-2xl">
-            <h3 className="text-base font-bold mb-4 text-gray-950">새로운 문서 생성</h3>
+        <div className="fixed inset-0 bg-black/40 dark:bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+          <div className="bg-white dark:bg-[#1e1e1e] rounded-2xl border border-gray-200 dark:border-gray-800 p-6 w-full max-w-md shadow-2xl">
+            <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4">
+              {addingDocParentId ? (language === "en" ? "Create Sub-Document" : "하위 문서 생성") : (language === "en" ? "Create Root Document" : "루트 문서 생성")}
+            </h3>
             <form onSubmit={handleCreateDocument} className="space-y-4">
               <div>
-                <label className="block text-xs font-bold text-gray-500 mb-1.5">문서 제목</label>
+                <label className="block text-xs font-bold text-gray-500 dark:text-gray-400 mb-1.5">
+                  {language === "en" ? "Document Title" : "문서 제목"}
+                </label>
                 <input 
-                  type="text" required
+                  type="text" 
+                  required
                   value={newDocTitle}
                   onChange={(e) => setNewDocTitle(e.target.value)}
-                  className="w-full px-3.5 py-2 text-sm border rounded-xl focus:outline-none focus:border-blue-500 bg-gray-50"
                   placeholder="예: 개발 파트별 설계 기획"
                 />
               </div>
