@@ -79,7 +79,7 @@
                             "content": [
                                 {
                                     "type": "text",
-                                    "text": "지원 일시",
+                                    "text": "지원 일시(서류 제출 기한 18일까지)",
                                     "styles": {}
                                 }
                             ],
@@ -219,7 +219,9 @@
                                 {
                                     "type": "text",
                                     "text": "공통 제출서류 목록",
-                                    "styles": {}
+                                    "styles": {
+                                        "backgroundColor": "red"
+                                    }
                                 }
                             ],
                             "children": [
@@ -378,7 +380,25 @@
                                     "styles": {}
                                 }
                             ],
-                            "children": []
+                            "children": [
+                                {
+                                    "id": "a8ab6c4e-0554-4993-8a02-dd591f68a211",
+                                    "type": "bulletListItem",
+                                    "props": {
+                                        "backgroundColor": "default",
+                                        "textColor": "default",
+                                        "textAlignment": "left"
+                                    },
+                                    "content": [
+                                        {
+                                            "type": "text",
+                                            "text": "720점 미만은 신청 x",
+                                            "styles": {}
+                                        }
+                                    ],
+                                    "children": []
+                                }
+                            ]
                         },
                         {
                             "id": "f4fbec03-e6e1-45d4-8170-eab7a93c49b4",

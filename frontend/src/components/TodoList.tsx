@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { CheckSquare, Square, Plus, Trash2, ListTodo } from "lucide-react";
+import { CheckSquare, Square, Plus, Trash2, ListTodo, CheckCheck, X, Check } from "lucide-react";
 
 interface TodoListProps {
   isDarkMode?: boolean;
@@ -33,6 +33,11 @@ export default function TodoList({ language = "ko", workspaceData, onNavigatePro
 
   const [newTaskTitle, setNewTaskTitle] = useState("");
   const [targetProjectId, setTargetProjectId] = useState<string>("");
+
+  // 다중 선택(Checkout) 상태 관리: Set of "projectId_taskId"
+  const [selectedTaskIds, setSelectedTaskIds] = useState<Set<string>>(new Set());
+
+  const getTaskKey = (task: { projectId: string; id: string }) => `${task.projectId}_${task.id}`;
 
   const loadAllTasks = async () => {
     try {
@@ -105,8 +110,9 @@ export default function TodoList({ language = "ko", workspaceData, onNavigatePro
     loadAllTasks();
   }, [workspaceData]);
 
-  // 실시간 토글 (낙관적 업데이트)
-  const handleToggleTask = (task: TaskItem) => {
+  // 실시간 완료 여부 토글 (체크박스 아이콘 전용)
+  const handleToggleTask = (task: TaskItem, e?: React.MouseEvent) => {
+    e?.stopPropagation();
     const newStatus = !task.completed;
     setTasks(prev => prev.map(t => (t.id === task.id && t.projectId === task.projectId ? { ...t, completed: newStatus } : t)));
 
@@ -120,8 +126,19 @@ export default function TodoList({ language = "ko", workspaceData, onNavigatePro
     });
   };
 
-  // 실시간 삭제 (낙관적 업데이트)
-  const handleDeleteTask = (task: TaskItem) => {
+  // 단일 항목 삭제 (오직 쓰레기통 버튼 클릭 시만 실행)
+  const handleDeleteSingleTask = (task: TaskItem, e: React.MouseEvent) => {
+    e.stopPropagation();
+    const key = getTaskKey(task);
+    
+    // 선택 목록에서도 제거
+    setSelectedTaskIds(prev => {
+      const next = new Set(prev);
+      next.delete(key);
+      return next;
+    });
+
+    // 로컬 목록에서 즉시 제거
     setTasks(prev => prev.filter(t => !(t.id === task.id && t.projectId === task.projectId)));
 
     fetch(`http://localhost:8000/api/projects/${task.projectId}/tasks/${task.id}?page_id=${task.pageId}`, {
@@ -130,6 +147,65 @@ export default function TodoList({ language = "ko", workspaceData, onNavigatePro
       console.error("Error deleting task:", err);
       loadAllTasks();
     });
+  };
+
+  // 선택(Checkout) 체크박스 토글
+  const handleToggleSelectTask = (task: TaskItem, e: React.MouseEvent) => {
+    e.stopPropagation();
+    const key = getTaskKey(task);
+    setSelectedTaskIds(prev => {
+      const next = new Set(prev);
+      if (next.has(key)) {
+        next.delete(key);
+      } else {
+        next.add(key);
+      }
+      return next;
+    });
+  };
+
+  // 전체 선택
+  const handleSelectAll = () => {
+    const next = new Set<string>();
+    filteredTasks.forEach(t => next.add(getTaskKey(t)));
+    setSelectedTaskIds(next);
+  };
+
+  // 선택 취소
+  const handleClearSelection = () => {
+    setSelectedTaskIds(new Set());
+  };
+
+  // 선택 항목 일괄 삭제
+  const handleDeleteSelected = async () => {
+    if (selectedTaskIds.size === 0) return;
+    
+    const count = selectedTaskIds.size;
+    const confirmMsg = language === "en" 
+      ? `Are you sure you want to delete ${count} selected task(s)?` 
+      : `선택한 ${count}개의 할 일을 정말 삭제하시겠습니까?`;
+      
+    if (!window.confirm(confirmMsg)) return;
+
+    const tasksToDelete = tasks.filter(t => selectedTaskIds.has(getTaskKey(t)));
+
+    // 낙관적 UI 업데이트: 로컬에서 즉시 삭제
+    setTasks(prev => prev.filter(t => !selectedTaskIds.has(getTaskKey(t))));
+    setSelectedTaskIds(new Set());
+
+    // 백엔드 비동기 삭제 호출
+    try {
+      await Promise.all(
+        tasksToDelete.map(task =>
+          fetch(`http://localhost:8000/api/projects/${task.projectId}/tasks/${task.id}?page_id=${task.pageId}`, {
+            method: "DELETE"
+          })
+        )
+      );
+    } catch (err) {
+      console.error("Error batch deleting tasks:", err);
+      loadAllTasks();
+    }
   };
 
   // 새 할 일 추가
@@ -184,8 +260,10 @@ export default function TodoList({ language = "ko", workspaceData, onNavigatePro
   const activeCount = totalCount - completedCount;
   const progressPercent = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
 
+  const isAllSelected = filteredTasks.length > 0 && filteredTasks.every(t => selectedTaskIds.has(getTaskKey(t)));
+
   return (
-    <div className="flex-1 p-8 max-w-5xl mx-auto space-y-6 overflow-y-auto h-full">
+    <div className="flex-1 p-8 max-w-5xl mx-auto space-y-6 overflow-y-auto h-full select-none">
       {/* 대시보드 헤더 */}
       <div className="bg-white dark:bg-[#1e1e1e] p-6 rounded-2xl border border-gray-200/80 dark:border-gray-800 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4 transition-colors">
         <div>
@@ -197,7 +275,7 @@ export default function TodoList({ language = "ko", workspaceData, onNavigatePro
           </h1>
           <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
             {language === "en" 
-              ? "Manage all tasks across your workspace projects in one place." 
+              ? "Manage and organize tasks across your workspace projects in one place." 
               : "워크스페이스의 모든 프로젝트에 등록된 할 일을 한눈에 모아서 확인하고 관리하세요."}
           </p>
         </div>
@@ -260,12 +338,57 @@ export default function TodoList({ language = "ko", workspaceData, onNavigatePro
         </button>
       </form>
 
+      {/* 선택항목 일괄 작업 툴바 (항목이 1개 이상 선택되었을 때 등장) */}
+      {selectedTaskIds.size > 0 && (
+        <div className="bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800/80 p-3.5 rounded-2xl flex flex-wrap items-center justify-between gap-3 shadow-sm animate-in fade-in slide-in-from-top-2 duration-200">
+          <div className="flex items-center gap-2 text-sm font-bold text-blue-900 dark:text-blue-200 pl-1">
+            <span className="w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs">
+              {selectedTaskIds.size}
+            </span>
+            <span>
+              {language === "en" 
+                ? `${selectedTaskIds.size} task(s) selected` 
+                : `${selectedTaskIds.size}개의 항목이 선택됨`}
+            </span>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={handleSelectAll}
+              className="px-3 py-1.5 bg-white dark:bg-[#1e1e1e] hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-xl text-xs font-semibold border border-gray-200 dark:border-gray-700 flex items-center gap-1 transition-all cursor-pointer"
+            >
+              <CheckCheck size={14} />
+              <span>{language === "en" ? "Select All" : "전체 선택"}</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={handleClearSelection}
+              className="px-3 py-1.5 bg-white dark:bg-[#1e1e1e] hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-xl text-xs font-semibold border border-gray-200 dark:border-gray-700 flex items-center gap-1 transition-all cursor-pointer"
+            >
+              <X size={14} />
+              <span>{language === "en" ? "Cancel" : "선택 취소"}</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={handleDeleteSelected}
+              className="px-3.5 py-1.5 bg-red-600 hover:bg-red-700 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-md shadow-red-500/20 transition-all cursor-pointer"
+            >
+              <Trash2 size={14} />
+              <span>{language === "en" ? "Delete Selected" : "선택항목 삭제"}</span>
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* 필터 툴바 */}
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-1">
         <div className="flex items-center gap-1 bg-gray-100 dark:bg-gray-800/60 p-1 rounded-xl">
           <button
             onClick={() => setFilter("all")}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
               filter === "all" ? "bg-white dark:bg-[#1e1e1e] text-blue-600 dark:text-blue-400 shadow-sm" : "text-gray-500 hover:text-gray-900 dark:hover:text-white"
             }`}
           >
@@ -273,7 +396,7 @@ export default function TodoList({ language = "ko", workspaceData, onNavigatePro
           </button>
           <button
             onClick={() => setFilter("active")}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
               filter === "active" ? "bg-white dark:bg-[#1e1e1e] text-blue-600 dark:text-blue-400 shadow-sm" : "text-gray-500 hover:text-gray-900 dark:hover:text-white"
             }`}
           >
@@ -281,7 +404,7 @@ export default function TodoList({ language = "ko", workspaceData, onNavigatePro
           </button>
           <button
             onClick={() => setFilter("completed")}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
               filter === "completed" ? "bg-white dark:bg-[#1e1e1e] text-blue-600 dark:text-blue-400 shadow-sm" : "text-gray-500 hover:text-gray-900 dark:hover:text-white"
             }`}
           >
@@ -289,21 +412,43 @@ export default function TodoList({ language = "ko", workspaceData, onNavigatePro
           </button>
         </div>
 
-        {/* 프로젝트별 필터 */}
-        <div className="flex items-center gap-2">
-          <span className="text-xs text-gray-400 font-semibold">{language === "en" ? "Filter by project:" : "프로젝트 필터:"}</span>
-          <select
-            value={selectedProjectFilter}
-            onChange={e => setSelectedProjectFilter(e.target.value)}
-            className="px-3 py-1.5 bg-white dark:bg-[#1e1e1e] border border-gray-200 dark:border-gray-700 rounded-lg text-xs font-medium text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500"
+        {/* 프로젝트별 필터 & 전체선택 체크박스 */}
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={isAllSelected ? handleClearSelection : handleSelectAll}
+            className="text-xs text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
           >
-            <option value="all">{language === "en" ? "All Projects" : "모든 프로젝트"}</option>
-            {projectsList.map(p => (
-              <option key={p.id} value={p.id}>
-                {p.name}
-              </option>
-            ))}
-          </select>
+            <div className={`w-4 h-4 rounded border flex items-center justify-center transition-all ${
+              isAllSelected 
+                ? "bg-blue-600 border-blue-600 text-white" 
+                : selectedTaskIds.size > 0 
+                  ? "bg-blue-100 dark:bg-blue-900 border-blue-500 text-blue-600" 
+                  : "border-gray-300 dark:border-gray-600"
+            }`}>
+              {isAllSelected && <Check size={12} strokeWidth={3} />}
+              {!isAllSelected && selectedTaskIds.size > 0 && <span className="w-2 h-0.5 bg-blue-600"></span>}
+            </div>
+            <span>{language === "en" ? "Select All" : "전체 선택"}</span>
+          </button>
+
+          <span className="h-4 w-px bg-gray-200 dark:bg-gray-700"></span>
+
+          <div className="flex items-center gap-2">
+            <span className="text-xs text-gray-400 font-semibold">{language === "en" ? "Filter by project:" : "프로젝트 필터:"}</span>
+            <select
+              value={selectedProjectFilter}
+              onChange={e => setSelectedProjectFilter(e.target.value)}
+              className="px-3 py-1.5 bg-white dark:bg-[#1e1e1e] border border-gray-200 dark:border-gray-700 rounded-lg text-xs font-medium text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500"
+            >
+              <option value="all">{language === "en" ? "All Projects" : "모든 프로젝트"}</option>
+              {projectsList.map(p => (
+                <option key={p.id} value={p.id}>
+                  {p.name}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
       </div>
 
@@ -324,62 +469,88 @@ export default function TodoList({ language = "ko", workspaceData, onNavigatePro
             </div>
           </div>
         ) : (
-          filteredTasks.map(task => (
-            <div
-              key={`${task.projectId}-${task.id}`}
-              className="p-4 flex items-center justify-between hover:bg-gray-50/80 dark:hover:bg-[#252525]/50 transition-colors group"
-            >
-              <div className="flex items-center gap-3.5 flex-1 min-w-0 pr-4">
-                <button
-                  type="button"
-                  onClick={() => handleToggleTask(task)}
-                  className="cursor-pointer text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-transform active:scale-90"
-                >
-                  {task.completed ? (
-                    <CheckSquare size={20} className="text-blue-600 dark:text-blue-400" />
-                  ) : (
-                    <Square size={20} />
-                  )}
-                </button>
+          filteredTasks.map(task => {
+            const taskKey = getTaskKey(task);
+            const isSelected = selectedTaskIds.has(taskKey);
 
-                <div className="flex flex-col min-w-0 flex-1">
-                  <span
-                    onClick={() => handleToggleTask(task)}
-                    className={`text-sm cursor-pointer select-none transition-all ${
-                      task.completed
-                        ? "line-through text-gray-400 dark:text-gray-500 font-normal"
-                        : "text-gray-800 dark:text-gray-200 font-medium"
+            return (
+              <div
+                key={taskKey}
+                className={`p-4 flex items-center justify-between transition-colors group ${
+                  isSelected 
+                    ? "bg-blue-50/50 dark:bg-blue-950/20" 
+                    : "hover:bg-gray-50/80 dark:hover:bg-[#252525]/50"
+                }`}
+              >
+                <div className="flex items-center gap-3 flex-1 min-w-0 pr-4">
+                  {/* 1. 다중 선택 체크박스 (Checkout / Select Box) */}
+                  <button
+                    type="button"
+                    onClick={(e) => handleToggleSelectTask(task, e)}
+                    className={`w-4 h-4 rounded border flex items-center justify-center transition-all cursor-pointer shrink-0 ${
+                      isSelected 
+                        ? "bg-blue-600 border-blue-600 text-white" 
+                        : "border-gray-300 dark:border-gray-600 hover:border-blue-500 bg-white dark:bg-gray-800"
                     }`}
+                    title={language === "en" ? "Select task" : "항목 선택"}
                   >
-                    {task.title}
-                  </span>
-                  <div className="flex items-center gap-2 mt-0.5 text-[11px] text-gray-400 dark:text-gray-500">
-                    <span 
-                      onClick={() => onNavigateProject?.(task.projectId)}
-                      className="hover:underline hover:text-blue-500 cursor-pointer flex items-center gap-1"
+                    {isSelected && <Check size={12} strokeWidth={3} />}
+                  </button>
+
+                  {/* 2. 완료 여부 토글 버튼 (Check / Square) */}
+                  <button
+                    type="button"
+                    onClick={(e) => handleToggleTask(task, e)}
+                    className="cursor-pointer text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-transform active:scale-90 shrink-0"
+                    title={task.completed ? (language === "en" ? "Mark active" : "진행 중으로 변경") : (language === "en" ? "Mark completed" : "완료 처리")}
+                  >
+                    {task.completed ? (
+                      <CheckSquare size={20} className="text-blue-600 dark:text-blue-400" />
+                    ) : (
+                      <Square size={20} />
+                    )}
+                  </button>
+
+                  {/* 3. 태스크 제목 및 프로젝트 정보 (텍스트 클릭 시 삭제되지 않도록 순수 정보로 제공) */}
+                  <div className="flex flex-col min-w-0 flex-1">
+                    <span
+                      className={`text-sm select-text transition-all ${
+                        task.completed
+                          ? "line-through text-gray-400 dark:text-gray-500 font-normal"
+                          : "text-gray-800 dark:text-gray-200 font-medium"
+                      }`}
                     >
-                      📁 {task.projectName}
+                      {task.title}
                     </span>
-                    <span>•</span>
-                    <span className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.2 rounded text-[10px]">
-                      {task.pageTitle}
-                    </span>
+                    <div className="flex items-center gap-2 mt-0.5 text-[11px] text-gray-400 dark:text-gray-500">
+                      <span 
+                        onClick={() => onNavigateProject?.(task.projectId)}
+                        className="hover:underline hover:text-blue-500 cursor-pointer flex items-center gap-1"
+                      >
+                        📁 {task.projectName}
+                      </span>
+                      <span>•</span>
+                      <span className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.2 rounded text-[10px]">
+                        {task.pageTitle}
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                <button
-                  type="button"
-                  onClick={() => handleDeleteTask(task)}
-                  className="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30 rounded-lg transition-all cursor-pointer"
-                  title={language === "en" ? "Delete Task" : "할 일 삭제"}
-                >
-                  <Trash2 size={16} />
-                </button>
+                {/* 4. 개별 삭제 버튼 (오직 이 쓰레기통 버튼을 눌렀을 때만 삭제됨) */}
+                <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <button
+                    type="button"
+                    onClick={(e) => handleDeleteSingleTask(task, e)}
+                    className="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30 rounded-lg transition-all cursor-pointer"
+                    title={language === "en" ? "Delete Task" : "할 일 삭제"}
+                  >
+                    <Trash2 size={16} />
+                  </button>
+                </div>
               </div>
-            </div>
-          ))
+            );
+          })
         )}
       </div>
     </div>
