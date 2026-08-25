@@ -522,24 +522,29 @@ export default function Projects({
 
   const rootDocs = Object.values(projectDetail.documents || {}).filter(d => d.parent_id === null);
   const allDocs = Object.values(projectDetail.documents || {});
+  const mainRootDoc = rootDocs[0] || allDocs[0];
 
   return (
     <div className="h-full flex flex-col overflow-hidden bg-white dark:bg-[#121212] transition-colors">
       {/* 상세 헤더 */}
-      <div className="px-6 py-4 border-b border-gray-200/60 dark:border-gray-800 bg-[#fafafa] dark:bg-[#1a1a1a] flex items-center justify-between shrink-0 transition-colors">
+      <div className="px-6 py-3.5 border-b border-gray-200/60 dark:border-gray-800 bg-[#fafafa] dark:bg-[#1a1a1a] flex items-center justify-between shrink-0 transition-colors">
         <div className="flex items-center gap-3">
           <button 
             onClick={() => onNavigate(null, null)}
-            className="p-1.5 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-lg text-gray-500 dark:text-gray-400 transition-colors"
-            title={language === "en" ? "Back to project list" : "프로젝트 목록으로 이동"}
+            className="p-1.5 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-lg text-gray-500 dark:text-gray-400 transition-colors cursor-pointer"
+            title={language === "en" ? "Back to project list" : "전체 프로젝트 목록으로 이동"}
           >
             <ArrowLeft size={16} />
           </button>
           <div className="flex items-center gap-2">
             <h2 
-              onClick={() => onNavigate(selectedProjectId, null)}
-              className="text-lg font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2 cursor-pointer hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-              title="프로젝트 홈으로 이동"
+              onClick={() => {
+                if (mainRootDoc) {
+                  onNavigate(selectedProjectId, mainRootDoc.id);
+                }
+              }}
+              className="text-base font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2 cursor-pointer hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+              title="프로젝트 메인 페이지로 이동"
             >
               📁 {projectDetail.name}
             </h2>
@@ -547,38 +552,15 @@ export default function Projects({
               {projectDetail.status}
             </span>
           </div>
-
-          {selectedDocId && (
-            <div className="flex items-center gap-1.5 text-xs text-gray-400 pl-2 border-l border-gray-200 dark:border-gray-700">
-              <button 
-                onClick={() => onNavigate(selectedProjectId, null)}
-                className="hover:text-blue-500 hover:underline cursor-pointer"
-              >
-                {language === "en" ? "Overview" : "개요"}
-              </button>
-              <span>/</span>
-              <span className="text-gray-800 dark:text-gray-200 font-semibold truncate max-w-[200px]">
-                {projectDetail.documents?.[selectedDocId]?.title || (language === "en" ? "Untitled" : "제목 없음")}
-              </span>
-            </div>
-          )}
         </div>
 
         <div className="flex items-center gap-2">
-          {selectedDocId && (
-            <button
-              onClick={() => onNavigate(selectedProjectId, null)}
-              className="px-3 py-1.5 text-xs font-semibold rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all"
-            >
-              🏠 {language === "en" ? "Project Home" : "프로젝트 홈"}
-            </button>
-          )}
           <button
             onClick={() => {
               setAddingDocParentId(null);
               setShowDocModal(true);
             }}
-            className="px-3 py-1.5 text-xs font-semibold rounded-lg bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-1.5 shadow-sm transition-all"
+            className="px-3 py-1.5 text-xs font-semibold rounded-lg bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-1.5 shadow-sm transition-all cursor-pointer"
           >
             <Plus size={14} /> {language === "en" ? "New Document" : "새 문서 추가"}
           </button>
