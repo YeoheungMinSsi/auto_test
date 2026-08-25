@@ -1,0 +1,179 @@
+{
+    "projects": {
+        "f7b2ea4e-5294-444f-a1b3-05dff967922c": {
+            "id": "f7b2ea4e-5294-444f-a1b3-05dff967922c",
+            "name": "RAG",
+            "description": "RAG 공부",
+            "status": "계획 중",
+            "created_at": "2026-08-24T18:29:16.535886",
+            "tasks": [],
+            "documents": {
+                "9bfaa174-548b-4a4f-bac5-fc09a7efc8ba": {
+                    "id": "9bfaa174-548b-4a4f-bac5-fc09a7efc8ba",
+                    "title": "RAG",
+                    "parent_id": null,
+                    "created_at": "2026-08-24T18:29:16.535891",
+                    "blocks": [
+                        {
+                            "id": "4ba7dcef-381f-4b51-b30b-890fdb4d4990",
+                            "type": "divider",
+                            "props": {},
+                            "children": []
+                        },
+                        {
+                            "id": "493bdac3-a095-4a7a-950d-a9001c89a2f3",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "챗봇을 만들기 위해 RAG 또는 파인튜니을 사용",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": [
+                                {
+                                    "id": "51950c3d-a9da-40c1-b9ec-f98f5778d262",
+                                    "type": "bulletListItem",
+                                    "props": {
+                                        "backgroundColor": "default",
+                                        "textColor": "default",
+                                        "textAlignment": "left"
+                                    },
+                                    "content": [
+                                        {
+                                            "type": "text",
+                                            "text": "RAG는 챗봇이 데이터(문서)에서 데이터를 가지고와 사용함",
+                                            "styles": {}
+                                        }
+                                    ],
+                                    "children": []
+                                },
+                                {
+                                    "id": "931e9462-ddda-4c55-9d95-01eff3524aee",
+                                    "type": "bulletListItem",
+                                    "props": {
+                                        "backgroundColor": "default",
+                                        "textColor": "default",
+                                        "textAlignment": "left"
+                                    },
+                                    "content": [
+                                        {
+                                            "type": "text",
+                                            "text": "파인튜닝은 특정모델을 가지고 있는 데이터로 학습을 함",
+                                            "styles": {}
+                                        }
+                                    ],
+                                    "children": []
+                                }
+                            ]
+                        },
+                        {
+                            "id": "43f26662-dbcd-44d2-bad0-12e199ddf5ed",
+                            "type": "paragraph",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [],
+                            "children": []
+                        },
+                        {
+                            "id": "2251cd19-6316-4090-bdf5-82c333bc4079",
+                            "type": "heading",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left",
+                                "level": 3,
+                                "isToggleable": false
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "RAG 챗봇",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "da621694-1753-4b01-88b7-d88a55136366",
+                            "type": "numberedListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "데이터 수집 및 정제 -> 데이터를 통해서 챗봇 답을 알려주기에 사용할 챗봇에 데이터를 수집 및 정제하여 각 형식으로 저장(json, csv, DB 등)",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "0dd6146c-95c4-4394-b3de-f8823f2759c0",
+                            "type": "numberedListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "정제된 데이터를 임베딩 모델을 통해서 고차원(실수)의 벡터(숫자 배열)로 변환",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": [
+                                {
+                                    "id": "a8e89a0c-9878-45c9-8a7e-baa0e6e0b2da",
+                                    "type": "bulletListItem",
+                                    "props": {
+                                        "backgroundColor": "default",
+                                        "textColor": "default",
+                                        "textAlignment": "left"
+                                    },
+                                    "content": [
+                                        {
+                                            "type": "text",
+                                            "text": "이때 모델을 bge-m3를 사용하는데 다국어 벡터화에 이점을 보임",
+                                            "styles": {}
+                                        }
+                                    ],
+                                    "children": []
+                                }
+                            ]
+                        },
+                        {
+                            "id": "21f666fc-da14-492a-b337-b1bc3768f3ce",
+                            "type": "numberedListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "엠베딩 값(벡터) 수치를 DB(ChromaDB)에 저장",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}

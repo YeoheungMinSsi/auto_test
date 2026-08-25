@@ -305,119 +305,148 @@ function EditorWrapper({
   }
 
   return (
-    <div className="flex-1 w-full max-w-4xl mx-auto px-10 py-10 flex flex-col h-full overflow-y-auto">
-      {/* 상단 브레드크럼 네비게이션 */}
-      <div className="flex items-center gap-1.5 text-xs text-gray-400 dark:text-gray-500 mb-6 font-medium pl-12 flex-wrap">
-        <span 
-          onClick={() => {
-            const rootDoc = Object.values(allDocuments).find(d => d.parent_id === null);
-            if (rootDoc) onNavigate?.(projectId, rootDoc.id);
-          }}
-          className="hover:text-blue-600 dark:hover:text-blue-400 hover:underline cursor-pointer flex items-center gap-1"
-          title="프로젝트 최상위 문서로 이동"
-        >
-          📁 {projectName || (language === "en" ? "Project" : "프로젝트")}
-        </span>
-        {breadcrumbs.map(b => (
-          <div key={b.id} className="flex items-center gap-1.5">
-            <span>/</span>
-            <span 
-              onClick={() => onNavigate?.(projectId, b.id)}
-              className="hover:text-blue-600 dark:hover:text-blue-400 hover:underline cursor-pointer truncate max-w-[150px]"
-              title={b.title}
-            >
-              📄 {b.title}
-            </span>
-          </div>
-        ))}
-        <span>/</span>
-        <span className="text-gray-700 dark:text-gray-300 font-semibold truncate max-w-[180px]">
-          📄 {title || (language === "en" ? "Untitled" : "제목 없음")}
-        </span>
-      </div>
+    <div className="flex-1 w-full h-full overflow-y-auto px-6 sm:px-12 py-10 pb-96">
+      <div className="max-w-4xl mx-auto space-y-6">
+        {/* 상단 브레드크럼 네비게이션 */}
+        <div className="flex items-center gap-1.5 text-xs text-gray-400 dark:text-gray-500 font-medium pl-12 flex-wrap">
+          <span 
+            onClick={() => {
+              const rootDoc = Object.values(allDocuments).find(d => d.parent_id === null);
+              if (rootDoc) onNavigate?.(projectId, rootDoc.id);
+            }}
+            className="hover:text-blue-600 dark:hover:text-blue-400 hover:underline cursor-pointer flex items-center gap-1"
+            title="프로젝트 최상위 문서로 이동"
+          >
+            📁 {projectName || (language === "en" ? "Project" : "프로젝트")}
+          </span>
+          {breadcrumbs.map(b => (
+            <div key={b.id} className="flex items-center gap-1.5">
+              <span>/</span>
+              <span 
+                onClick={() => onNavigate?.(projectId, b.id)}
+                className="hover:text-blue-600 dark:hover:text-blue-400 hover:underline cursor-pointer truncate max-w-[150px]"
+                title={b.title}
+              >
+                📄 {b.title}
+              </span>
+            </div>
+          ))}
+          <span>/</span>
+          <span className="text-gray-700 dark:text-gray-300 font-semibold truncate max-w-[180px]">
+            📄 {title || (language === "en" ? "Untitled" : "제목 없음")}
+          </span>
+        </div>
 
-      <div className="flex items-center justify-between mb-4 shrink-0">
-        <input 
-          type="text"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          onBlur={handleTitleBlur}
-          className="text-4xl font-bold pl-12 focus:outline-none text-gray-800 dark:text-gray-100 bg-transparent w-full border-none"
-          placeholder={language === "en" ? "Untitled" : "제목 없음"}
-        />
-        <span className={`text-[10px] px-2 py-0.5 rounded font-mono shrink-0 ${
-          saveStatus === "saved" ? "bg-green-50 text-green-600 dark:bg-green-950/30 dark:text-green-400" :
-          saveStatus === "saving" ? "bg-amber-50 text-amber-600 dark:bg-amber-950/30 dark:text-amber-400" : "bg-red-50 text-red-600 dark:bg-red-950/30 dark:text-red-400"
-        }`}>
-          {saveStatus === "saved" ? (language === "en" ? "Saved" : "클라우드 저장됨") :
-           saveStatus === "saving" ? (language === "en" ? "Saving..." : "저장 중...") : (language === "en" ? "Save Failed" : "저장 실패")}
-        </span>
-      </div>
-
-      {/* 에디터 본문 영역 */}
-      <div className="flex-1 min-h-[300px]">
-        <BlockNoteView 
-          editor={editor} 
-          theme={isDarkMode ? "dark" : "light"} 
-          onChange={handleEditorChange}
-          slashMenu={false}
-        >
-          <SuggestionMenuController 
-            triggerCharacter="/" 
-            getItems={async (query) => getCustomSlashMenuItems(editor, query)} 
+        {/* 문서 제목 및 상태 바 */}
+        <div className="flex items-center justify-between shrink-0">
+          <input 
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            onBlur={handleTitleBlur}
+            className="text-4xl font-bold pl-12 focus:outline-none text-gray-800 dark:text-gray-100 bg-transparent w-full border-none"
+            placeholder={language === "en" ? "Untitled" : "제목 없음"}
           />
-        </BlockNoteView>
-      </div>
+          <span className={`text-[10px] px-2 py-0.5 rounded font-mono shrink-0 ${
+            saveStatus === "saved" ? "bg-green-50 text-green-600 dark:bg-green-950/30 dark:text-green-400" :
+            saveStatus === "saving" ? "bg-amber-50 text-amber-600 dark:bg-amber-950/30 dark:text-amber-400" : "bg-red-50 text-red-600 dark:bg-red-950/30 dark:text-red-400"
+          }`}>
+            {saveStatus === "saved" ? (language === "en" ? "Saved" : "클라우드 저장됨") :
+             saveStatus === "saving" ? (language === "en" ? "Saving..." : "저장 중...") : (language === "en" ? "Save Failed" : "저장 실패")}
+          </span>
+        </div>
 
-      {/* 하위 페이지 목록 카드 섹션 (노션 스타일) */}
-      <div className="mt-12 pt-8 border-t border-gray-100 dark:border-gray-800 space-y-4">
-        <div className="flex items-center justify-between">
-          <div className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider flex items-center gap-1.5">
-            <FileText size={14} className="text-blue-500" />
-            <span>{language === "en" ? "Sub-pages in this document" : "이 문서의 하위 페이지"}</span>
-            <span className="text-[10px] px-1.5 py-0.2 bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 rounded-full font-mono">
-              {subDocuments.length}
-            </span>
-          </div>
+        {/* 상단 퀵 하위 페이지 바 (글이 길어져도 상단에서 바로 확인 및 이동 가능) */}
+        <div className="pl-12 flex items-center gap-2 flex-wrap text-xs">
+          <span className="text-gray-400 dark:text-gray-500 font-medium">
+            {language === "en" ? "Sub-pages:" : "하위 페이지:"}
+          </span>
+          {subDocuments.map((subDoc) => (
+            <button
+              key={subDoc.id}
+              type="button"
+              onClick={() => onNavigate?.(projectId, subDoc.id)}
+              className="inline-flex items-center gap-1 px-2.5 py-1 bg-gray-100 dark:bg-gray-800/80 hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-blue-950/40 dark:hover:text-blue-400 rounded-lg text-gray-700 dark:text-gray-300 font-medium transition-colors cursor-pointer border border-transparent hover:border-blue-200 dark:hover:border-blue-800"
+            >
+              <span>📄</span>
+              <span className="truncate max-w-[120px]">{subDoc.title}</span>
+            </button>
+          ))}
           <button
             type="button"
             onClick={handleCreateSubpage}
-            className="text-xs text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-semibold flex items-center gap-1 px-2.5 py-1 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-950/30 transition-all cursor-pointer"
+            className="inline-flex items-center gap-1 px-2.5 py-1 bg-blue-50 dark:bg-blue-950/30 hover:bg-blue-100 dark:hover:bg-blue-900/40 text-blue-600 dark:text-blue-400 rounded-lg font-semibold transition-colors cursor-pointer border border-blue-200/60 dark:border-blue-800/50"
           >
-            + {language === "en" ? "Add Sub-page" : "하위 페이지 추가"}
+            <span>+</span>
+            <span>{language === "en" ? "Add Sub-page" : "하위 페이지 추가"}</span>
           </button>
         </div>
 
-        {subDocuments.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {subDocuments.map((subDoc) => (
-              <div
-                key={subDoc.id}
-                onClick={() => onNavigate?.(projectId, subDoc.id)}
-                className="p-4 bg-white dark:bg-[#1e1e1e] border border-gray-200/80 dark:border-gray-800 rounded-xl hover:border-blue-500 dark:hover:border-blue-500 hover:shadow-md transition-all cursor-pointer flex items-center justify-between group"
-              >
-                <div className="flex items-center gap-3 truncate">
-                  <div className="w-8 h-8 rounded-lg bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 flex items-center justify-center text-sm font-semibold shrink-0 group-hover:scale-110 transition-transform">
-                    📄
+        {/* 에디터 본문 영역 (스크롤 제약 없이 내용에 맞춰 자연스럽게 확장) */}
+        <div className="min-h-[400px]">
+          <BlockNoteView 
+            editor={editor} 
+            theme={isDarkMode ? "dark" : "light"} 
+            onChange={handleEditorChange}
+            slashMenu={false}
+          >
+            <SuggestionMenuController 
+              triggerCharacter="/" 
+              getItems={async (query) => getCustomSlashMenuItems(editor, query)} 
+            />
+          </BlockNoteView>
+        </div>
+
+        {/* 하위 페이지 목록 카드 섹션 (노션 스타일) */}
+        <div className="mt-16 pt-8 border-t border-gray-100 dark:border-gray-800 space-y-4">
+          <div className="flex items-center justify-between">
+            <div className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider flex items-center gap-1.5">
+              <FileText size={14} className="text-blue-500" />
+              <span>{language === "en" ? "Sub-pages in this document" : "이 문서의 하위 페이지"}</span>
+              <span className="text-[10px] px-1.5 py-0.2 bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 rounded-full font-mono">
+                {subDocuments.length}
+              </span>
+            </div>
+            <button
+              type="button"
+              onClick={handleCreateSubpage}
+              className="text-xs text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-semibold flex items-center gap-1 px-2.5 py-1 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-950/30 transition-all cursor-pointer"
+            >
+              + {language === "en" ? "Add Sub-page" : "하위 페이지 추가"}
+            </button>
+          </div>
+
+          {subDocuments.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {subDocuments.map((subDoc) => (
+                <div
+                  key={subDoc.id}
+                  onClick={() => onNavigate?.(projectId, subDoc.id)}
+                  className="p-4 bg-white dark:bg-[#1e1e1e] border border-gray-200/80 dark:border-gray-800 rounded-xl hover:border-blue-500 dark:hover:border-blue-500 hover:shadow-md transition-all cursor-pointer flex items-center justify-between group"
+                >
+                  <div className="flex items-center gap-3 truncate">
+                    <div className="w-8 h-8 rounded-lg bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 flex items-center justify-center text-sm font-semibold shrink-0 group-hover:scale-110 transition-transform">
+                      📄
+                    </div>
+                    <span className="text-sm font-semibold text-gray-800 dark:text-gray-200 truncate">
+                      {subDoc.title}
+                    </span>
                   </div>
-                  <span className="text-sm font-semibold text-gray-800 dark:text-gray-200 truncate">
-                    {subDoc.title}
+                  <span className="text-gray-400 group-hover:text-blue-500 group-hover:translate-x-0.5 transition-all text-xs font-bold shrink-0">
+                    →
                   </span>
                 </div>
-                <span className="text-gray-400 group-hover:text-blue-500 group-hover:translate-x-0.5 transition-all text-xs font-bold shrink-0">
-                  →
-                </span>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div 
-            onClick={handleCreateSubpage}
-            className="p-5 border border-dashed border-gray-200 dark:border-gray-800 rounded-xl text-center text-xs text-gray-400 dark:text-gray-500 hover:border-blue-400 dark:hover:border-blue-500 hover:text-blue-500 cursor-pointer transition-all flex flex-col items-center justify-center gap-1"
-          >
-            <span>{language === "en" ? "No sub-pages yet. Click to create one." : "등록된 하위 페이지가 없습니다. 클릭하여 새로운 하위 문서를 만들어보세요."}</span>
-          </div>
-        )}
+              ))}
+            </div>
+          ) : (
+            <div 
+              onClick={handleCreateSubpage}
+              className="p-5 border border-dashed border-gray-200 dark:border-gray-800 rounded-xl text-center text-xs text-gray-400 dark:text-gray-500 hover:border-blue-400 dark:hover:border-blue-500 hover:text-blue-500 cursor-pointer transition-all flex flex-col items-center justify-center gap-1"
+            >
+              <span>{language === "en" ? "No sub-pages yet. Click to create one." : "등록된 하위 페이지가 없습니다. 클릭하여 새로운 하위 문서를 만들어보세요."}</span>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

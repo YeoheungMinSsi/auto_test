@@ -18,6 +18,15 @@
             "icon": "💻",
             "description": "동서대에서 진행항 프로젝트",
             "created_at": "2026-08-19T18:27:03.148506"
+        },
+        {
+            "id": "page_45516c39-3d28-4d97-93d1-88b99b1aac79",
+            "title": "공부",
+            "has_subpages": true,
+            "is_hidden": false,
+            "icon": "💡",
+            "description": "공부내용 적기",
+            "created_at": "2026-08-24T18:29:02.416026"
         }
     ]
 }

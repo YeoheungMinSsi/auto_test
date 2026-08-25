@@ -130,9 +130,383 @@
                     "created_at": "2026-08-19T19:09:37.902580",
                     "blocks": [
                         {
-                            "id": "268dcb46-d1e2-4474-ab8e-f6065f12465f",
-                            "type": "text",
-                            "content": "챗봇만들기"
+                            "id": "igfvaab",
+                            "type": "paragraph",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "챗봇만들기",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "c36c41df-e5d2-46ff-b6cf-05f84067efff",
+                            "type": "paragraph",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [],
+                            "children": []
+                        }
+                    ]
+                },
+                "73aaae28-3ebe-449a-af85-2e5c243d2f4f": {
+                    "id": "73aaae28-3ebe-449a-af85-2e5c243d2f4f",
+                    "title": "술 챗봇",
+                    "parent_id": "0bf5086e-ba46-4e83-8984-170de85c7f48",
+                    "created_at": "2026-08-24T17:21:15.768277",
+                    "blocks": [
+                        {
+                            "id": "4wt4bw3",
+                            "type": "numberedListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "데이터 가지고 오기",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "67bc8d70-e264-4de3-99d2-f78c9a36a4a2",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "iba 칵테일 데이터 가지고오기",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": [
+                                {
+                                    "id": "41b1fa55-9ff3-4c1e-b540-04cd30975a00",
+                                    "type": "bulletListItem",
+                                    "props": {
+                                        "backgroundColor": "default",
+                                        "textColor": "default",
+                                        "textAlignment": "left"
+                                    },
+                                    "content": [
+                                        {
+                                            "type": "text",
+                                            "text": "102개의 칵테일 데이터를 가지고옴",
+                                            "styles": {}
+                                        }
+                                    ],
+                                    "children": []
+                                }
+                            ]
+                        },
+                        {
+                            "id": "f4296395-a21e-49bb-bf68-9aeb0ef0ff81",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "전통주 데이터",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": [
+                                {
+                                    "id": "ceff0995-0afc-4123-87e0-ad6c6d2554b6",
+                                    "type": "bulletListItem",
+                                    "props": {
+                                        "backgroundColor": "default",
+                                        "textColor": "default",
+                                        "textAlignment": "left"
+                                    },
+                                    "content": [
+                                        {
+                                            "type": "text",
+                                            "text": "전통주 사이트에서 데이터를 크롤링하여 데이터를 가지고 옮",
+                                            "styles": {}
+                                        }
+                                    ],
+                                    "children": []
+                                }
+                            ]
+                        },
+                        {
+                            "id": "cd490dd0-4536-428f-8c10-de3515e92139",
+                            "type": "paragraph",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [],
+                            "children": []
+                        },
+                        {
+                            "id": "429890da-14e2-4ebd-b7ec-b68eead06343",
+                            "type": "paragraph",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "챗봇 만드는 방식",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "722c46d4-a5b9-4190-81be-b20a5089a3c6",
+                            "type": "numberedListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "RAG 형식",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "906a62f4-1cb7-4a40-932e-6cd5269cab98",
+                            "type": "numberedListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "파인튜닝",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "65d22386-1d63-4c2e-a74b-5313f6dca7a8",
+                            "type": "numberedListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left",
+                                "start": 3
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "하이브리드(RAG + 파인튜닝)",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "0eb95034-2e9d-4fe6-a1dc-aa47ce1d1da0",
+                            "type": "paragraph",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [],
+                            "children": []
+                        },
+                        {
+                            "id": "8036789f-f4a2-41ca-acf7-b1985b812d18",
+                            "type": "paragraph",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "현재 사용중인 방식 -> RAG방식",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "bf339f8c-2082-42c6-8f76-0baa984102ad",
+                            "type": "paragraph",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [],
+                            "children": []
+                        },
+                        {
+                            "id": "138d8bb8-9cdb-4d76-a3c8-59ad18617ac2",
+                            "type": "heading",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left",
+                                "level": 3,
+                                "isToggleable": false
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "RAG 방식 구성",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "1ae7b62b-48eb-494a-836c-c816ed2e2723",
+                            "type": "numberedListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "데이터 -> 문서 청킹 -> 데이터 임베딩 -> ChromaDB에 저장(로컬 벡터 저장) -> 이후 2로",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "c8b8a404-66fa-4b9c-9d55-41f4d46cfac7",
+                            "type": "numberedListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "질문 -> 임베딩 모델(bge-m3 또는 nomic-embed-text) -> DB에서 유사도 검색 -> 관련 데이터 -> AI(Local LLM) -> 답변",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "08cc8be8-8534-4816-8491-391ef9c220dd",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "현재 local LLM에는 Gemma:e4b를 사용중",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "fc49689c-0e88-4492-9cd7-1c0ea0dfc9e8",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "임베딩 모델은 한국어 및 다국어 텍스트가 뛰어난 bge-m3 또는 nomic-embed-text 사용 예정",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "8f59d3d0-dcd0-44d0-b7f0-e6e597f47fb8",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "RAG Framwork는 langchain, langchain-community, langchain-ollama 사용 예정",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "8a9bf420-56ce-4ca0-8aea-58b5cfde814c",
+                            "type": "paragraph",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [],
+                            "children": []
+                        },
+                        {
+                            "id": "2957b688-038a-483a-a0a2-6f8f19bb707b",
+                            "type": "paragraph",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [],
+                            "children": []
+                        },
+                        {
+                            "id": "0be22ccc-9c41-444f-8366-0bd11f41a28f",
+                            "type": "paragraph",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [],
+                            "children": []
                         }
                     ]
                 }

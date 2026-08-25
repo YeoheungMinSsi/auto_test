@@ -621,9 +621,9 @@ export default function Projects({
           </div>
 
           {/* 우측 화면 (문서 에디터 또는 프로젝트 홈 개요 대시보드) */}
-          <div className="flex-1 h-full overflow-y-auto">
+          <div className="flex-1 h-full overflow-hidden flex flex-col">
             {selectedDocId && projectDetail.documents?.[selectedDocId] ? (
-              <div className="h-full flex flex-col">
+              <div className="flex-1 h-full overflow-hidden flex flex-col">
                 <NotionEditor 
                   projectId={projectDetail.id}
                   docId={selectedDocId} 
@@ -640,7 +640,7 @@ export default function Projects({
               </div>
             ) : (
               /* 프로젝트 홈 / 개요 대시보드 화면 */
-              <div className="p-10 max-w-5xl mx-auto space-y-8">
+              <div className="flex-1 h-full overflow-y-auto p-10 max-w-5xl mx-auto space-y-8 w-full">
                 {/* 프로젝트 정보 헤더 카드 */}
                 <div className="bg-gradient-to-br from-white to-gray-50 dark:from-[#1e1e1e] dark:to-[#181818] p-8 rounded-2xl border border-gray-200/80 dark:border-gray-800 shadow-sm space-y-4 transition-colors">
                   <div className="flex items-start justify-between">
