@@ -103,10 +103,10 @@ function App() {
     }
   }, [isDarkMode]);
 
-  const handleNavigate = (view: string, projId?: string | null, docId?: string | null) => {
+  const handleNavigate = (view: string, projId: string | null = null, docId: string | null = null) => {
     setCurrentView(view);
-    if (projId !== undefined) setSelectedProjectId(projId);
-    if (docId !== undefined) setSelectedDocId(docId);
+    setSelectedProjectId(projId);
+    setSelectedDocId(docId);
   };
 
   const handleCreatePage = () => {

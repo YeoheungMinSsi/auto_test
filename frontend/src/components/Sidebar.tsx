@@ -257,7 +257,7 @@ export default function Sidebar({
                   currentView === page.id ? "bg-gray-200/80 dark:bg-gray-800 text-gray-900 dark:text-gray-100 font-semibold" : "text-gray-600 dark:text-gray-400 hover:bg-gray-200/60 dark:hover:bg-gray-800"
                 }`}
               >
-                <div onClick={() => onNavigate(page.id)} className="flex items-center gap-2 flex-1 truncate">
+                <div onClick={() => onNavigate(page.id, null, null)} className="flex items-center gap-2 flex-1 truncate">
                   <span className="text-sm shrink-0">{page.icon || "📄"}</span> <span className="truncate">{page.title}</span>
                 </div>
                 <div className="flex items-center gap-0.5">
