@@ -103,39 +103,12 @@ export default function Projects({
         .then(res => res.json())
         .then(data => {
           setProjectDetail(data);
-
-          const docs = data.documents || {};
-          const docKeys = Object.keys(docs);
-
-          if (docKeys.length > 0) {
-            // 현재 선택된 문서가 없거나 유효하지 않으면 루트 문서로 자동 선택
-            if (!selectedDocId || !docs[selectedDocId]) {
-              const rootDoc = Object.values(docs).find((d: any) => d.parent_id === null) as any;
-              const targetDocId = rootDoc ? rootDoc.id : docKeys[0];
-              onNavigate(selectedProjectId, targetDocId);
-            }
-          } else {
-            // 문서가 하나도 없으면 기본 루트 문서 자동 생성
-            fetch(`http://localhost:8000/api/projects/${selectedProjectId}/documents?page_id=${customPageId || "progress"}`, {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ title: data.name || "시작 페이지", parent_id: null })
-            })
-              .then(r => r.json())
-              .then(newDoc => {
-                if (newDoc.id) {
-                  onNavigate(selectedProjectId, newDoc.id);
-                  onWorkspaceUpdate?.();
-                }
-              })
-              .catch(err => console.error("Error creating initial root doc:", err));
-          }
         })
         .catch(err => console.error("Error loading project detail:", err));
     } else {
       setProjectDetail(null);
     }
-  }, [selectedProjectId, selectedDocId, customPageId]);
+  }, [selectedProjectId, customPageId]);
 
   // 프로젝트 생성
   const handleCreateProject = (e: React.FormEvent) => {
@@ -522,7 +495,6 @@ export default function Projects({
 
   const rootDocs = Object.values(projectDetail.documents || {}).filter(d => d.parent_id === null);
   const allDocs = Object.values(projectDetail.documents || {});
-  const mainRootDoc = rootDocs[0] || allDocs[0];
 
   return (
     <div className="h-full flex flex-col overflow-hidden bg-white dark:bg-[#121212] transition-colors">
@@ -530,21 +502,25 @@ export default function Projects({
       <div className="px-6 py-3.5 border-b border-gray-200/60 dark:border-gray-800 bg-[#fafafa] dark:bg-[#1a1a1a] flex items-center justify-between shrink-0 transition-colors">
         <div className="flex items-center gap-3">
           <button 
-            onClick={() => onNavigate(null, null)}
+            onClick={() => {
+              if (selectedDocId) {
+                // 문서 에디터에 있다면 프로젝트 홈(하위 프로젝트 및 문서 목록)으로 복귀
+                onNavigate(selectedProjectId, null);
+              } else {
+                // 프로젝트 홈에 있다면 전체 프로젝트 그리드 목록으로 복귀
+                onNavigate(null, null);
+              }
+            }}
             className="p-1.5 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-lg text-gray-500 dark:text-gray-400 transition-colors cursor-pointer"
-            title={language === "en" ? "Back to project list" : "전체 프로젝트 목록으로 이동"}
+            title={selectedDocId ? (language === "en" ? "Back to project overview" : "하위 프로젝트/문서 목록으로 이동") : (language === "en" ? "Back to project list" : "전체 프로젝트 목록으로 이동")}
           >
             <ArrowLeft size={16} />
           </button>
           <div className="flex items-center gap-2">
             <h2 
-              onClick={() => {
-                if (mainRootDoc) {
-                  onNavigate(selectedProjectId, mainRootDoc.id);
-                }
-              }}
+              onClick={() => onNavigate(selectedProjectId, null)}
               className="text-base font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2 cursor-pointer hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-              title="프로젝트 메인 페이지로 이동"
+              title="프로젝트 홈(하위 목록)으로 이동"
             >
               📁 {projectDetail.name}
             </h2>
