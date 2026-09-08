@@ -37,7 +37,7 @@ function App() {
 
   const handleUpdateEditingPage = () => {
     if (!editingPage || !editingPage.title.trim()) return;
-    fetch(`http://localhost:8000/api/workspace/pages/${editingPage.id}`, {
+    fetch(`/api/workspace/pages/${editingPage.id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -61,7 +61,7 @@ function App() {
 
   const handleToggleHidden = (page: any, e: React.MouseEvent) => {
     e.stopPropagation();
-    fetch(`http://localhost:8000/api/workspace/pages/${page.id}`, {
+    fetch(`/api/workspace/pages/${page.id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ is_hidden: !page.is_hidden })
@@ -78,7 +78,7 @@ function App() {
   };
 
   const loadWorkspace = () => {
-    fetch("http://localhost:8000/api/workspace")
+    fetch("/api/workspace")
       .then(res => {
         if (!res.ok) throw new Error("Server not responding");
         setIsBackendConnected(true);
@@ -111,7 +111,7 @@ function App() {
 
   const handleCreatePage = () => {
     if (!newPageData.title.trim()) return;
-    fetch("http://localhost:8000/api/workspace/pages", {
+    fetch("/api/workspace/pages", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(newPageData)
@@ -134,7 +134,7 @@ function App() {
   const handleDeletePage = (pageId: string, e: React.MouseEvent) => {
     e.stopPropagation();
     if (window.confirm("이 페이지를 삭제하시겠습니까?")) {
-      fetch(`http://localhost:8000/api/workspace/pages/${pageId}`, { method: "DELETE" })
+      fetch(`/api/workspace/pages/${pageId}`, { method: "DELETE" })
         .then(res => {
           if (!res.ok) throw new Error("Failed to delete page");
           if (currentView === pageId) setCurrentView("home");
@@ -321,7 +321,7 @@ function App() {
         {!isBackendConnected && (
           <div className="bg-red-500 text-white px-6 py-2.5 text-sm flex items-center justify-between font-semibold shrink-0 shadow-md">
             <span className="flex items-center gap-2">
-              ⚠️ 백엔드 API 서버(localhost:8000)에 연결할 수 없습니다. 기능 동작을 위해 'python main.py' 백엔드 서버를 먼저 실행해 주세요.
+              ⚠️ 백엔드 API 서버에 연결할 수 없습니다. 기능 동작을 위해 백엔드 서버를 먼저 실행해 주세요.
             </span>
             <button 
               onClick={loadWorkspace}

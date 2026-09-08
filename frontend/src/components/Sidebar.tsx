@@ -55,7 +55,7 @@ export default function Sidebar({
   const activePageId = isCustomSubpage ? currentView : "progress";
 
   const loadSidebarProjects = () => {
-    fetch(`http://localhost:8000/api/projects?page_id=${activePageId}`)
+    fetch(`/api/projects?page_id=${activePageId}`)
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data)) {
@@ -92,7 +92,7 @@ export default function Sidebar({
     const name = prompt(language === "en" ? "Enter new project name:" : "새로운 프로젝트의 이름을 입력하세요:");
     if (!name || !name.trim()) return;
 
-    fetch(`http://localhost:8000/api/projects?page_id=${targetId}`, {
+    fetch(`/api/projects?page_id=${targetId}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name: name.trim(), description: "" })
@@ -109,7 +109,7 @@ export default function Sidebar({
 
   const handleUpdateWorkspace = () => {
     if (!workspaceNameInput.trim()) return;
-    fetch("http://localhost:8000/api/workspace", {
+    fetch("/api/workspace", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ workspace_name: workspaceNameInput })
@@ -124,7 +124,7 @@ export default function Sidebar({
 
   const handleUpdatePage = () => {
     if (!pageSettingsId || !pageEditData.title.trim()) return;
-    fetch(`http://localhost:8000/api/workspace/pages/${pageSettingsId}`, {
+    fetch(`/api/workspace/pages/${pageSettingsId}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(pageEditData)
@@ -136,7 +136,7 @@ export default function Sidebar({
 
   const handleDeletePage = (pageId: string) => {
     if (window.confirm(language === "en" ? "Are you sure you want to delete this page?" : "이 페이지를 삭제하시겠습니까?")) {
-      fetch(`http://localhost:8000/api/workspace/pages/${pageId}`, { method: "DELETE" })
+      fetch(`/api/workspace/pages/${pageId}`, { method: "DELETE" })
         .then(() => {
           if (currentView === pageId) onNavigate("home");
           onWorkspaceUpdate?.();

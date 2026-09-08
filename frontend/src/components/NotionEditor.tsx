@@ -33,7 +33,7 @@ export default function NotionEditor({
   const [projectName, setProjectName] = useState<string>("");
 
   const loadDocData = () => {
-    fetch(`http://localhost:8000/api/projects/${projectId}?page_id=${pageId || "progress"}`)
+    fetch(`/api/projects/${projectId}?page_id=${pageId || "progress"}`)
       .then(res => res.json())
       .then(data => {
         setProjectName(data.name || "");
@@ -201,7 +201,7 @@ function EditorWrapper({
 
   const saveContent = (blocks: any[]) => {
     setSaveStatus("saving");
-    fetch(`http://localhost:8000/api/projects/${projectId}/documents/${docId}/content?page_id=${pageId || "progress"}`, {
+    fetch(`/api/projects/${projectId}/documents/${docId}/content?page_id=${pageId || "progress"}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ blocks })
@@ -238,7 +238,7 @@ function EditorWrapper({
   const handleTitleBlur = () => {
     if (title.trim() === "" || title === docTitle) return;
     
-    fetch(`http://localhost:8000/api/projects/${projectId}/documents/${docId}/title?page_id=${pageId || "progress"}`, {
+    fetch(`/api/projects/${projectId}/documents/${docId}/title?page_id=${pageId || "progress"}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ title: title.trim() })
@@ -252,7 +252,7 @@ function EditorWrapper({
     const subTitle = prompt(language === "en" ? "Enter sub-page title:" : "새 하위 문서의 제목을 입력하세요:");
     if (!subTitle || !subTitle.trim()) return;
 
-    fetch(`http://localhost:8000/api/projects/${projectId}/documents?page_id=${pageId || "progress"}`, {
+    fetch(`/api/projects/${projectId}/documents?page_id=${pageId || "progress"}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

@@ -4,10 +4,19 @@ import uuid
 import glob
 import subprocess
 import json
+import logging
 from fastapi import FastAPI, HTTPException, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List, Optional, Any
+
+# 로그 시간 저장 코드
+logging.basicConfig(
+    format="[%(asctime)s] %(levelname)s: %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S",
+    level=logging.INFO
+)
+
 
 # 백엔드 모듈 경로 인식
 base_dir = os.path.dirname(os.path.abspath(__file__))

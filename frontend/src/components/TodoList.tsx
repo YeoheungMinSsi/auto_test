@@ -46,7 +46,7 @@ export default function TodoList({ language = "ko", workspaceData, onNavigatePro
       const projs: Array<{ id: string; name: string; pageId: string }> = [];
 
       // 1. 기본 진행 상황 (progress) 프로젝트 로드
-      const resProgress = await fetch("http://localhost:8000/api/projects?page_id=progress");
+      const resProgress = await fetch("/api/projects?page_id=progress");
       if (resProgress.ok) {
         const data: ProjectData[] = await resProgress.json();
         if (Array.isArray(data)) {
@@ -70,7 +70,7 @@ export default function TodoList({ language = "ko", workspaceData, onNavigatePro
       for (const page of customPages) {
         if (page.has_subpages) {
           try {
-            const resCustom = await fetch(`http://localhost:8000/api/projects?page_id=${page.id}`);
+            const resCustom = await fetch(`/api/projects?page_id=${page.id}`);
             if (resCustom.ok) {
               const data: ProjectData[] = await resCustom.json();
               if (Array.isArray(data)) {
@@ -116,7 +116,7 @@ export default function TodoList({ language = "ko", workspaceData, onNavigatePro
     const newStatus = !task.completed;
     setTasks(prev => prev.map(t => (t.id === task.id && t.projectId === task.projectId ? { ...t, completed: newStatus } : t)));
 
-    fetch(`http://localhost:8000/api/projects/${task.projectId}/tasks/${task.id}?page_id=${task.pageId}`, {
+    fetch(`/api/projects/${task.projectId}/tasks/${task.id}?page_id=${task.pageId}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ completed: newStatus })
@@ -141,7 +141,7 @@ export default function TodoList({ language = "ko", workspaceData, onNavigatePro
     // 로컬 목록에서 즉시 제거
     setTasks(prev => prev.filter(t => !(t.id === task.id && t.projectId === task.projectId)));
 
-    fetch(`http://localhost:8000/api/projects/${task.projectId}/tasks/${task.id}?page_id=${task.pageId}`, {
+    fetch(`/api/projects/${task.projectId}/tasks/${task.id}?page_id=${task.pageId}`, {
       method: "DELETE"
     }).catch(err => {
       console.error("Error deleting task:", err);
@@ -197,7 +197,7 @@ export default function TodoList({ language = "ko", workspaceData, onNavigatePro
     try {
       await Promise.all(
         tasksToDelete.map(task =>
-          fetch(`http://localhost:8000/api/projects/${task.projectId}/tasks/${task.id}?page_id=${task.pageId}`, {
+          fetch(`/api/projects/${task.projectId}/tasks/${task.id}?page_id=${task.pageId}`, {
             method: "DELETE"
           })
         )
@@ -232,7 +232,7 @@ export default function TodoList({ language = "ko", workspaceData, onNavigatePro
 
     setTasks(prev => [newTaskItem, ...prev]);
 
-    fetch(`http://localhost:8000/api/projects/${targetProj.id}/tasks?page_id=${targetProj.pageId}`, {
+    fetch(`/api/projects/${targetProj.id}/tasks?page_id=${targetProj.pageId}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ title: titleToAdd })
