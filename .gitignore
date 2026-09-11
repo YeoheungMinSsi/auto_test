@@ -29,3 +29,7 @@ input.txt
 *.png
 *.jpg
 *.jpeg
+
+# Dependencies
+node_modules/
+dist/

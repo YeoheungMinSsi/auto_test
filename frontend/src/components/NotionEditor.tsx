@@ -3,8 +3,18 @@ import "@blocknote/core/fonts/inter.css";
 import "@blocknote/mantine/style.css";
 import { BlockNoteView } from "@blocknote/mantine";
 import { useCreateBlockNote, SuggestionMenuController, getDefaultReactSlashMenuItems, type DefaultReactSuggestionItem } from "@blocknote/react";
+import { BlockNoteSchema, defaultBlockSpecs, createCodeBlockSpec } from "@blocknote/core";
+import { codeBlockOptions } from "@blocknote/code-block";
 import { ko, en } from "@blocknote/core/locales";
 import { FileText } from "lucide-react";
+
+// 노션 스타일의 다양한 프로그래밍 언어 지원 코드 블록 스키마
+const schema = BlockNoteSchema.create({
+  blockSpecs: {
+    ...defaultBlockSpecs,
+    codeBlock: createCodeBlockSpec(codeBlockOptions),
+  },
+});
 
 interface NotionEditorProps {
   projectId: string;
@@ -192,9 +202,111 @@ function EditorWrapper({
   onWorkspaceUpdate
 }: WrapperProps) {
   const editor = useCreateBlockNote({
+    schema,
     initialContent: initialContent,
     dictionary: language === "en" ? en : ko,
   });
+
+  const editorContainerRef = useRef<HTMLDivElement>(null);
+
+  // 코드 블록 복사 버튼 및 노션 인터랙션 자동 주입
+  useEffect(() => {
+    const container = editorContainerRef.current;
+    if (!container) return;
+
+    const attachCopyButtons = () => {
+      const codeBlocks = container.querySelectorAll<HTMLElement>(
+        '.bn-block-content[data-content-type="codeBlock"]'
+      );
+
+      codeBlocks.forEach((codeBlock) => {
+        if (codeBlock.querySelector(".bn-code-copy-btn")) return;
+
+        const copyBtn = document.createElement("button");
+        copyBtn.className = "bn-code-copy-btn";
+        copyBtn.type = "button";
+        copyBtn.contentEditable = "false";
+        copyBtn.title = language === "en" ? "Copy code" : "코드 복사";
+        copyBtn.innerHTML = `
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect width="14" height="14" x="8" y="8" rx="2" ry="2"/>
+            <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>
+          </svg>
+          <span>${language === "en" ? "Copy" : "복사"}</span>
+        `;
+
+        copyBtn.onclick = (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+
+          const codeEl = codeBlock.querySelector("pre code") || codeBlock.querySelector("pre");
+          const textToCopy = codeEl ? codeEl.textContent || "" : "";
+
+          const showCopied = () => {
+            copyBtn.classList.add("copied");
+            copyBtn.innerHTML = `
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              <span style="color: #22c55e;">${language === "en" ? "Copied!" : "복사됨!"}</span>
+            `;
+            setTimeout(() => {
+              copyBtn.classList.remove("copied");
+              copyBtn.innerHTML = `
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect width="14" height="14" x="8" y="8" rx="2" ry="2"/>
+                  <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>
+                </svg>
+                <span>${language === "en" ? "Copy" : "복사"}</span>
+              `;
+            }, 2000);
+          };
+
+          if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(textToCopy).then(showCopied).catch(() => {
+              fallbackCopy(textToCopy, showCopied);
+            });
+          } else {
+            fallbackCopy(textToCopy, showCopied);
+          }
+        };
+
+        codeBlock.appendChild(copyBtn);
+      });
+    };
+
+    const fallbackCopy = (text: string, onSuccess: () => void) => {
+      const textArea = document.createElement("textarea");
+      textArea.value = text;
+      textArea.style.position = "fixed";
+      textArea.style.opacity = "0";
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      try {
+        document.execCommand("copy");
+        onSuccess();
+      } catch (err) {
+        console.error("Fallback copy failed:", err);
+      }
+      document.body.removeChild(textArea);
+    };
+
+    attachCopyButtons();
+
+    const observer = new MutationObserver(() => {
+      attachCopyButtons();
+    });
+
+    observer.observe(container, {
+      childList: true,
+      subtree: true,
+    });
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [language]);
 
   const saveTimerRef = useRef<any>(null);
   const [saveStatus, setSaveStatus] = useState<"saved" | "saving" | "unsaved">("saved");
@@ -383,7 +495,70 @@ function EditorWrapper({
         </div>
 
         {/* 에디터 본문 영역 (스크롤 제약 없이 내용에 맞춰 자연스럽게 확장) */}
-        <div className="min-h-[400px]">
+        <div ref={editorContainerRef} className="min-h-[400px] relative">
+          <style>{`
+            .bn-block-content[data-content-type="codeBlock"] {
+              position: relative !important;
+            }
+            .bn-block-content[data-content-type="codeBlock"] > div > select {
+              appearance: auto !important;
+              opacity: 0.75 !important;
+              background-color: rgba(255, 255, 255, 0.1) !important;
+              border: 1px solid rgba(255, 255, 255, 0.18) !important;
+              padding: 2px 8px !important;
+              border-radius: 5px !important;
+              color: #e2e8f0 !important;
+              font-size: 11px !important;
+              font-family: ui-sans-serif, system-ui, sans-serif !important;
+              cursor: pointer !important;
+              transition: all 0.2s ease !important;
+              top: 8px !important;
+              left: 14px !important;
+            }
+            .bn-block-content[data-content-type="codeBlock"]:hover > div > select {
+              opacity: 1 !important;
+              background-color: rgba(255, 255, 255, 0.18) !important;
+              border-color: rgba(255, 255, 255, 0.3) !important;
+            }
+            .bn-block-content[data-content-type="codeBlock"] > div > select > option {
+              background-color: #1e1e1e !important;
+              color: #f1f5f9 !important;
+            }
+            .bn-code-copy-btn {
+              position: absolute !important;
+              top: 8px !important;
+              right: 14px !important;
+              z-index: 10 !important;
+              display: inline-flex !important;
+              align-items: center !important;
+              gap: 5px !important;
+              padding: 3px 9px !important;
+              font-size: 11px !important;
+              font-weight: 500 !important;
+              line-height: 1 !important;
+              border-radius: 5px !important;
+              background-color: rgba(255, 255, 255, 0.1) !important;
+              border: 1px solid rgba(255, 255, 255, 0.18) !important;
+              color: #cbd5e1 !important;
+              cursor: pointer !important;
+              opacity: 0.75 !important;
+              transition: all 0.2s ease !important;
+              user-select: none !important;
+            }
+            .bn-block-content[data-content-type="codeBlock"]:hover .bn-code-copy-btn {
+              opacity: 1 !important;
+            }
+            .bn-code-copy-btn:hover {
+              background-color: rgba(255, 255, 255, 0.22) !important;
+              border-color: rgba(255, 255, 255, 0.35) !important;
+              color: #ffffff !important;
+            }
+            .bn-code-copy-btn.copied {
+              opacity: 1 !important;
+              background-color: rgba(34, 197, 94, 0.18) !important;
+              border-color: rgba(34, 197, 94, 0.45) !important;
+            }
+          `}</style>
           <BlockNoteView 
             editor={editor} 
             theme={isDarkMode ? "dark" : "light"} 

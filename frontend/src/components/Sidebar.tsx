@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { FileText, Home, Rocket, BarChart2, BookOpen, ChevronRight, ChevronDown, Plus, MoreHorizontal, Sun, Moon, Settings, MoreVertical, X, Globe, CheckSquare } from "lucide-react";
+import { FileText, Home, Rocket, BarChart2, BookOpen, ChevronRight, ChevronDown, Plus, MoreHorizontal, Sun, Moon, Settings, MoreVertical, X, Globe, CheckSquare, PanelLeftClose } from "lucide-react";
 
 interface SidebarProps {
   currentView: string;
@@ -12,6 +12,8 @@ interface SidebarProps {
   onWorkspaceUpdate?: () => void;
   language?: "ko" | "en";
   onLanguageChange?: (lang: "ko" | "en") => void;
+  isOpen?: boolean;
+  onToggleSidebar?: () => void;
 }
 
 interface Project {
@@ -33,7 +35,9 @@ export default function Sidebar({
   workspaceData, 
   onWorkspaceUpdate,
   language = "ko",
-  onLanguageChange
+  onLanguageChange,
+  isOpen = true,
+  onToggleSidebar
 }: SidebarProps) {
   const [projects, setProjects] = useState<Project[]>([]);
   const [expandedProjects, setExpandedProjects] = useState<Record<string, boolean>>({});
@@ -176,23 +180,37 @@ export default function Sidebar({
   const shouldShowProjects = currentView === "projects" || isCustomSubpage;
 
   return (
-    <div className="w-60 bg-[#fbfbfa] dark:bg-[#1a1a1a] border-r border-gray-200/60 dark:border-gray-800 h-screen flex flex-col text-[#37352f] dark:text-gray-300 select-none shrink-0 justify-between transition-colors">
-      <div className="flex flex-col overflow-hidden flex-1">
+    <div className={`bg-[#fbfbfa] dark:bg-[#1a1a1a] border-r border-gray-200/60 dark:border-gray-800 h-screen flex flex-col text-[#37352f] dark:text-gray-300 select-none shrink-0 justify-between transition-all duration-300 ease-in-out ${
+      isOpen ? "w-60 opacity-100" : "w-0 -ml-60 opacity-0 overflow-hidden pointer-events-none border-r-0"
+    }`}>
+      <div className="flex flex-col overflow-hidden flex-1 w-60">
         {/* 워크스페이스 헤더 */}
         <div className="p-4 hover:bg-gray-200/60 dark:hover:bg-gray-800 flex items-center justify-between font-semibold transition-colors border-b border-gray-100 dark:border-gray-800 shrink-0">
-          <div onClick={() => onNavigate("home")} className="cursor-pointer flex items-center gap-2 flex-1">
+          <div onClick={() => onNavigate("home")} className="cursor-pointer flex items-center gap-2 flex-1 min-w-0">
             <div className={`w-6 h-6 bg-gradient-to-br ${workspaceColor} rounded-lg text-white flex items-center justify-center text-xs font-bold shadow-md shadow-indigo-500/10 shrink-0`}>A</div>
             <span className="text-sm font-bold text-gray-800 dark:text-gray-200 truncate pr-1">
               {workspaceData?.workspace_name || "Auto Workspace"}
             </span>
           </div>
-          <button onClick={() => {
-            setWorkspaceNameInput(workspaceData?.workspace_name || "Auto Workspace");
-            setSelectedLanguage(language);
-            setShowWorkspaceSettings(true);
-          }} className="p-1 hover:bg-gray-300 dark:hover:bg-gray-700 rounded text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors" title="설정">
-            <Settings size={14} />
-          </button>
+          <div className="flex items-center gap-1 shrink-0">
+            <button onClick={() => {
+              setWorkspaceNameInput(workspaceData?.workspace_name || "Auto Workspace");
+              setSelectedLanguage(language);
+              setShowWorkspaceSettings(true);
+            }} className="p-1 hover:bg-gray-300 dark:hover:bg-gray-700 rounded text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors" title="설정">
+              <Settings size={14} />
+            </button>
+            {onToggleSidebar && (
+              <button 
+                type="button"
+                onClick={onToggleSidebar} 
+                className="p-1 hover:bg-gray-300 dark:hover:bg-gray-700 rounded text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors cursor-pointer" 
+                title={language === "en" ? "Close Sidebar (Ctrl+\\)" : "사이드바 닫기 (Ctrl+\\)"}
+              >
+                <PanelLeftClose size={15} />
+              </button>
+            )}
+          </div>
         </div>
 
         {/* 상단 네비게이션 */}
