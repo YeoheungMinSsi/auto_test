@@ -3,8 +3,17 @@ import "@blocknote/core/fonts/inter.css";
 import "@blocknote/mantine/style.css";
 import { BlockNoteView } from "@blocknote/mantine";
 import { useCreateBlockNote, SuggestionMenuController, getDefaultReactSlashMenuItems, type DefaultReactSuggestionItem } from "@blocknote/react";
+import { BlockNoteSchema, createCodeBlockSpec } from "@blocknote/core";
+import { codeBlockOptions } from "@blocknote/code-block";
 import { ko, en } from "@blocknote/core/locales";
 import { FileText } from "lucide-react";
+
+// 노션 스타일의 다양한 프로그래밍 언어 지원 코드 블록 스키마
+const schema = BlockNoteSchema.create().extend({
+  blockSpecs: {
+    codeBlock: createCodeBlockSpec(codeBlockOptions),
+  },
+});
 
 interface NotionEditorProps {
   projectId: string;
@@ -33,7 +42,7 @@ export default function NotionEditor({
   const [projectName, setProjectName] = useState<string>("");
 
   const loadDocData = () => {
-    fetch(`http://localhost:8000/api/projects/${projectId}?page_id=${pageId || "progress"}`)
+    fetch(`/api/projects/${projectId}?page_id=${pageId || "progress"}`)
       .then(res => res.json())
       .then(data => {
         setProjectName(data.name || "");
@@ -192,16 +201,98 @@ function EditorWrapper({
   onWorkspaceUpdate
 }: WrapperProps) {
   const editor = useCreateBlockNote({
+    schema,
     initialContent: initialContent,
     dictionary: language === "en" ? en : ko,
   });
+
+  const editorContainerRef = useRef<HTMLDivElement>(null);
+  const [hoveredCodeBlock, setHoveredCodeBlock] = useState<{
+    text: string;
+    top: number;
+    right: number;
+  } | null>(null);
+  const [isCopied, setIsCopied] = useState(false);
+  const hideTimerRef = useRef<any>(null);
+
+  // 마우스 호버 시 현재 코드 블록 위치를 계산하여 안전하게 플로팅 버튼 표시 (DOM 수정 없음)
+  const handleMouseMove = (e: React.MouseEvent) => {
+    const container = editorContainerRef.current;
+    if (!container) return;
+
+    const target = e.target as HTMLElement;
+    if (target.closest(".bn-floating-copy-btn")) {
+      if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
+      return;
+    }
+
+    const codeBlock = target.closest<HTMLElement>('.bn-block-content[data-content-type="codeBlock"]');
+    if (codeBlock) {
+      if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
+      const rect = codeBlock.getBoundingClientRect();
+      const containerRect = container.getBoundingClientRect();
+      const pre = codeBlock.querySelector("pre");
+      const text = pre ? pre.textContent || "" : "";
+
+      setHoveredCodeBlock({
+        text,
+        top: rect.top - containerRect.top + 8,
+        right: containerRect.right - rect.right + 14,
+      });
+    } else {
+      if (!hideTimerRef.current) {
+        hideTimerRef.current = setTimeout(() => {
+          setHoveredCodeBlock(null);
+          setIsCopied(false);
+          hideTimerRef.current = null;
+        }, 150);
+      }
+    }
+  };
+
+  const handleCopy = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!hoveredCodeBlock) return;
+
+    const textToCopy = hoveredCodeBlock.text;
+    const onSuccess = () => {
+      setIsCopied(true);
+      setTimeout(() => setIsCopied(false), 2000);
+    };
+
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(textToCopy).then(onSuccess).catch(() => {
+        fallbackCopy(textToCopy, onSuccess);
+      });
+    } else {
+      fallbackCopy(textToCopy, onSuccess);
+    }
+  };
+
+  const fallbackCopy = (text: string, onSuccess: () => void) => {
+    const textArea = document.createElement("textarea");
+    textArea.value = text;
+    textArea.style.position = "fixed";
+    textArea.style.opacity = "0";
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    try {
+      document.execCommand("copy");
+      onSuccess();
+    } catch (err) {
+      console.error("Fallback copy failed:", err);
+    }
+    document.body.removeChild(textArea);
+  };
 
   const saveTimerRef = useRef<any>(null);
   const [saveStatus, setSaveStatus] = useState<"saved" | "saving" | "unsaved">("saved");
 
   const saveContent = (blocks: any[]) => {
     setSaveStatus("saving");
-    fetch(`http://localhost:8000/api/projects/${projectId}/documents/${docId}/content?page_id=${pageId || "progress"}`, {
+    fetch(`/api/projects/${projectId}/documents/${docId}/content?page_id=${pageId || "progress"}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ blocks })
@@ -238,7 +329,7 @@ function EditorWrapper({
   const handleTitleBlur = () => {
     if (title.trim() === "" || title === docTitle) return;
     
-    fetch(`http://localhost:8000/api/projects/${projectId}/documents/${docId}/title?page_id=${pageId || "progress"}`, {
+    fetch(`/api/projects/${projectId}/documents/${docId}/title?page_id=${pageId || "progress"}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ title: title.trim() })
@@ -252,7 +343,7 @@ function EditorWrapper({
     const subTitle = prompt(language === "en" ? "Enter sub-page title:" : "새 하위 문서의 제목을 입력하세요:");
     if (!subTitle || !subTitle.trim()) return;
 
-    fetch(`http://localhost:8000/api/projects/${projectId}/documents?page_id=${pageId || "progress"}`, {
+    fetch(`/api/projects/${projectId}/documents?page_id=${pageId || "progress"}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -383,7 +474,80 @@ function EditorWrapper({
         </div>
 
         {/* 에디터 본문 영역 (스크롤 제약 없이 내용에 맞춰 자연스럽게 확장) */}
-        <div className="min-h-[400px]">
+        <div 
+          ref={editorContainerRef} 
+          onMouseMove={handleMouseMove}
+          onMouseLeave={() => {
+            setHoveredCodeBlock(null);
+            setIsCopied(false);
+          }}
+          className="min-h-[400px] relative"
+        >
+          <style>{`
+            .bn-block-content[data-content-type="codeBlock"] {
+              position: relative !important;
+            }
+            .bn-block-content[data-content-type="codeBlock"] > div > select {
+              appearance: auto !important;
+              opacity: 0.75 !important;
+              background-color: rgba(255, 255, 255, 0.1) !important;
+              border: 1px solid rgba(255, 255, 255, 0.18) !important;
+              padding: 2px 8px !important;
+              border-radius: 5px !important;
+              color: #e2e8f0 !important;
+              font-size: 11px !important;
+              font-family: ui-sans-serif, system-ui, sans-serif !important;
+              cursor: pointer !important;
+              transition: all 0.2s ease !important;
+              top: 8px !important;
+              left: 14px !important;
+            }
+            .bn-block-content[data-content-type="codeBlock"]:hover > div > select {
+              opacity: 1 !important;
+              background-color: rgba(255, 255, 255, 0.18) !important;
+              border-color: rgba(255, 255, 255, 0.3) !important;
+            }
+            .bn-block-content[data-content-type="codeBlock"] > div > select > option {
+              background-color: #1e1e1e !important;
+              color: #f1f5f9 !important;
+            }
+          `}</style>
+
+          {/* 노션 스타일 플로팅 복사 버튼 (ProseMirror 내부 DOM 오염 없이 절대 위치로 안전하게 렌더링) */}
+          {hoveredCodeBlock && (
+            <button
+              type="button"
+              onClick={handleCopy}
+              style={{
+                top: `${hoveredCodeBlock.top}px`,
+                right: `${hoveredCodeBlock.right}px`,
+              }}
+              className={`bn-floating-copy-btn absolute z-20 inline-flex items-center gap-1.5 px-2.5 py-1 text-[11px] font-medium rounded-md border shadow-md transition-all cursor-pointer select-none ${
+                isCopied 
+                  ? "bg-emerald-600/90 text-white border-emerald-500" 
+                  : "bg-gray-800/90 hover:bg-gray-700 text-gray-200 border-gray-600/80 hover:text-white"
+              }`}
+              title={language === "en" ? "Copy code" : "코드 복사"}
+            >
+              {isCopied ? (
+                <>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="20 6 9 17 4 12"/>
+                  </svg>
+                  <span>{language === "en" ? "Copied!" : "복사됨!"}</span>
+                </>
+              ) : (
+                <>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <rect width="14" height="14" x="8" y="8" rx="2" ry="2"/>
+                    <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>
+                  </svg>
+                  <span>{language === "en" ? "Copy" : "복사"}</span>
+                </>
+              )}
+            </button>
+          )}
+
           <BlockNoteView 
             editor={editor} 
             theme={isDarkMode ? "dark" : "light"} 

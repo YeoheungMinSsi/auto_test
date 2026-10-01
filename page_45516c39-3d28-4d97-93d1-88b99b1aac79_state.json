@@ -170,6 +170,284 @@
                                 }
                             ],
                             "children": []
+                        },
+                        {
+                            "id": "aefd5773-0b99-4ff9-933c-60d9e9fadf79",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "위 상태면 일단 챗봇을 위한 기본적인 준비는 완료되었음",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "496d2235-7d1a-40ea-bac5-21e69ac9e8ac",
+                            "type": "paragraph",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [],
+                            "children": []
+                        },
+                        {
+                            "id": "489162df-16c2-4320-b8c6-daf9af86bdea",
+                            "type": "paragraph",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [],
+                            "children": []
+                        }
+                    ]
+                }
+            }
+        },
+        "447990a4-3632-4071-8972-4ec1449c5719": {
+            "id": "447990a4-3632-4071-8972-4ec1449c5719",
+            "name": "Linux",
+            "description": "",
+            "status": "계획 중",
+            "created_at": "2026-09-03T17:34:19.691099",
+            "tasks": [],
+            "documents": {
+                "d6591057-25d8-44b7-aa5d-c277725738d2": {
+                    "id": "d6591057-25d8-44b7-aa5d-c277725738d2",
+                    "title": "Linux",
+                    "parent_id": null,
+                    "created_at": "2026-09-03T17:34:19.691105",
+                    "blocks": [
+                        {
+                            "id": "16263e22-ef51-4577-a96d-5647c44498c6",
+                            "type": "paragraph",
+                            "props": {
+                                "textColor": "default",
+                                "backgroundColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": []
+                        }
+                    ]
+                },
+                "45e11030-ec45-43d9-825f-51852e5a68d1": {
+                    "id": "45e11030-ec45-43d9-825f-51852e5a68d1",
+                    "title": "한글 입력기",
+                    "parent_id": "d6591057-25d8-44b7-aa5d-c277725738d2",
+                    "created_at": "2026-09-03T17:48:55.941055",
+                    "blocks": [
+                        {
+                            "id": "ti9ft84",
+                            "type": "numberedListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "검색창 - Settings - System 에서 Manage installed Languages 에 접속",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "a55434c7-584f-49ef-864a-da42353a732e",
+                            "type": "numberedListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "Install / Remove Languages 에서 Korean을 선택해 Apply",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "68aa2ea9-e33f-4b67-b899-b9d068b9aa6d",
+                            "type": "numberedListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left",
+                                "start": 3
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "터미널에서 ibus-setup을 이력하여 ibus 창을 전시",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "10e64391-4456-44f8-bc73-450a816242fa",
+                            "type": "numberedListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "ibus - input Method 창에서 Add를 클릭해 Korean 검색",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "1e435317-1f75-453c-84be-0014bc450835",
+                            "type": "numberedListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "검색된 목록에서 Hangul을 선택해 설치",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "1a80da04-ea67-471c-8491-6f14778f378b",
+                            "type": "numberedListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left",
+                                "start": 6
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "Settings - Keyboard에서 Input Source 및 Add Input Source를 클릭",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "617b578c-66c0-47ee-a230-3c9363ce29fd",
+                            "type": "numberedListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "Add input Source에서 korean을 검색해 Korean (Hangul)을 선택 해 Add 클릭",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "a1e58d03-87fb-417e-9313-8015dbd25bec",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "뜨지 않는다면 Other를 클릭",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "c76d5b80-2dde-467b-8a69-69c203db3068",
+                            "type": "numberedListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left",
+                                "start": 8
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "이후 이전에 있던 Input Source를 삭제",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "7f0e58b7-8db1-4a42-af31-8f397a24219e",
+                            "type": "paragraph",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [],
+                            "children": []
+                        },
+                        {
+                            "id": "bd08de5b-71fe-4d1c-b50e-d7bd9ce169e1",
+                            "type": "heading",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left",
+                                "level": 3,
+                                "isToggleable": false
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "한글 변환 방법",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "ce24bd5b-411f-4d2e-a609-8cf95f2330c6",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "shift + Space를 누르면 한글/영어로 변환됨",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
                         }
                     ]
                 }

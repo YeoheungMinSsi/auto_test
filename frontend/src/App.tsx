@@ -4,7 +4,7 @@ import Automation from "./components/Automation"
 import Projects from "./components/Projects"
 import Blog from "./components/Blog"
 import TodoList from "./components/TodoList"
-import { Plus, MoreVertical, X, Edit2, Eye, EyeOff, Trash2 } from "lucide-react"
+import { Plus, MoreVertical, X, Edit2, Eye, EyeOff, Trash2, PanelLeft } from "lucide-react"
 
 const PAGE_ICONS = ["📄", "📝", "🚀", "📊", "💡", "📚", "⚙️", "📁", "🎨", "🔬", "📌", "🎯", "💻", "📂", "✨", "🔍", "⚡", "🔒", "🛠️", "💬"];
 
@@ -13,6 +13,30 @@ function App() {
   const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
   const [selectedDocId, setSelectedDocId] = useState<string | null>(null);
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(() => {
+    const saved = localStorage.getItem("sidebar_open");
+    return saved !== null ? saved === "true" : true;
+  });
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen((prev) => {
+      const next = !prev;
+      localStorage.setItem("sidebar_open", String(next));
+      return next;
+    });
+  };
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === "\\") {
+        e.preventDefault();
+        toggleSidebar();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
   const [language, setLanguage] = useState<"ko" | "en">(() => {
     return (localStorage.getItem("app_lang") as "ko" | "en") || "ko";
   });
@@ -37,7 +61,7 @@ function App() {
 
   const handleUpdateEditingPage = () => {
     if (!editingPage || !editingPage.title.trim()) return;
-    fetch(`http://localhost:8000/api/workspace/pages/${editingPage.id}`, {
+    fetch(`/api/workspace/pages/${editingPage.id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -61,7 +85,7 @@ function App() {
 
   const handleToggleHidden = (page: any, e: React.MouseEvent) => {
     e.stopPropagation();
-    fetch(`http://localhost:8000/api/workspace/pages/${page.id}`, {
+    fetch(`/api/workspace/pages/${page.id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ is_hidden: !page.is_hidden })
@@ -78,7 +102,7 @@ function App() {
   };
 
   const loadWorkspace = () => {
-    fetch("http://localhost:8000/api/workspace")
+    fetch("/api/workspace")
       .then(res => {
         if (!res.ok) throw new Error("Server not responding");
         setIsBackendConnected(true);
@@ -111,7 +135,7 @@ function App() {
 
   const handleCreatePage = () => {
     if (!newPageData.title.trim()) return;
-    fetch("http://localhost:8000/api/workspace/pages", {
+    fetch("/api/workspace/pages", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(newPageData)
@@ -134,7 +158,7 @@ function App() {
   const handleDeletePage = (pageId: string, e: React.MouseEvent) => {
     e.stopPropagation();
     if (window.confirm("이 페이지를 삭제하시겠습니까?")) {
-      fetch(`http://localhost:8000/api/workspace/pages/${pageId}`, { method: "DELETE" })
+      fetch(`/api/workspace/pages/${pageId}`, { method: "DELETE" })
         .then(res => {
           if (!res.ok) throw new Error("Failed to delete page");
           if (currentView === pageId) setCurrentView("home");
@@ -305,6 +329,8 @@ function App() {
   return (
     <div className="flex w-full h-screen overflow-hidden bg-white dark:bg-[#121212] text-[#37352f] dark:text-gray-200 font-sans antialiased transition-colors">
       <Sidebar 
+        isOpen={isSidebarOpen}
+        onToggleSidebar={toggleSidebar}
         currentView={currentView} 
         onNavigate={handleNavigate}
         selectedProjectId={selectedProjectId}
@@ -321,7 +347,7 @@ function App() {
         {!isBackendConnected && (
           <div className="bg-red-500 text-white px-6 py-2.5 text-sm flex items-center justify-between font-semibold shrink-0 shadow-md">
             <span className="flex items-center gap-2">
-              ⚠️ 백엔드 API 서버(localhost:8000)에 연결할 수 없습니다. 기능 동작을 위해 'python main.py' 백엔드 서버를 먼저 실행해 주세요.
+              ⚠️ 백엔드 API 서버에 연결할 수 없습니다. 기능 동작을 위해 백엔드 서버를 먼저 실행해 주세요.
             </span>
             <button 
               onClick={loadWorkspace}
@@ -332,8 +358,17 @@ function App() {
           </div>
         )}
 
-        <div className="h-12 border-b border-gray-200/60 dark:border-gray-800 bg-white dark:bg-[#1a1a1a] flex items-center justify-between px-6 text-sm text-gray-500 dark:text-gray-400 font-medium shrink-0 transition-colors">
-          <div className="flex items-center gap-2">
+        <div className="h-12 border-b border-gray-200/60 dark:border-gray-800 bg-white dark:bg-[#1a1a1a] flex items-center justify-between px-4 sm:px-6 text-sm text-gray-500 dark:text-gray-400 font-medium shrink-0 transition-colors">
+          <div className="flex items-center gap-2.5">
+            <button
+              onClick={toggleSidebar}
+              className={`p-1.5 rounded-lg text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 transition-all ${
+                !isSidebarOpen ? "bg-blue-50 text-blue-600 dark:bg-blue-950/40 dark:text-blue-400" : ""
+              }`}
+              title={isSidebarOpen ? (language === "en" ? "Close sidebar (Ctrl+\\)" : "사이드바 접기 (Ctrl+\\)") : (language === "en" ? "Open sidebar (Ctrl+\\)" : "사이드바 열기 (Ctrl+\\)")}
+            >
+              <PanelLeft size={18} />
+            </button>
             <span className="cursor-pointer hover:text-gray-800 dark:hover:text-gray-200" onClick={() => handleNavigate("home")}>Auto Workspace</span>
             {currentView !== "home" && (
               <>

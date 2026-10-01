@@ -71,7 +71,7 @@ export default function Automation() {
 
   // 카테고리 목록 불러오기
   const loadCategories = () => {
-    fetch("http://localhost:8000/api/categories")
+    fetch("/api/categories")
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data)) {
@@ -93,7 +93,7 @@ export default function Automation() {
   const handleCreateCategory = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newCategoryName.trim()) return;
-    fetch("http://localhost:8000/api/categories", {
+    fetch("/api/categories", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ category: newCategoryName.trim() })
@@ -111,7 +111,7 @@ export default function Automation() {
     setIsSearching(true);
     setSearchResults([]);
     const sourcesParam = searchSources.join(",");
-    fetch(`http://localhost:8000/api/papers/search?query=${encodeURIComponent(searchQuery)}&sources=${sourcesParam}&limit=${searchLimit}`)
+    fetch(`/api/papers/search?query=${encodeURIComponent(searchQuery)}&sources=${sourcesParam}&limit=${searchLimit}`)
       .then(res => {
         if (!res.ok) throw new Error("검색 오류");
         return res.json();
@@ -140,7 +140,7 @@ export default function Automation() {
     const category = selectedPaperCats[index] || "temp";
     setDownloadStatuses(prev => ({ ...prev, [index]: "loading" }));
     
-    fetch("http://localhost:8000/api/papers/download", {
+    fetch("/api/papers/download", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ paper, category })
@@ -165,7 +165,7 @@ export default function Automation() {
 
     setShowLogTerminal(true);
     const interval = setInterval(() => {
-      fetch(`http://localhost:8000/api/tasks/${activeTaskId}`)
+      fetch(`/api/tasks/${activeTaskId}`)
         .then(res => res.json())
         .then((data: TaskStatus) => {
           setTaskStatus(data);
@@ -197,7 +197,7 @@ export default function Automation() {
     setIsSearching(true);
     
     const sourcesParam = autoSources.join(",");
-    fetch(`http://localhost:8000/api/papers/search?query=${encodeURIComponent(autoQuery)}&sources=${sourcesParam}&limit=${autoLimit}`)
+    fetch(`/api/papers/search?query=${encodeURIComponent(autoQuery)}&sources=${sourcesParam}&limit=${autoLimit}`)
       .then(res => res.json())
       .then(async (papers: Paper[]) => {
         if (!Array.isArray(papers) || papers.length === 0) {
@@ -208,7 +208,7 @@ export default function Automation() {
         
         setIsSearching(false);
         const targetPaper = papers[0];
-        const resDl = await fetch("http://localhost:8000/api/papers/download", {
+        const resDl = await fetch("/api/papers/download", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ paper: targetPaper, category: autoCategory })
@@ -219,7 +219,7 @@ export default function Automation() {
           alert("이미 존재하는 논문이거나 다운로드에 실패했습니다. (메타데이터만 수집되었을 수 있습니다.)");
         }
         
-        const resCol = await fetch("http://localhost:8000/api/collected-papers");
+        const resCol = await fetch("/api/collected-papers");
         const collected: any[] = await resCol.json();
         const latestPaper = collected.find(c => c.title === targetPaper.title && c.pdf_path);
         
@@ -228,7 +228,7 @@ export default function Automation() {
           return;
         }
 
-        const resSum = await fetch("http://localhost:8000/api/papers/summarize", {
+        const resSum = await fetch("/api/papers/summarize", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ pdf_path: latestPaper.pdf_path, title: latestPaper.title })
@@ -249,7 +249,7 @@ export default function Automation() {
   // 탭 2: 카테고리 변경 시 요약 논문 파일 로드
   useEffect(() => {
     if (!pptCategory) return;
-    fetch(`http://localhost:8000/api/category-summaries?category=${encodeURIComponent(pptCategory)}`)
+    fetch(`/api/category-summaries?category=${encodeURIComponent(pptCategory)}`)
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data)) {
@@ -265,7 +265,7 @@ export default function Automation() {
     if (selectedPptPaperIndex === -1 || pptPapers.length === 0) return;
     const selected = pptPapers[selectedPptPaperIndex];
     
-    fetch("http://localhost:8000/api/ppt/generate", {
+    fetch("/api/ppt/generate", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ json_path: selected.json_path, title: selected.title })
@@ -290,7 +290,7 @@ export default function Automation() {
     setStrapiPapers([]);
     
     const catArg = strapiFilterCat === "전체보기" ? "" : `?category=${encodeURIComponent(strapiFilterCat)}`;
-    fetch(`http://localhost:8000/api/strapi/papers${catArg}`)
+    fetch(`/api/strapi/papers${catArg}`)
       .then(res => res.json())
       .then(data => {
         if (data.error) {

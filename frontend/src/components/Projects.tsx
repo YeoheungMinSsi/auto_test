@@ -73,7 +73,7 @@ export default function Projects({
 
   // 프로젝트 목록 로드
   const loadProjects = () => {
-    fetch(`http://localhost:8000/api/projects?page_id=${customPageId || "progress"}`)
+    fetch(`/api/projects?page_id=${customPageId || "progress"}`)
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data)) {
@@ -89,7 +89,7 @@ export default function Projects({
 
   // 단일 프로젝트 상세 로드 함수
   const loadProjectDetail = (projId: string) => {
-    fetch(`http://localhost:8000/api/projects/${projId}?page_id=${customPageId || "progress"}`)
+    fetch(`/api/projects/${projId}?page_id=${customPageId || "progress"}`)
       .then(res => res.json())
       .then(data => {
         setProjectDetail(data);
@@ -99,7 +99,7 @@ export default function Projects({
 
   useEffect(() => {
     if (selectedProjectId) {
-      fetch(`http://localhost:8000/api/projects/${selectedProjectId}?page_id=${customPageId || "progress"}`)
+      fetch(`/api/projects/${selectedProjectId}?page_id=${customPageId || "progress"}`)
         .then(res => res.json())
         .then(data => {
           setProjectDetail(data);
@@ -115,7 +115,7 @@ export default function Projects({
     e.preventDefault();
     if (!newProjName.trim()) return;
 
-    fetch(`http://localhost:8000/api/projects?page_id=${customPageId || "progress"}`, {
+    fetch(`/api/projects?page_id=${customPageId || "progress"}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name: newProjName, description: newProjDesc })
@@ -144,7 +144,7 @@ export default function Projects({
     e.stopPropagation();
     if (!confirm("이 프로젝트를 정말 삭제하시겠습니까?")) return;
 
-    fetch(`http://localhost:8000/api/projects/${id}?page_id=${customPageId || "progress"}`, {
+    fetch(`/api/projects/${id}?page_id=${customPageId || "progress"}`, {
       method: "DELETE"
     })
       .then(() => {
@@ -162,7 +162,7 @@ export default function Projects({
     e.preventDefault();
     if (!editProjId || !editProjName.trim()) return;
 
-    fetch(`http://localhost:8000/api/projects/${editProjId}?page_id=${customPageId || "progress"}`, {
+    fetch(`/api/projects/${editProjId}?page_id=${customPageId || "progress"}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name: editProjName, status: editProjStatus })
@@ -180,7 +180,7 @@ export default function Projects({
     e.preventDefault();
     if (!newDocTitle.trim() || !selectedProjectId) return;
 
-    fetch(`http://localhost:8000/api/projects/${selectedProjectId}/documents?page_id=${customPageId || "progress"}`, {
+    fetch(`/api/projects/${selectedProjectId}/documents?page_id=${customPageId || "progress"}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ title: newDocTitle, parent_id: addingDocParentId })
@@ -201,7 +201,7 @@ export default function Projects({
     e.stopPropagation();
     if (!selectedProjectId || !confirm("이 문서를 삭제하시겠습니까? 하위 문서도 모두 함께 삭제됩니다.")) return;
 
-    fetch(`http://localhost:8000/api/projects/${selectedProjectId}/documents/${docId}?page_id=${customPageId || "progress"}`, {
+    fetch(`/api/projects/${selectedProjectId}/documents/${docId}?page_id=${customPageId || "progress"}`, {
       method: "DELETE"
     })
       .then(() => {
@@ -269,7 +269,7 @@ export default function Projects({
 
   const handleUpdatePageIcon = (icon: string) => {
     if (!customPageId) return;
-    fetch(`http://localhost:8000/api/workspace/pages/${customPageId}`, {
+    fetch(`/api/workspace/pages/${customPageId}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ icon })

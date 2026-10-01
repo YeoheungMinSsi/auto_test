@@ -37,7 +37,7 @@ export default function Blog() {
     setError("");
     const catArg = selectedCat === "전체" ? "" : `?category=${encodeURIComponent(selectedCat)}`;
     
-    fetch(`http://localhost:8000/api/strapi/blog${catArg}`)
+    fetch(`/api/strapi/blog${catArg}`)
       .then(res => res.json())
       .then(data => {
         if (data.error) {
@@ -83,7 +83,7 @@ export default function Blog() {
     }
 
     setIsSubmitting(true);
-    fetch("http://localhost:8000/api/strapi/blog", {
+    fetch("/api/strapi/blog", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ title, content, category, author })
