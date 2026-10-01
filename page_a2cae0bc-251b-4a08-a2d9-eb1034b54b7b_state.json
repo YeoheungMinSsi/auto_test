@@ -402,14 +402,347 @@
                         },
                         {
                             "id": "f4fbec03-e6e1-45d4-8170-eab7a93c49b4",
-                            "type": "paragraph",
+                            "type": "heading",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left",
+                                "level": 4,
+                                "isToggleable": false
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "교수님(CV)",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "0d27f0f2-2c12-418d-98c0-0377f4df8fdd",
+                            "type": "bulletListItem",
                             "props": {
                                 "backgroundColor": "default",
                                 "textColor": "default",
                                 "textAlignment": "left"
                             },
-                            "content": [],
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "감진규(부센터장) 교수님",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": [
+                                {
+                                    "id": "ec9f16f8-9472-447c-b3bc-1b0b7ddc6ca5",
+                                    "type": "bulletListItem",
+                                    "props": {
+                                        "backgroundColor": "default",
+                                        "textColor": "default",
+                                        "textAlignment": "left"
+                                    },
+                                    "content": [
+                                        {
+                                            "type": "text",
+                                            "text": "컴퓨터비전, 의료영상처리, 머신러닝",
+                                            "styles": {}
+                                        }
+                                    ],
+                                    "children": []
+                                },
+                                {
+                                    "id": "811a21b9-8eb5-4321-a207-2c3360c82fe0",
+                                    "type": "bulletListItem",
+                                    "props": {
+                                        "backgroundColor": "default",
+                                        "textColor": "default",
+                                        "textAlignment": "left"
+                                    },
+                                    "content": [
+                                        {
+                                            "type": "link",
+                                            "href": "https://bic.pusan.ac.kr/bic/index.do",
+                                            "content": [
+                                                {
+                                                    "type": "text",
+                                                    "text": "https://bic.pusan.ac.kr/bic/index.do",
+                                                    "styles": {}
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "children": []
+                                }
+                            ]
+                        },
+                        {
+                            "id": "2f5d9e20-5009-4b54-a411-b82ddcacd4a1",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "박진선 교수님",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": [
+                                {
+                                    "id": "649e5e24-8b8f-4c30-90ff-837a7b64f5a9",
+                                    "type": "bulletListItem",
+                                    "props": {
+                                        "backgroundColor": "default",
+                                        "textColor": "default",
+                                        "textAlignment": "left"
+                                    },
+                                    "content": [
+                                        {
+                                            "type": "text",
+                                            "text": "컴퓨터비전, 머신러닝",
+                                            "styles": {}
+                                        }
+                                    ],
+                                    "children": []
+                                },
+                                {
+                                    "id": "270b82c2-7c76-4d97-a248-3af1b07234eb",
+                                    "type": "bulletListItem",
+                                    "props": {
+                                        "backgroundColor": "default",
+                                        "textColor": "default",
+                                        "textAlignment": "left"
+                                    },
+                                    "content": [
+                                        {
+                                            "type": "link",
+                                            "href": "https://pnu-viplab.github.io/",
+                                            "content": [
+                                                {
+                                                    "type": "text",
+                                                    "text": "https://pnu-viplab.github.io/",
+                                                    "styles": {
+                                                        "underline": true
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "children": []
+                                }
+                            ]
+                        },
+                        {
+                            "id": "0365f727-e08d-4b64-b7bb-6b098437c1ee",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "전상률 교수님",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": [
+                                {
+                                    "id": "9f567ea6-69e1-40b2-bc3e-0d41fa293f38",
+                                    "type": "bulletListItem",
+                                    "props": {
+                                        "backgroundColor": "default",
+                                        "textColor": "default",
+                                        "textAlignment": "left"
+                                    },
+                                    "content": [
+                                        {
+                                            "type": "text",
+                                            "text": "컴퓨터비전, 머신러닝",
+                                            "styles": {}
+                                        }
+                                    ],
+                                    "children": []
+                                },
+                                {
+                                    "id": "8d2c8826-70dc-4610-9816-d49cd01dacee",
+                                    "type": "bulletListItem",
+                                    "props": {
+                                        "backgroundColor": "default",
+                                        "textColor": "default",
+                                        "textAlignment": "left"
+                                    },
+                                    "content": [
+                                        {
+                                            "type": "link",
+                                            "href": "https://pnucvlab.github.io/",
+                                            "content": [
+                                                {
+                                                    "type": "text",
+                                                    "text": "https://pnucvlab.github.io/",
+                                                    "styles": {
+                                                        "underline": true,
+                                                        "textColor": "rgb(85, 85, 85)"
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "children": []
+                                }
+                            ]
+                        },
+                        {
+                            "id": "6b9494a3-31fd-4c6d-b2dc-9bcbd54dced0",
+                            "type": "heading",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left",
+                                "level": 4,
+                                "isToggleable": false
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "교수님(another)",
+                                    "styles": {}
+                                }
+                            ],
                             "children": []
+                        },
+                        {
+                            "id": "6aa1a7ff-09a9-4226-9a8d-bc56a6d11523",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "김종덕 교수님",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": [
+                                {
+                                    "id": "140deb55-4526-4552-8ebc-f8a7691f3d54",
+                                    "type": "bulletListItem",
+                                    "props": {
+                                        "backgroundColor": "default",
+                                        "textColor": "default",
+                                        "textAlignment": "left"
+                                    },
+                                    "content": [
+                                        {
+                                            "type": "text",
+                                            "text": "사물 인터넷(AIoT), 무선네트워",
+                                            "styles": {}
+                                        }
+                                    ],
+                                    "children": []
+                                },
+                                {
+                                    "id": "bd7b5638-60f2-4498-9f54-c6187a9daf85",
+                                    "type": "bulletListItem",
+                                    "props": {
+                                        "backgroundColor": "default",
+                                        "textColor": "default",
+                                        "textAlignment": "left"
+                                    },
+                                    "content": [
+                                        {
+                                            "type": "link",
+                                            "href": "https://pnu-inc.github.io/#professor",
+                                            "content": [
+                                                {
+                                                    "type": "text",
+                                                    "text": "https://pnu-inc.github.io/#professor",
+                                                    "styles": {}
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "children": []
+                                }
+                            ]
+                        },
+                        {
+                            "id": "9b453264-f621-461e-b7bc-f3ad87c64971",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "권용인 교수님",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": [
+                                {
+                                    "id": "4c0979a5-417e-4d18-9fdf-bc9ae4d3d23a",
+                                    "type": "bulletListItem",
+                                    "props": {
+                                        "backgroundColor": "default",
+                                        "textColor": "default",
+                                        "textAlignment": "left"
+                                    },
+                                    "content": [
+                                        {
+                                            "type": "text",
+                                            "text": "임베디드 시스템, 인공지능 반도체, 온디바이스 AI ",
+                                            "styles": {}
+                                        }
+                                    ],
+                                    "children": []
+                                },
+                                {
+                                    "id": "c59dfce1-3d76-4d56-9b9b-986bdc70505b",
+                                    "type": "bulletListItem",
+                                    "props": {
+                                        "backgroundColor": "default",
+                                        "textColor": "default",
+                                        "textAlignment": "left"
+                                    },
+                                    "content": [
+                                        {
+                                            "type": "link",
+                                            "href": "https://sota.pusan.ac.kr/members.html",
+                                            "content": [
+                                                {
+                                                    "type": "text",
+                                                    "text": "https://sota.pusan.ac.kr/members.html",
+                                                    "styles": {}
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "children": []
+                                },
+                                {
+                                    "id": "04d642c1-ed5c-4187-9d16-94c2f1f19206",
+                                    "type": "paragraph",
+                                    "props": {
+                                        "backgroundColor": "default",
+                                        "textColor": "default",
+                                        "textAlignment": "left"
+                                    },
+                                    "content": [],
+                                    "children": []
+                                }
+                            ]
                         }
                     ]
                 },
@@ -911,6 +1244,46 @@
                         },
                         {
                             "id": "a4eb70f1-419f-4a54-bb7a-0f2019f92951",
+                            "type": "paragraph",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [],
+                            "children": []
+                        }
+                    ]
+                }
+            }
+        },
+        "28ec2cad-70ca-4e3c-8406-0b8c7e71bf54": {
+            "id": "28ec2cad-70ca-4e3c-8406-0b8c7e71bf54",
+            "name": "vm전달용",
+            "description": "",
+            "status": "계획 중",
+            "created_at": "2026-09-11T17:41:45.552179",
+            "tasks": [],
+            "documents": {
+                "92e8b502-8b7e-4d9e-a7f9-94f4c50fd2e5": {
+                    "id": "92e8b502-8b7e-4d9e-a7f9-94f4c50fd2e5",
+                    "title": "vm전달용",
+                    "parent_id": null,
+                    "created_at": "2026-09-11T17:41:45.555773",
+                    "blocks": [
+                        {
+                            "id": "9fbe9bfb-1ed8-48d4-bf32-448acde173d9",
+                            "type": "paragraph",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [],
+                            "children": []
+                        },
+                        {
+                            "id": "e3403a79-02c9-4c78-8684-23d4c68e118e",
                             "type": "paragraph",
                             "props": {
                                 "backgroundColor": "default",

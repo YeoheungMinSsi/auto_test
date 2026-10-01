@@ -884,6 +884,531 @@
                             "children": []
                         }
                     ]
+                },
+                "db19abe2-96c0-48b9-943c-3786b207b5bc": {
+                    "id": "db19abe2-96c0-48b9-943c-3786b207b5bc",
+                    "title": "챗봇 서버",
+                    "parent_id": "73aaae28-3ebe-449a-af85-2e5c243d2f4f",
+                    "created_at": "2026-09-09T17:22:53.431499",
+                    "blocks": [
+                        {
+                            "id": "lrm4tz5",
+                            "type": "heading",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left",
+                                "level": 3,
+                                "isToggleable": false
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "서버생성",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "6ba4c529-5357-457f-a805-ce894bcaa702",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "챗봇을 24시간 돌리기 위해서 챗봇 api를 가상서버(VMware)에 생성",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "f25372c6-947b-444c-af4d-ef14b0e080f7",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "하나의 VMware 머신을 운용하는 것이 효율적",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "40863290-8532-4bb2-8d02-1b0934c8ecde",
+                            "type": "heading",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left",
+                                "level": 4,
+                                "isToggleable": false
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "파이썬 가상환경",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "11660af1-821f-4954-9968-cf41a8b6ecb8",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "원하는 디렉토리를 생성하고 거기에 가상환경을 생성",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "a52bb2c2-6504-49ba-a689-3fbd060c8771",
+                            "type": "codeBlock",
+                            "props": {
+                                "language": "text"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "python3 -m venv [가상환경 명]",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "9791bcc1-1722-452c-9cf3-38237a48a3d9",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "가상환경 접속",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "98c13b45-e2ba-4cf9-b891-cc6a9c3f59b6",
+                            "type": "codeBlock",
+                            "props": {
+                                "language": "text"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "source [프로젝트위치]/bin/activate\n# 가상환경 해제\ndeactivate",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "b23e0395-76fe-4a4e-a24a-fc3ffe0a53b1",
+                            "type": "heading",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left",
+                                "level": 4,
+                                "isToggleable": false
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "필수 라이브러리 설치",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "330cb9b2-579c-4aa0-9c0c-eb64f807e9e0",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "필수 라이브러리(이전 drink 챗봇을 운용하는데 사용한 라이브러리) 설치",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "df38f347-fedd-4435-8427-007a73a90eda",
+                            "type": "codeBlock",
+                            "props": {
+                                "language": "text"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "# 가상환경 on 상태\npip install openapi uvicorn python-dotenv pydantic requests",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "469c81ca-285f-4abc-a520-9d053a8e6d0d",
+                            "type": "heading",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left",
+                                "level": 3,
+                                "isToggleable": false
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "테스트",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "54ea3b6e-b098-4240-9722-dfaf6394b12f",
+                            "type": "heading",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left",
+                                "level": 4,
+                                "isToggleable": false
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "챗봇 코드 임시 생성",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "ba20dbfd-4f77-4b8b-b8aa-79cc0b580902",
+                            "type": "codeBlock",
+                            "props": {
+                                "language": "text"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "vim [프로젝트위치]/router.py",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "cf421335-8055-47a4-abac-8ae885e7d32f",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "아래 내용 임시 저장",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "04275707-c82f-4be7-8f62-45e4a4750deb",
+                            "type": "codeBlock",
+                            "props": {
+                                "language": "text"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "from fastapi import APIRouter\nfrom pydantic import BaseModel\n\nrouter = APIRouter(prefix=\"/drink\", tags=[\"Drink Chatbot\"])\n\nclass ChatRequest(BaseModel):\n    message: str\n\n@router.get(\"/ping\")\ndef ping():\n    return {\"status\": \"ok\", \"message\": \"음료 챗봇 서버가 정상 작동 중입니다!\"}\n\n@router.post(\"/chat\")\ndef chat(request: ChatRequest):\n    user_msg = request.message\n    # [임시 테스트 응답] 나중에 여기에 OpenAI나 LLM 로직을 연결합니다.\n    bot_reply = f\"음료 챗봇입니다. '{user_msg}'에 맞는 음료를 추천해 드릴게요! (예: 시원한 아이스 아메리카노)\"\n    return {\"reply\": bot_reply}",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "78b69f6b-1bc3-45e4-a99f-2de5603dc4a5",
+                            "type": "heading",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left",
+                                "level": 4,
+                                "isToggleable": false
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "메인 실행 실행 파일 생성",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "33e76768-d32d-45b1-b986-15879a684c50",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "여러 챗봇을 묶을 메인 실행 파일(main.py) 생성",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "6f799926-66f5-4bf2-a72a-a9ac54307923",
+                            "type": "codeBlock",
+                            "props": {
+                                "language": "text"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "vim [프로젝트 위치]/main.py",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "6a4adc3b-0db8-4425-8b35-5811fa0790c2",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "임시 내용 저장",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "817ecdeb-5935-45bc-bb4a-02440c325d81",
+                            "type": "codeBlock",
+                            "props": {
+                                "language": "text"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "from fastapi import FastAPI\nfrom drink.router import router as drink_router\n\n# Nginx에서 /chatbot 경로로 들어오므로 root_path 지정\napp = FastAPI(\n    title=\"통합 챗봇 API\",\n    root_path=\"/chatbot\"\n)\n\n# drink 챗봇 라우터 등록\napp.include_router(drink_router)\n\n@app.get(\"/\")\ndef read_root():\n    return {\"service\": \"챗봇 메인 게이트웨이\", \"version\": \"1.0\"}",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "041c87d0-5af0-4d6d-a269-fe19d182decf",
+                            "type": "heading",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left",
+                                "level": 3,
+                                "isToggleable": false
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "로컬에서 챗봇 서버 띄우기",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "c678c880-85d0-4f5f-820b-0a71390dcf2b",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "다른 프로젝트에서 포트를 8000으로 생성하여 8001 포트로 챗봇 서버 생성",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "f80bd663-0715-4784-b971-d94a1e20abe7",
+                            "type": "codeBlock",
+                            "props": {
+                                "language": "text"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "uvicorn main:app --host 127.0.0.1 --port 8001 --reload",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "016fd4c9-6cee-4e5f-a9ce-784938709145",
+                            "type": "heading",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left",
+                                "level": 4,
+                                "isToggleable": false
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "테스트",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "b4f273b5-f255-4df6-9a44-a4053ae26b06",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "터미널에서 정상 작동하는지 테스트",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "8623a66d-1e81-43ca-ade1-cf9267308b71",
+                            "type": "codeBlock",
+                            "props": {
+                                "language": "text"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "curl http://127.0.0.1:8001/drink/ping\n# {\"status\":\"ok\",\"message\":\"음료 챗봇 서버가 정상 작동 중입니다!\"} 가 나오면 성공!",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "c994a636-a648-4bd2-ac3d-2e4e2704a98b",
+                            "type": "heading",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left",
+                                "level": 3,
+                                "isToggleable": false
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "Ollama서버",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "d6d7f222-ce3c-42eb-b623-c697bb3bfccf",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "ollama서버는 gpu를 사용해야 하므로 vmware에서 사용이 불가능함, 따라서 윈도우에서 Ollama서버를 운용하고 포트를 열어 vmware에서 ollama서버와 통신하도록 만들어서 vmware가 api를 통해 요청하고 이 요청을 받은 ollama서버가 윈도우에서 gpu를 연산을 하고 결과를 vmware로 전송함",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "f2078f6c-0ab5-4936-a6fb-019eefa2f306",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [],
+                            "children": []
+                        }
+                    ]
+                },
+                "62ce6af7-d658-4904-91ff-a56063b9ecbc": {
+                    "id": "62ce6af7-d658-4904-91ff-a56063b9ecbc",
+                    "title": "기존 프로젝트(drink)와 연결",
+                    "parent_id": "db19abe2-96c0-48b9-943c-3786b207b5bc",
+                    "created_at": "2026-09-09T18:01:27.057858",
+                    "blocks": [
+                        {
+                            "id": "9f2e7454-48ed-4929-8f3e-560989a6322a",
+                            "type": "text",
+                            "content": ""
+                        }
+                    ]
                 }
             }
         },
@@ -3450,7 +3975,7 @@
                             "content": [
                                 {
                                     "type": "text",
-                                    "text": "nohub",
+                                    "text": "nohub(로그)",
                                     "styles": {}
                                 }
                             ],
@@ -4227,7 +4752,7 @@
                             "children": []
                         },
                         {
-                            "id": "c9cce7f9-ba53-4044-8062-5609c3c1a4a0",
+                            "id": "5cbe501a-a90f-44b5-b77e-5b0df1d1de71",
                             "type": "heading",
                             "props": {
                                 "backgroundColor": "default",
@@ -5584,7 +6109,7 @@
                             "content": [
                                 {
                                     "type": "text",
-                                    "text": "가상머신의 ~/project/auto_test 디렉토리",
+                                    "text": "가상머신의 ~/project/auto_test 디렉토리에 start.sh라는 스크립트 파일을 생성",
                                     "styles": {}
                                 }
                             ],
@@ -5804,6 +6329,2267 @@
                                     "styles": {}
                                 }
                             ],
+                            "children": []
+                        },
+                        {
+                            "id": "9984187b-a044-4025-8c96-54c602882583",
+                            "type": "heading",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left",
+                                "level": 4,
+                                "isToggleable": false
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "이후 문제",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "39918c8e-9c8d-4459-8655-3da0cd9ac658",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "가상화를 하고 쉘을 입력해야 제대로 백엔드 서버가 구동되어 start.sh파일을 수정함",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "a17913da-1254-4a85-9a03-0f17ec67e0a8",
+                            "type": "codeBlock",
+                            "props": {
+                                "language": "text"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "nohup /home/min/blog/bin/python3 main.py > ~/logs/auto/app.log 2> ~/logs/auto/error.log &",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        }
+                    ]
+                },
+                "a271bd14-5752-4acb-b00b-36c623fdd03a": {
+                    "id": "a271bd14-5752-4acb-b00b-36c623fdd03a",
+                    "title": "오류사항",
+                    "parent_id": null,
+                    "created_at": "2026-09-08T19:07:21.970413",
+                    "blocks": [
+                        {
+                            "id": "lu6f1i5",
+                            "type": "heading",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left",
+                                "level": 2,
+                                "isToggleable": false
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "26년",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "73c78aa6-bfce-4ee0-8e48-b191ff67ec3a",
+                            "type": "heading",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left",
+                                "level": 3,
+                                "isToggleable": false
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "9월",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "ccaf42d5-0863-4aa4-93aa-88f7946b11dd",
+                            "type": "heading",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left",
+                                "level": 4,
+                                "isToggleable": false
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "8일",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "64ce685f-12f0-46e0-805f-92d39636fa59",
+                            "type": "numberedListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "전일(7일)에 서버를 생성 후 제대로 구동되는 것을 확인, 이후 8일에 다시 가상환경(VMware)에서 서버를 구동하니 안되는 사항 발생",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "fb6c3c62-6e53-4e16-867b-9ec20e871f14",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "해당 사항은 서버를 구동시키기 위해 설치한 라이브러리를 파이썬 가상화(env)를 통해서 설치를 했는데 가상화를 activate하지 않고 구동하니 front상에서 문제가 있다고 뜸",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "52771791-ab3f-4b04-8d4f-d5fd594c16c2",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "간단히 구동하기 위해서 만든 ",
+                                    "styles": {}
+                                },
+                                {
+                                    "type": "link",
+                                    "href": "https://start.sh",
+                                    "content": [
+                                        {
+                                            "type": "text",
+                                            "text": "start.sh",
+                                            "styles": {}
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "text",
+                                    "text": " 파일의 내용을 가상화를 하는 동시에 서버(백엔드, main.py)를 구동하여 \n로그를 저장하도록 설정함",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "19dbc569-378e-4986-973e-e17e015934e6",
+                            "type": "codeBlock",
+                            "props": {
+                                "language": "text"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "# 이때 가상화를 구동하기 위해 가상화 디렉토리 위치를 찾는 방법\nfind ~ -name \"activate\" 2>/dev/null\n# 가상화를 수행하는 방법\nsource 가상화위치/activate\n\n# start.sh파일 내 내용\nnohup /home/min/blog/bin/python3 main.py > ~/logs/auto/app.log 2> ~/logs/auto/error.log &",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "8b1b690c-da3f-4e03-9c72-44caac5b6e02",
+                            "type": "paragraph",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [],
+                            "children": []
+                        },
+                        {
+                            "id": "d30f76a3-bc43-4ab7-8c43-4c435b228489",
+                            "type": "numberedListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left",
+                                "start": 2
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "위 가상화를 수행하고도 프론트에 백엔드가 연결이 되어있지 않다는 내용 확인",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "406edb62-f5a8-4319-a562-9fe37620a22c",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "위 문제는 브라우저는 사용자의 pc(윈도우)에서 돌고 있음, 그런데 프론트 코드에 주소가 \"http://localhost:8000\"으로 되어있었음",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": [
+                                {
+                                    "id": "cbe18781-ba76-48ac-bc27-2ea06539b23c",
+                                    "type": "bulletListItem",
+                                    "props": {
+                                        "backgroundColor": "default",
+                                        "textColor": "default",
+                                        "textAlignment": "left"
+                                    },
+                                    "content": [
+                                        {
+                                            "type": "text",
+                                            "text": "이 localhost는 내 컴퓨터(윈도우)를 뜻해, 브라우저는 가상머신을 보지않고 윈도우 내 프론트 코드의 8000포트를 접근할려고함",
+                                            "styles": {}
+                                        }
+                                    ],
+                                    "children": []
+                                }
+                            ]
+                        },
+                        {
+                            "id": "d6b6000b-2f59-4c94-8729-646bd4089ab5",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "이 문제를 프론트엔드 코드의 주소를 ",
+                                    "styles": {}
+                                },
+                                {
+                                    "type": "link",
+                                    "href": "http://localhost:8000/api",
+                                    "content": [
+                                        {
+                                            "type": "text",
+                                            "text": "http://localhost:8000/api",
+                                            "styles": {}
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "text",
+                                    "text": " 에서 상대 경로인 \"/api\"로 고쳐, Nginx가 가상머신 백엔드로 접근하도록 수정함",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "cae6c43e-a931-4ac0-97eb-6877cdaa377b",
+                            "type": "numberedListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left",
+                                "start": 3
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "로그에 시간대가 저장되지 않음",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "8146a18b-1f7d-449b-9559-b990b6edefc0",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "파이썬 상단에 시간 설정을 해도, uvicorn.run이 실행되는 동안 Uvicorn이 파이썬의 로깅 설정을 무시하고 자기 기본 포맷으로 덮음",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": [
+                                {
+                                    "id": "d670377d-438d-4f85-b07e-585b166cc0fa",
+                                    "type": "bulletListItem",
+                                    "props": {
+                                        "backgroundColor": "default",
+                                        "textColor": "default",
+                                        "textAlignment": "left"
+                                    },
+                                    "content": [
+                                        {
+                                            "type": "text",
+                                            "text": "이런 이유로 logging을 해도 시간을 저장하지 못함",
+                                            "styles": {}
+                                        }
+                                    ],
+                                    "children": []
+                                }
+                            ]
+                        },
+                        {
+                            "id": "02534f7a-cd5b-4128-ad37-647fce178e9e",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "파이썬을 백그라운드 파일로 보낼 때, 파이썬은 용량이 어느 정도 찰 때까지 메모리에 로그를 담아두고 파일에 즉시 쓰지 않음",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "6fd57fad-701f-4e23-ba03-c60d04d95df8",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "먼저 ",
+                                    "styles": {}
+                                },
+                                {
+                                    "type": "link",
+                                    "href": "https://main.py",
+                                    "content": [
+                                        {
+                                            "type": "text",
+                                            "text": "main.py",
+                                            "styles": {}
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "text",
+                                    "text": " 맨 아래 Uvicorn 실행 부분에 시간(Timestamp) 포맷을 직접 심어주는 공식 설정을 적용함",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "d22ba567-c789-497e-b1e2-bf6c91fa9220",
+                            "type": "codeBlock",
+                            "props": {
+                                "language": "text"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "# Uvicorn 자체 로거에 시간(Timestamp) 포맷 주입\nlog_config = uvicorn.config.LOGGING_CONFIG\nlog_config[\"formatters\"][\"default\"][\"fmt\"] = \"[%(asctime)s] %(levelprefix)s %(message)s\"\nlog_config[\"formatters\"][\"default\"][\"datefmt\"] = \"%Y-%m-%d %H:%M:%S\"\nlog_config[\"formatters\"][\"access\"][\"fmt\"] = '[%(asctime)s] %(levelprefix)s %(client_addr)s - \"%(request_line)s\" %(status_code)s'\nlog_config[\"formatters\"][\"access\"][\"datefmt\"] = \"%Y-%m-%d %H:%M:%S\"",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "00dd2ff0-8283-4147-8295-3e678cd20367",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "다음 스크립트 파일 ",
+                                    "styles": {}
+                                },
+                                {
+                                    "type": "link",
+                                    "href": "https://start.sh",
+                                    "content": [
+                                        {
+                                            "type": "text",
+                                            "text": "start.sh",
+                                            "styles": {}
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "text",
+                                    "text": " 파일에 -u 코드를 입력함",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "4a1c394a-64e5-4489-8e6b-4c3d52823f54",
+                            "type": "codeBlock",
+                            "props": {
+                                "language": "text"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "/home/min/blog/bin/python3 -u main.py > ~/logs/auto/app.log 2> ~/logs/auto/error.log &",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "e0d54551-a96f-4d1e-b60a-b0a8f4ea46b2",
+                            "type": "paragraph",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [],
+                            "children": []
+                        }
+                    ]
+                },
+                "ce2d0576-bf4a-48f5-a3be-6560785dcd61": {
+                    "id": "ce2d0576-bf4a-48f5-a3be-6560785dcd61",
+                    "title": "배포",
+                    "parent_id": null,
+                    "created_at": "2026-09-09T13:50:41.657401",
+                    "blocks": [
+                        {
+                            "id": "knygrr7",
+                            "type": "divider",
+                            "props": {},
+                            "children": []
+                        },
+                        {
+                            "id": "298008c1-8fcf-4660-b4ff-ad762eb65f81",
+                            "type": "heading",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left",
+                                "level": 3,
+                                "isToggleable": false
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "배포",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "8c8ee9ac-7075-4993-b373-22748ff89e35",
+                            "type": "heading",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left",
+                                "level": 4,
+                                "isToggleable": false
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "배포란?",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "f851edd9-3735-4bc2-8c00-c59569815d2e",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "서버 환경 구축",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": [
+                                {
+                                    "id": "a26bcded-0412-42b3-962f-8b50bdb18b40",
+                                    "type": "bulletListItem",
+                                    "props": {
+                                        "backgroundColor": "default",
+                                        "textColor": "default",
+                                        "textAlignment": "left"
+                                    },
+                                    "content": [
+                                        {
+                                            "type": "text",
+                                            "text": "VMware 우분투 설치 및 Python 가상환경 구성",
+                                            "styles": {}
+                                        }
+                                    ],
+                                    "children": []
+                                }
+                            ]
+                        },
+                        {
+                            "id": "42b918b4-4d76-4d21-805f-947e230b09d8",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "웹 서버/게이트웨이 설정",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": [
+                                {
+                                    "id": "77cc04ef-5390-4bcc-9728-7d63a8237c52",
+                                    "type": "bulletListItem",
+                                    "props": {
+                                        "backgroundColor": "default",
+                                        "textColor": "default",
+                                        "textAlignment": "left"
+                                    },
+                                    "content": [
+                                        {
+                                            "type": "text",
+                                            "text": "Nginx 설치 및 리버스 프록시 연동",
+                                            "styles": {}
+                                        }
+                                    ],
+                                    "children": []
+                                }
+                            ]
+                        },
+                        {
+                            "id": "bfe40bf6-b02b-47f5-822f-e937916fa5f0",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "백엔드 프로세스 구동",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": [
+                                {
+                                    "id": "732aaf3d-4496-4c66-bd1c-a880728e0ace",
+                                    "type": "bulletListItem",
+                                    "props": {
+                                        "backgroundColor": "default",
+                                        "textColor": "default",
+                                        "textAlignment": "left"
+                                    },
+                                    "content": [
+                                        {
+                                            "type": "text",
+                                            "text": "Uvicorn으로 FastAPI 및 에이전트 실행",
+                                            "styles": {}
+                                        }
+                                    ],
+                                    "children": []
+                                }
+                            ]
+                        },
+                        {
+                            "id": "8f2e8f87-6f5a-4ff4-a6a4-5234c71e7aea",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "네트워크 경로 개방",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": [
+                                {
+                                    "id": "25881c0f-7717-4439-bfcb-4679fa17cc77",
+                                    "type": "bulletListItem",
+                                    "props": {
+                                        "backgroundColor": "default",
+                                        "textColor": "default",
+                                        "textAlignment": "left"
+                                    },
+                                    "content": [
+                                        {
+                                            "type": "text",
+                                            "text": "포트 포워딩, 방화벽 해제, 터널링 등을 통해 외부 기기가 들어올 길을 여는 작업",
+                                            "styles": {}
+                                        }
+                                    ],
+                                    "children": []
+                                }
+                            ]
+                        },
+                        {
+                            "id": "f2b7a02a-507b-433b-aa58-3d1fbc2327c4",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "위 모든 파이프라인 전체를 통틀어 \"배포\"라고 함",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "e91f094e-0ff3-4670-a334-c2974a9f5847",
+                            "type": "quote",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "즉 지금까지 백엔드 프로세스 구동까지 했고 \"네트워크 경로 개방\" 작업을 수행해야 함",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "b527f1b1-eea3-4f3d-9f16-76f41635f9bd",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "현재 VMware와 같은 ip를 사용하는 컴퓨터, 즉 VMware를 실행 중인 컴퓨터에서는 접근이 다른데\n다른 C클래스 대역부터 다른 IP에서는 접근이 불가능함",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": [
+                                {
+                                    "id": "3d4459af-aa42-43b2-9ff5-cd309d93ea82",
+                                    "type": "bulletListItem",
+                                    "props": {
+                                        "backgroundColor": "default",
+                                        "textColor": "default",
+                                        "textAlignment": "left"
+                                    },
+                                    "content": [
+                                        {
+                                            "type": "text",
+                                            "text": "192.168.x.x 가 아닌 다른 IP대역을 사용하는 기기에서는 접근이 불가능함",
+                                            "styles": {}
+                                        }
+                                    ],
+                                    "children": []
+                                }
+                            ]
+                        },
+                        {
+                            "id": "a79fae78-7e6a-4f12-9fde-2c51d2f7bd26",
+                            "type": "heading",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left",
+                                "level": 4,
+                                "isToggleable": false
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "배포 방법",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "c97ea4f6-54c0-41bf-aa30-bc707c97d4fc",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "각 Cloudflare, Tailscale, ngrok 등이 있음",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": [
+                                {
+                                    "id": "946b3dc6-f56e-4f84-8c3c-49c6293cd8bc",
+                                    "type": "bulletListItem",
+                                    "props": {
+                                        "backgroundColor": "default",
+                                        "textColor": "default",
+                                        "textAlignment": "left"
+                                    },
+                                    "content": [
+                                        {
+                                            "type": "text",
+                                            "text": "위 각 방법은 구축은 완전 무료지만 Cloudflare는 개인 도메인 소유가 필수여서 도메인 구매비가 필요함",
+                                            "styles": {}
+                                        }
+                                    ],
+                                    "children": []
+                                }
+                            ]
+                        },
+                        {
+                            "id": "9411284e-146b-41cb-b75d-6466cc5d58e2",
+                            "type": "heading",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left",
+                                "level": 4,
+                                "isToggleable": false
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "tailscale",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "b1edfe54-f25c-48c1-981b-0d53151fd4d8",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "완전무료(personal 플랜), 사용자 1명에 최대 기기 100대 연결이 가능함",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "7d58940a-0c24-4e46-adc4-e321ea25aeb3",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "대역폭/트래픽 무제한, 서브넷 라우터 기능 제공",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "0b3cb190-fa98-4687-8aa9-602c8cb70404",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "팀/공동 작업자 추가 시 유료로 변경됨, 공개 웹사이트 운영 불가(기기간 통신만 가능)",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": [
+                                {
+                                    "id": "b48ee0e1-4647-4446-9be1-d80689125590",
+                                    "type": "bulletListItem",
+                                    "props": {
+                                        "backgroundColor": "default",
+                                        "textColor": "default",
+                                        "textAlignment": "left"
+                                    },
+                                    "content": [
+                                        {
+                                            "type": "text",
+                                            "text": "즉 배포라기 보단 나만의(내가 허용한) 기기에서만 사용가능함",
+                                            "styles": {}
+                                        }
+                                    ],
+                                    "children": []
+                                }
+                            ]
+                        },
+                        {
+                            "id": "91b126c4-9838-477b-9473-bbef043e210f",
+                            "type": "heading",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left",
+                                "level": 4,
+                                "isToggleable": false
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "ngrok",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "a575b206-9979-4005-a157-e4fa01da0ba5",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "완전무료(Free 플랜),",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "b9ee4b94-d1bf-45cb-bb1b-16137c11458d",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "무료 HTTPS 도메인 제공, 터널 1개 항시 유지함, 웹 대시보드 트래픽 검사 지원",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "cfb7ad6b-a67f-4c4f-a5dd-976fcf40ca2d",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "무료 도메인 1개만 고정 가능(추가 시 매번 랜덤 URL 생성)",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "8d366fdd-adde-4097-ba2b-83a71cf38238",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "월간 대역폭(데이터 전송량) 및 요청 수 (초당 요청) 제한 존재",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "180a8d08-c859-4a74-8e1f-249b83c91e34",
+                            "type": "heading",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left",
+                                "level": 4,
+                                "isToggleable": false
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "cloudflare Tunnel",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "36865073-225a-46fb-a0bf-57c9c4095b65",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "완전 무료(도메인 가격은 들어감)",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "0fd536d0-20be-4e5c-be66-14eebff09a9e",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "대역폭 및 트래픽 무제한",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "0e180f9e-987f-4599-88d4-c1e5e1b8cb5a",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "글로벌 Anycast CDN 및 DDoS 방어 무료",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "6e3ab8a1-c8ad-4bc8-9e09-42e4ea71d617",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "무료 자동 SSL(HTTPS) 발급",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "7f0cf6ef-99bf-4d71-9109-95197c58c1ec",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "개인 도메인 소유 필수 - 도메인 구매비 연 1~2만원",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "329ec180-ddda-4418-acdd-89167a2e7b60",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "영상 스트리밍 등 대용량 미디어 전송 시 정책 위반 가능",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "9e3ff269-5621-4957-88a1-977e0dd9b287",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [],
+                            "children": []
+                        }
+                    ]
+                },
+                "694be807-8b1d-4bff-9cb0-0f8b4c81b48f": {
+                    "id": "694be807-8b1d-4bff-9cb0-0f8b4c81b48f",
+                    "title": "ngrok",
+                    "parent_id": "ce2d0576-bf4a-48f5-a3be-6560785dcd61",
+                    "created_at": "2026-09-09T15:17:26.604977",
+                    "blocks": [
+                        {
+                            "id": "uum211z",
+                            "type": "divider",
+                            "props": {},
+                            "children": []
+                        },
+                        {
+                            "id": "7f3fd475-fa41-44da-b909-72ac9878732d",
+                            "type": "heading",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left",
+                                "level": 3,
+                                "isToggleable": false
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "ngrok?",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "225bdbe7-cfdc-40aa-966e-7b2b00d03948",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "로컬 컴퓨터나 가상머신(VM)에서 실행 중인 서버를 공유기 포트 포워딩, 방화벽 설정, 고정 공인 IP없이도 인터넷 외부에서 즉시 접근할 수 있게 만들어주는 보안 리버스 프록시 터널링 도구",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "dd8c58a0-09a8-421a-ae0d-4bdb40a055bf",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "보통 로컬에서 ",
+                                    "styles": {}
+                                },
+                                {
+                                    "type": "link",
+                                    "href": "http://localhost:8000",
+                                    "content": [
+                                        {
+                                            "type": "text",
+                                            "text": "http://localhost:8000",
+                                            "styles": {}
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "text",
+                                    "text": " 으로 띄운 서버는 내 컴퓨터 안에서만 접근가능함, 하지만 ngrok 명령어를 입력하면 고유한 공용 인터넷 주소를 즉시 발급해줌",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "d53d3101-d2d6-4d02-9833-260e27f0a782",
+                            "type": "heading",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left",
+                                "level": 3,
+                                "isToggleable": false
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "동작 메커니즘(리버스 터널링)",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "acde0424-2029-4fc4-84a1-d50acceff52c",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "로컬 우분투 - 1. 아웃바운드 암호화 연결 수립 - ngrok 글로벌 클라우드 서버",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "572f9d6e-c021-4e4b-a765-e25f15a83d7f",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "외부 사용자 - 2. ",
+                                    "styles": {}
+                                },
+                                {
+                                    "type": "link",
+                                    "href": "https://ngrok-free.app",
+                                    "content": [
+                                        {
+                                            "type": "text",
+                                            "text": "https://ngrok-free.app",
+                                            "styles": {}
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "text",
+                                    "text": " 요청 - ngrok 글로벌 클라우드 서버로 접근",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "f2750be8-c61b-4950-86cf-b9dc8ddcfd3a",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "3.  터널 파이프로 패킷 전달 - 로컬 우분투(ngrok agent/ Nginx, FastAPI)로 접속",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "4b224c2f-945d-47e1-b3fa-1877119c1236",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "4. 내부 80/8000 포트로 포워딩",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "6b26848e-0045-4290-93cc-ca6e9d008c95",
+                            "type": "heading",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left",
+                                "level": 4,
+                                "isToggleable": false
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "아웃바운드 연결(Outbound-only)",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "46469de7-c45d-4b9b-91c1-7590b8ef1e4e",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "우분투에 설치된 ngrok agent가 ngrok 본사의 글로벌 에지(Edge) 서버로 먼저 암호화된 터널을 뚫어놓고 대기, 브라우저로 네이버를 연 때처럼 컴퓨터가 밖으로 나가는 연결이므로, 공유기나 NAT 방화벽에 걸리지 않고 통과",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "512b9f95-1451-4256-9ea4-8df5c1481e4b",
+                            "type": "heading",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left",
+                                "level": 4,
+                                "isToggleable": false
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "트래픽 인입 및 중계",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "4bda1179-84b8-4d11-9dcc-f36e0fb5d1aa",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "외부 사용자(스마트폰 LET 등)가 ngrok이 발급해 준 공용 URL로 접속하면, 요청이 ngrok 엣지 서버로 들어감",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "38d6550c-d835-4c5e-a269-67d28f6170b2",
+                            "type": "heading",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left",
+                                "level": 4,
+                                "isToggleable": false
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "역방향 전달",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "0dc1b6aa-a9e0-47bf-b78e-01b594377486",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "ngrok 에지 서버는 미리 뚫려 있던 터널 파이프라인을 타고 해당 요청을 내 우분투 안의 ngrok agent로 밀어 넣음",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "9610117d-4976-48a6-affe-83325f4be2a1",
+                            "type": "heading",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left",
+                                "level": 4,
+                                "isToggleable": false
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "로컬 포워딩",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "59a40f37-78e4-440f-8a80-6b14105825de",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "ngrok agent가 로컬의 127.0.0.1:80 또는 8000 으로 요청을 넘겨주어 최종 응답을 만듦",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "77e7c88e-2e58-4ce1-9ce1-0fe1f4006aa6",
+                            "type": "heading",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left",
+                                "level": 3,
+                                "isToggleable": false
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "ngrok의 기능",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "1683c728-910e-4dfd-afaf-41ff2816e887",
+                            "type": "heading",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left",
+                                "level": 4,
+                                "isToggleable": false
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "즉각적인 무료 SSL/TLS (HTTPS) 인증서 발급",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "7d93789f-91b7-4872-a81d-087b9896c348",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "로컬에서는 ",
+                                    "styles": {}
+                                },
+                                {
+                                    "type": "link",
+                                    "href": "http://로",
+                                    "content": [
+                                        {
+                                            "type": "text",
+                                            "text": "http://로",
+                                            "styles": {}
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "text",
+                                    "text": " 서버를 띄워도, ngrok이 외부 사용자에게는 공인 신뢰 인증서가 적용된 https:// 주소를 제공",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "1eb6c88a-64ec-4368-be7d-7114ce61bf83",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "모바일 브라우저나 최신 API는 HTTPS가 강제되는 경우가 많은데 이를 바로 해결",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "adec9a1a-175b-4227-91e4-5323369c49a6",
+                            "type": "heading",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left",
+                                "level": 4,
+                                "isToggleable": false
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "트래픽 실시간 모니터링 및 인스펙션 (Web UI)",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "8d1b026b-a8ab-49ca-9825-ad26836ce315",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "ngrok을 실행하면 로컬(http://127.0.0.1:4040)에 관리자 대시보드가 열림",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "d3dfd906-d15b-4807-b2fc-89ebbf62523b",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "외부에서 들어온 HTTP Header, Body, Query Parameter, 상태 코드 등을 눈으로 보며 디버깅할 수 있음",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "f763231b-c3c6-4138-9911-3937bd11d74f",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "버튼 클릭으로 과거 요청을 그대로 다시 쏘는 Replay 기능을 지원",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "160499ef-7b35-4548-91c2-ae57e4d18d03",
+                            "type": "heading",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left",
+                                "level": 4,
+                                "isToggleable": false
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "에지 보안 필터링",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "bd79c2a6-73b7-4b22-b6b6-8fa044eab3a6",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "트래픽이 내 컴퓨터에 도달하기 전 ngrok 서버 단에서 구글/깃허브 계정 인증(OAuth), 아이디/비밀번호(Basic Auth), IP 화이트리스트, Webhook 서명 검증을 처리",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "cd785a5b-091c-45a4-b0c7-986108f90794",
+                            "type": "heading",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left",
+                                "level": 4,
+                                "isToggleable": false
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "다양한 프로토콜 지원",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "1acbb115-d35e-48e2-941e-ba3fa9e24441",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "일반 웹 트레픽(HTTP/HTTPS) 이외에도 SSH(tcp 22), 원격 데스크톱, 데이터베이스 포트 등 TCP 트래픽 전체를 터널링 가능",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "969d1575-612f-4652-9458-f1e8a8437e7d",
+                            "type": "heading",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left",
+                                "level": 3,
+                                "isToggleable": false
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "설정 시작",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "3669aeec-2dc0-4df6-8387-19ec595f68a4",
+                            "type": "heading",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left",
+                                "level": 4,
+                                "isToggleable": false
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "ngrok 회원가입",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "25a1975a-c5ab-44d0-83e9-9e25f81abc1e",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "ngrok 사이트에 접속하여 구글이나 github 계정을 연동",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "6c3a51a1-12b5-420b-8e78-e10a5d2f4f82",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "로그인 후 대시보드의 Getting Started - Your Authtoken으로 이동",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "32595ee5-f6e5-41ea-bba8-ff33ab71bdaa",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "화면에 있는 토큰 문자열을 복사",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "8c3eea9e-6afa-42f3-8eae-8f0b4789b424",
+                            "type": "heading",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left",
+                                "level": 4,
+                                "isToggleable": false
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "우분투(vmware 가상서버)에 ngrok 설치 및 토큰 등록",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "3d06fe06-3a00-47b3-921e-8bbb1ed4f4e8",
+                            "type": "codeBlock",
+                            "props": {
+                                "language": "text"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "# ngrok 주소 등록\ncurl -s https://ngrok-agent.s3.amazonaws.com/ngrok.asc | sudo tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null\n\n# 등록되었는지 화면에 출력\necho \"deb https://ngrok-agent.s3.amazonaws.com buster main\" | sudo tee /etc/apt/sources.list.d/ngrok.list\n\n# ngrok 설치\nsudo apt update\nsudo apt install -y ngrok",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "7c334e48-5a02-4097-9d06-bb3d69b7ac68",
+                            "type": "heading",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left",
+                                "level": 4,
+                                "isToggleable": false
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "ngrok 토큰 등록",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "98873668-a2d1-4ad3-85f0-de0749712451",
+                            "type": "codeBlock",
+                            "props": {
+                                "language": "text"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "ngrok config add-authtoken <본인 토큰>",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "47630c1e-3b1d-449a-8d83-dcc85f8c44b8",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "Authtoken saved to configuration file 메시지가 출력되면 인증이 완료됨",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "eee475bf-dc3d-4b2a-824e-5995bade01a1",
+                            "type": "heading",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left",
+                                "level": 4,
+                                "isToggleable": false
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "내부 서비스 구동 상태 점검",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "4eeb8887-4b96-4f32-aad3-31958696e702",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "터널을 열기 전 Nginx(80번 포트)와 백엔드(8000번 포트)가 vmware에서 정상 대기 중인지 확인",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "fe0b1d45-d4bb-4d43-8049-e9eeb68c9020",
+                            "type": "codeBlock",
+                            "props": {
+                                "language": "text"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "# Nginx 활성화 사앹\nsudo systemctl status nginx --no-pager\n\n# 백엔드 프로세스 포트 점검\nss -tulpn | grep 8000",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "13865e60-fe95-405c-ac09-92c161db8621",
+                            "type": "heading",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left",
+                                "level": 4,
+                                "isToggleable": false
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "ngrok 보안 옵션 적용",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "32c37b95-9c39-4237-92d0-f55518d34003",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "80번 포트로 들어오는 트래픽에 Google OAuth 인증을 걸고, 지정된 구글 이메일만 허용하도록 실행",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "783f9d14-28e2-4c74-96fb-bc5679944e1b",
+                            "type": "codeBlock",
+                            "props": {
+                                "language": "text"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "ngrok http 80 --oauth=google --oauth-allow-email=내이메일@gmail.com",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "e9f002cc-26a6-4d71-94e2-2ab816630ee4",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "다른 이메일을 추가하려면 쉼표로 구분",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "43f14a2f-bfbc-4d33-af0f-315a0b73b209",
+                            "type": "paragraph",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "내이메일@gmail.com, 남이메일.com",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "34341347-97c7-4b85-8e0a-a6df0d82d0f4",
+                            "type": "heading",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left",
+                                "level": 3,
+                                "isToggleable": false
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "설정 간편화",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "dcff380c-e897-48b0-a5f9-b16ccc90bd63",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "ngrok 설정 파일에 내가 쓸 설정을 한 번만 등록해 두면, 앞으로는 복잡한 이메일 없이 ngrok start web만 입력",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "119b8f21-6a50-4499-88b5-9f60ec3a21bd",
+                            "type": "heading",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left",
+                                "level": 4,
+                                "isToggleable": false
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "설정",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "8495a4c9-140f-4cc7-9c05-536c9864b809",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "설정 파일 열기",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "bc73580d-410f-4fff-b84e-fa3e977b3862",
+                            "type": "codeBlock",
+                            "props": {
+                                "language": "text"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "ngrok config edit",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "e6b59382-909d-444c-a62a-a80ce7253a4c",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "파일에 해당 내용 저장",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "cbc68f19-95a1-461b-baf0-90276cf6a888",
+                            "type": "codeBlock",
+                            "props": {
+                                "language": "text"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "tunnels:\n  web:\n    proto: http\n    addr: 80\n    oauth:\n      provider: google\n      allow_emails:\n        - 내이메일@gmail.com",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": [
+                                {
+                                    "id": "80a741bc-717e-4c58-91e3-0117968a7930",
+                                    "type": "bulletListItem",
+                                    "props": {
+                                        "backgroundColor": "default",
+                                        "textColor": "default",
+                                        "textAlignment": "left"
+                                    },
+                                    "content": [
+                                        {
+                                            "type": "text",
+                                            "text": "내용 입력 -> Ctrl + O -> Enter -> Ctrl + X",
+                                            "styles": {}
+                                        }
+                                    ],
+                                    "children": []
+                                }
+                            ]
+                        },
+                        {
+                            "id": "da27160a-e6bb-49b9-b53c-26bc66140b31",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "이후 ngrok start web을 입력하면 됨",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "17a42f68-c727-44c3-a9d5-b2829f15439a",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "edit 시 라인은 스페이스바 2번으로 해야함 탭으로 하면 오류가 발생할 수 있음",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "c7cecd2d-e547-4060-90d8-7363c7f25589",
+                            "type": "heading",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left",
+                                "level": 3,
+                                "isToggleable": false
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "간편화",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "a8958660-2df6-4fa7-8086-d2da99f52c98",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "이전 서버 구동 간편화를 하기 위해서 했던 방식과 동일",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "80c8ca4e-64e6-4ed5-beb0-e3fd7e06bf71",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "이전 ",
+                                    "styles": {}
+                                },
+                                {
+                                    "type": "link",
+                                    "href": "https://start.sh",
+                                    "content": [
+                                        {
+                                            "type": "text",
+                                            "text": "start.sh",
+                                            "styles": {}
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "text",
+                                    "text": " 파일에 구동 내용 합치기",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "95cdc6ad-092d-4b74-b0d3-4df4b91a1626",
+                            "type": "codeBlock",
+                            "props": {
+                                "language": "text"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "[nano,vi,vim] ~/..../start.sh",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "98d2760c-4470-45fb-9d6d-9f780af6dc94",
+                            "type": "bulletListItem",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "아래 내용 추가",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "6371393b-bc80-42ac-a6e8-29b5200a7fa5",
+                            "type": "codeBlock",
+                            "props": {
+                                "language": "text"
+                            },
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": "nohup ngrok start web > ~/logs/auto/ngrok.log 2>&1 &",
+                                    "styles": {}
+                                }
+                            ],
+                            "children": []
+                        },
+                        {
+                            "id": "3044fddd-6f0b-439f-97b1-ed427f56ad24",
+                            "type": "paragraph",
+                            "props": {
+                                "backgroundColor": "default",
+                                "textColor": "default",
+                                "textAlignment": "left"
+                            },
+                            "content": [],
                             "children": []
                         }
                     ]
